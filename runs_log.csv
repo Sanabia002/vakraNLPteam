@@ -1,3 +1,4 @@
 timestamp,output_dir,capability,domain,model,llama_cpp_build,thinking,top_k_tools,max_iterations,max_samples,temperature,items,status_counts,avg_duration_s,wall_s,return_code,notes
 2026-10-31T14:49:00,output/exp_k10_it12_t0,3,hockey,openai/qwen3.5-4b,b11960,off,10,12,1,0,1,"{""error"": 1}",197.8,210.2,0,"qwen3.5-4b Q4_K_M bartowski, B580 Vulkan"
 2026-10-31T14:49:13,output/exp_k40_it12_t0,3,hockey,openai/qwen3.5-4b,b11960,off,40,12,1,0,1,"{""error"": 1}",0.6,13.0,0,"same, larger shortlist"
+2026-10-31T15:43:14,output/exp_k40_it12_c32k,3,hockey,openai/qwen3.5-4b,b11960,off,40,12,1,0,1,"{""error"": 1}",143.8,156.8,0,"ctx 32768, k=40"
