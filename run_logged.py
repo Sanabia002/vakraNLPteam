@@ -24,8 +24,10 @@ a = p.parse_args()
 if os.path.exists(a.out):
     sys.exit(f"{a.out} already exists; choose a new --out name so runs stay separate")
 
-cmd = [sys.executable, "benchmark_runner.py", "--capability_id", a.cap, "--domain", a.domain,
-       "--provider", "litellm", "--model", a.model, "--output", a.out]
+cmd = [sys.executable, "benchmark_runner.py", "--capability_id", a.cap]
+for _d in a.domain.split(","):
+    cmd += ["--domain", _d.strip()]
+cmd += ["--provider", "litellm", "--model", a.model, "--output", a.out]
 if a.top_k != "0": cmd += ["--top-k-tools", a.top_k]
 if a.max_iter: cmd += ["--max-iterations", a.max_iter]
 if a.samples: cmd += ["--max-samples-per-domain", a.samples]
