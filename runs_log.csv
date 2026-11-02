@@ -2,3 +2,13 @@ timestamp,output_dir,capability,domain,model,llama_cpp_build,thinking,top_k_tool
 2026-10-31T14:49:00,output/exp_k10_it12_t0,3,hockey,openai/qwen3.5-4b,b11960,off,10,12,1,0,1,"{""error"": 1}",197.8,210.2,0,"qwen3.5-4b Q4_K_M bartowski, B580 Vulkan"
 2026-10-31T14:49:13,output/exp_k40_it12_t0,3,hockey,openai/qwen3.5-4b,b11960,off,40,12,1,0,1,"{""error"": 1}",0.6,13.0,0,"same, larger shortlist"
 2026-10-31T15:43:14,output/exp_k40_it12_c32k,3,hockey,openai/qwen3.5-4b,b11960,off,40,12,1,0,1,"{""error"": 1}",143.8,156.8,0,"ctx 32768, k=40"
+2026-10-31T16:43:24,output/oracle_gold_only,3,hockey,openai/qwen3.5-4b,b11960,off,0,12,1,0,1,"{""error"": 1}",600.1,614.0,0,ORACLE: 3 gold tools only
+2026-10-31T16:44:39,output/oracle_gold_plus7,3,hockey,openai/qwen3.5-4b,b11960,off,0,12,1,0,1,"{""error"": 1}",61.6,75.2,0,ORACLE: 3 gold + 7 baseline distractors
+2026-11-01T15:47:05,output/oracle_gold_only_b,3,hockey,openai/qwen3.5-4b,b11960,off,0,12,1,0,1,"{""error"": 1}",600.1,614.1,0,"ORACLE retry: 3 gold tools only, ORACLE ACTIVE print"
+2026-11-01T16:00:48,output/oracle_gold_only_c,3,hockey,openai/qwen3.5-4b,b11960,off,0,12,1,0,1,"{""error"": 1}",150.0,163.3,0,"ORACLE gold only, 150s timeout, server log saved"
+2026-11-01T16:06:23,output/oracle_gold_only_t07,3,hockey,openai/qwen3.5-4b,b11960,off,0,12,1,0.7,1,"{""error"": 1}",150.0,165.5,0,"ORACLE gold only, temp 0.7"
+2026-11-01T16:26:02,output/oracle_gold_only_d,3,hockey,openai/qwen3.5-4b,b11960,off,0,12,1,0,1,"{""error"": 1}",420.1,442.7,0,"ORACLE gold only, 420s timeout"
+2026-11-01T17:21:27,output/oracle_fixed,3,hockey,openai/qwen3.5-4b,b11960,off,0,12,1,0,1,"{""error"": 1}",0.1,18.1,0,"ORACLE gold only, mcp 1.30.0 (downgraded from 2.3.0)"
+2026-11-01T17:28:42,output/oracle_fixed2,3,hockey,openai/qwen3.5-4b,b11960,off,0,12,1,0,1,"{""success"": 1}",7.8,24.3,0,"ORACLE gold only, mcp 2.3.0 + wrapper accepts input_schema"
+2026-11-01T17:32:23,output/fx_baseline_k10,3,hockey,openai/qwen3.5-4b,b11960,off,10,12,1,0,1,"{""error"": 1}",37.4,50.1,0,fixed harness; baseline shortlist k=10
+2026-11-01T17:32:47,output/fx_gold_plus7,3,hockey,openai/qwen3.5-4b,b11960,off,0,12,1,0,1,"{""success"": 1}",10.2,24.3,0,fixed harness; ORACLE 3 gold + 7 distractors

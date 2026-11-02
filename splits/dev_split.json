@@ -1,0 +1,112 @@
+{
+ "seed": 0,
+ "exclude": [
+  "hockey"
+ ],
+ "criteria": {
+  "n_shared": 6,
+  "n_cap4_only": 1,
+  "frac_range": [
+   0.15,
+   0.27
+  ],
+  "min_3hop_dev_cap3": 3
+ },
+ "capability_3": {
+  "dev_domains": [
+   "beer_factory",
+   "college_completion",
+   "genes",
+   "ice_hockey_draft",
+   "law_episode",
+   "mondial_geo"
+  ],
+  "train_domains": [
+   "authors",
+   "bike_share_1",
+   "book_publishing_company",
+   "books",
+   "cars",
+   "citeseer",
+   "codebase_comments",
+   "coinmarketcap",
+   "computer_student",
+   "disney",
+   "european_football_1",
+   "hockey",
+   "image_and_language",
+   "music_tracker",
+   "olympics",
+   "restaurant",
+   "soccer_2016",
+   "student_loan",
+   "trains",
+   "university",
+   "world",
+   "world_development_indicators"
+  ],
+  "dev_questions": 82,
+  "train_questions": 264,
+  "dev_per_domain": {
+   "beer_factory": 28,
+   "college_completion": 22,
+   "genes": 1,
+   "ice_hockey_draft": 3,
+   "law_episode": 6,
+   "mondial_geo": 22
+  }
+ },
+ "capability_4": {
+  "dev_domains": [
+   "beer_factory",
+   "college_completion",
+   "genes",
+   "ice_hockey_draft",
+   "law_episode",
+   "mondial_geo",
+   "professional_basketball"
+  ],
+  "train_domains": [
+   "address",
+   "airline",
+   "app_store",
+   "authors",
+   "bike_share_1",
+   "book_publishing_company",
+   "books",
+   "cars",
+   "codebase_comments",
+   "coinmarketcap",
+   "computer_student",
+   "cookbook",
+   "disney",
+   "european_football_1",
+   "food_inspection",
+   "hockey",
+   "image_and_language",
+   "menu",
+   "music_tracker",
+   "olympics",
+   "restaurant",
+   "sales_in_weather",
+   "shakespeare",
+   "soccer_2016",
+   "student_loan",
+   "talkingdata",
+   "university",
+   "world",
+   "world_development_indicators"
+  ],
+  "dev_questions": 151,
+  "train_questions": 747,
+  "dev_per_domain": {
+   "beer_factory": 29,
+   "college_completion": 1,
+   "genes": 3,
+   "ice_hockey_draft": 13,
+   "law_episode": 22,
+   "mondial_geo": 47,
+   "professional_basketball": 36
+  }
+ }
+}
