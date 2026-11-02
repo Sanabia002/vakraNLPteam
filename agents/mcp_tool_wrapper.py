@@ -122,10 +122,12 @@ class MCPToolWrapper:
         """
         # 1. Convert schema (CRITICAL: This ensures LLM can see parameters)
         args_schema = None
-        if hasattr(mcp_tool, 'inputSchema') and mcp_tool.inputSchema:
+        # mcp>=2 renamed inputSchema -> input_schema; accept both.
+        _schema = getattr(mcp_tool, 'inputSchema', None) or getattr(mcp_tool, 'input_schema', None)
+        if _schema:
             args_schema = self._convert_json_schema_to_pydantic(
                 mcp_tool.name,
-                mcp_tool.inputSchema
+                _schema
             )
 
         # 2. Sanitize name if needed
