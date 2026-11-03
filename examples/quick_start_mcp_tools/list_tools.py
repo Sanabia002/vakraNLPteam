@@ -48,8 +48,8 @@ def _print_tools(tools, verbose: bool):
                     print(f"         {line}")
             else:
                 print(f"         {lines[0]}")
-        if verbose and tool.inputSchema:
-            schema = tool.inputSchema
+        if verbose and (getattr(tool, "input_schema", None) or getattr(tool, "inputSchema", None)):
+            schema = (getattr(tool, "input_schema", None) or getattr(tool, "inputSchema", None))
             props = schema.get("properties", {})
             required = set(schema.get("required", []))
             if props:
@@ -109,7 +109,7 @@ Examples:
             {
                 "name": t.name,
                 "description": t.description,
-                "inputSchema": t.inputSchema,
+                "inputSchema": (getattr(t, "input_schema", None) or getattr(t, "inputSchema", None)),
             }
             for t in tools
         ]

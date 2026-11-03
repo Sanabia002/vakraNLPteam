@@ -89,7 +89,7 @@ async def list_tools_for_domains(
                             "name": tool.name,
                             "description": tool.description or "",
                             "inputSchema": (
-                                tool.inputSchema
+                                (getattr(tool, "input_schema", None) or getattr(tool, "inputSchema", None))
                                 if hasattr(tool, "inputSchema") else {}
                             ),
                         })

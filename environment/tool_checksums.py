@@ -56,7 +56,7 @@ def compute_tool_checksum(tools: List[Any]) -> str:
     ):
         name = tool.name if hasattr(tool, "name") else tool["name"]
         schema = (
-            tool.inputSchema
+            (getattr(tool, "input_schema", None) or getattr(tool, "inputSchema", None))
             if hasattr(tool, "inputSchema")
             else tool.get("inputSchema", {})
         )

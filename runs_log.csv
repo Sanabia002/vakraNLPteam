@@ -12,3 +12,5 @@ timestamp,output_dir,capability,domain,model,llama_cpp_build,thinking,top_k_tool
 2026-11-01T17:28:42,output/oracle_fixed2,3,hockey,openai/qwen3.5-4b,b11960,off,0,12,1,0,1,"{""success"": 1}",7.8,24.3,0,"ORACLE gold only, mcp 2.3.0 + wrapper accepts input_schema"
 2026-11-01T17:32:23,output/fx_baseline_k10,3,hockey,openai/qwen3.5-4b,b11960,off,10,12,1,0,1,"{""error"": 1}",37.4,50.1,0,fixed harness; baseline shortlist k=10
 2026-11-01T17:32:47,output/fx_gold_plus7,3,hockey,openai/qwen3.5-4b,b11960,off,0,12,1,0,1,"{""success"": 1}",10.2,24.3,0,fixed harness; ORACLE 3 gold + 7 distractors
+2026-11-01T21:29:51,output/probe_genes,3,genes,openai/qwen3.5-4b,b11960,off,20,12,1,0,1,"{""success"": 1}",10.6,22.1,0,probe after wrapper fix
+2026-11-01T21:40:50,output/dev3_k20_shakedown_b,3,"beer_factory,college_completion,genes,ice_hockey_draft,law_episode,mondial_geo",openai/qwen3.5-4b,b11960,off,20,12,3,0,16,"{""error"": 4, ""success"": 12}",29.1,491.1,0,dev shakedown; wrapper fix present; k=20; 3 q/domain

@@ -467,9 +467,9 @@ async def list_tools_mcp(domains: list[str], base_url: str):
             print(f"  {tool.name}")
             if tool.description:
                 print(f"    {tool.description}")
-            if tool.inputSchema and tool.inputSchema.get("properties"):
+            if (getattr(tool, "input_schema", None) or getattr(tool, "inputSchema", None)) and (getattr(tool, "input_schema", None) or getattr(tool, "inputSchema", None)).get("properties"):
                 print(f"    params:")
-                print(_format_params(tool.inputSchema, indent=1))
+                print(_format_params((getattr(tool, "input_schema", None) or getattr(tool, "inputSchema", None)), indent=1))
             print()
 
 
@@ -503,9 +503,9 @@ async def list_tools_docker(domains: list[str], args):
                         print(f"  {tool.name}")
                         if tool.description:
                             print(f"    {tool.description}")
-                        if tool.inputSchema and tool.inputSchema.get("properties"):
+                        if (getattr(tool, "input_schema", None) or getattr(tool, "inputSchema", None)) and (getattr(tool, "input_schema", None) or getattr(tool, "inputSchema", None)).get("properties"):
                             print(f"    params:")
-                            print(_format_params(tool.inputSchema, indent=1))
+                            print(_format_params((getattr(tool, "input_schema", None) or getattr(tool, "inputSchema", None)), indent=1))
                         print()
         except Exception as e:
             print(f"\n{domain}: ERROR — {e}")

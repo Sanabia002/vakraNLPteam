@@ -111,7 +111,7 @@ class TestComputeToolChecksum:
     def test_dict_input(self):
         """Accepts plain dicts as well as objects with attributes."""
         tool_obj = _make_tools(["t"])[0]
-        tool_dict = {"name": "t", "inputSchema": tool_obj.inputSchema}
+        tool_dict = {"name": "t", "inputSchema": (getattr(tool_obj, "input_schema", None) or getattr(tool_obj, "inputSchema", None))}
         assert compute_tool_checksum([tool_obj]) == compute_tool_checksum([tool_dict])
 
     def test_pydantic_v2_schema(self):

@@ -65,7 +65,7 @@ async def _run(capability_id: int, domain: str, tool_name: str,
             )
         else:
             tool = tools[tool_name]
-            schema = tool.inputSchema or {}
+            schema = (getattr(tool, "input_schema", None) or getattr(tool, "inputSchema", None)) or {}
             props = schema.get("properties", {})
             required = set(schema.get("required", []))
             _tool_info = {"tool": tool, "props": props, "required": required}

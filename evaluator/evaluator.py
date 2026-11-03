@@ -222,7 +222,7 @@ async def evaluate_domain(
         async with create_client_and_connect(mcp_config, domain) as session:
             # Get schema from tools
             tools_result = await session.list_tools()
-            schema_map = {tool.name: tool.inputSchema for tool in tools_result.tools}
+            schema_map = {tool.name: (getattr(tool, "input_schema", None) or getattr(tool, "inputSchema", None)) for tool in tools_result.tools}
 
             # Batch execute tools
             batch_tools_pred = [extract_toolcalls_for_mcp(pr, limit_last_n=N_TOOL_CALLS_PER_TURN) for _, pr in paired]

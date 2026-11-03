@@ -116,7 +116,7 @@ def list_tools(capability_id: int, domain: str):
                     {
                         "name": tool.name,
                         "description": tool.description or "",
-                        "inputSchema": _schema_to_dict(tool.inputSchema),
+                        "inputSchema": _schema_to_dict((getattr(tool, "input_schema", None) or getattr(tool, "inputSchema", None))),
                     }
                     for tool in result.tools
                 ]

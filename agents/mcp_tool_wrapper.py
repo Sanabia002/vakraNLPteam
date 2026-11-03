@@ -165,7 +165,7 @@ class MCPToolWrapper:
 
         Args:
             tool_name: Name of the tool (used for model class name)
-            input_schema: JSON Schema dict from mcp_tool.inputSchema
+            input_schema: JSON Schema dict from (getattr(mcp_tool, "input_schema", None) or getattr(mcp_tool, "inputSchema", None))
 
         Returns:
             Dynamically created Pydantic BaseModel class or None if

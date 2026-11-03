@@ -116,8 +116,8 @@ def print_tools(tools: list) -> None:
         print(f"  {t.name}")
         if t.description:
             print(f"    {t.description.strip().split(chr(10))[0]}")
-        props = t.inputSchema.get("properties", {}) if t.inputSchema else {}
-        required = set((t.inputSchema or {}).get("required", []))
+        props = (getattr(t, "input_schema", None) or getattr(t, "inputSchema", None)).get("properties", {}) if (getattr(t, "input_schema", None) or getattr(t, "inputSchema", None)) else {}
+        required = set(((getattr(t, "input_schema", None) or getattr(t, "inputSchema", None)) or {}).get("required", []))
         if props:
             print(f"    Parameters:")
             for param, schema in props.items():
