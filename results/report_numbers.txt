@@ -11,15 +11,15 @@ VALUE RECOVERABILITY: gold string arguments, by where the value comes from
   177 (21%) not recoverable from question or earlier results  e.g. ['X', 'X', 'X', 'Private for-profit', 'Private for-profit']
   62 (7%) differs from question only by case  e.g. ['michael jackson', 'Public', 'X', 'Public', 'M']
 
-EVALUATOR: results/eval_dev3_k20_full_v2.json
-  summary: {"n_domains": 6, "n_paired_dialogues": 82, "n_missing_predictions": 0, "n_extra_predictions": 0, "n_samples": 82, "n_correct": 10.0, "mean_dialogue_score": 0.12195121951219512, "min_dialogue_score": 0.0, "max_dialogue_score": 1.0}
-  beer_factory: correct 4.0/28  missing predictions: 0
-  college_completion: correct 0.0/22  missing predictions: 0
+EVALUATOR: results/eval_dev3_k40_full_c.json
+  summary: {"n_domains": 6, "n_paired_dialogues": 82, "n_missing_predictions": 0, "n_extra_predictions": 0, "n_samples": 82, "n_correct": 18.0, "mean_dialogue_score": 0.21951219512195122, "min_dialogue_score": 0.0, "max_dialogue_score": 1.0}
+  beer_factory: correct 8.0/28  missing predictions: 0
+  college_completion: correct 1.0/22  missing predictions: 0
   genes: correct 0.0/1  missing predictions: 0
   ice_hockey_draft: correct 2.0/3  missing predictions: 0
-  law_episode: correct 0.0/6  missing predictions: 0
-  mondial_geo: correct 4.0/22  missing predictions: 0
+  law_episode: correct 2.0/6  missing predictions: 0
+  mondial_geo: correct 5.0/22  missing predictions: 0
 
 RETRIEVAL vs MODEL (k=20): evaluator-correct by whether ALL gold tools were in the top 20
-  all gold in top-20 = True: correct 10/45
-  all gold in top-20 = False: correct 0/37
+  all gold in top-20 = True: correct 11/45
+  all gold in top-20 = False: correct 7/37
