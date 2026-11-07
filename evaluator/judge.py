@@ -333,7 +333,7 @@ class CorrectnessJudge(LLMJudge):
             result_parsed= self._parse_response(result)
             return JudgeOutput(score=result_parsed["score"], explanation=result_parsed["explanation"])
         except Exception as e:
-            return JudgeOutput(score=0.0, explanation="Judge Error {e}.")
+            return JudgeOutput(score=0.0, explanation=f"Judge Error {e}.")
 
 class ExactMatchJudge(LLMJudge):
     """
