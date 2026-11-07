@@ -66,7 +66,23 @@ FINAL_SYSTEM_GROUNDED = ("Answer the question only from the tool results below. 
                          "Give only the answer; add nothing else.")
 FINAL_SYSTEM_PLAIN = "Answer the question using the tool results below."
 
+FINAL_USER_TEMPLATE = "Question: {question}\nTool results:\n{results}\n\nAnswer:"
+
 PLAN_MAX_TOKENS, STEP_MAX_TOKENS, FINAL_MAX_TOKENS = 300, 256, 200  # server generation cap is 1024
+RESULT_CHARS_DEFAULT = 600  # PLAN_RESULT_CHARS
+
+
+def format_tool_results(records: List[dict], result_chars: int) -> str:
+    """Numbered 'tool(args) -> result' lines, each result cut to result_chars. Shared with the baseline agent."""
+    if not records:
+        return "(none yet)"
+    lines = []
+    for i, r in enumerate(records, 1):
+        res = str(r["result"])
+        if len(res) > result_chars:
+            res = res[:result_chars] + "...(truncated)"
+        lines.append(f"{i}. {r['tool_name']}({json.dumps(r['arguments'], default=str)}) -> {res}")
+    return "\n".join(lines)
 
 
 def strip_think(text: Any) -> str:
@@ -193,7 +209,7 @@ class PlanExecuteAgent(AgentInterface):
         self.m = _int_env("PLAN_STEP_M", 5)
         self.n = _int_env("PLAN_QUESTION_N", 3)
         self.max_steps = _int_env("PLAN_MAX_STEPS", 5)
-        self.result_chars = _int_env("PLAN_RESULT_CHARS", 600)
+        self.result_chars = _int_env("PLAN_RESULT_CHARS", RESULT_CHARS_DEFAULT)
         # The runner precomputes a shortlist when agent._shortlister is set; keep it None.
         # The tools actually offered are returned in AgentResponse.shortlisted_tools.
         self._shortlister = None
@@ -237,15 +253,7 @@ class PlanExecuteAgent(AgentInterface):
             return f"Error: {type(e).__name__}: {e}"
 
     def _history_text(self, records: List[dict]) -> str:
-        if not records:
-            return "(none yet)"
-        lines = []
-        for i, r in enumerate(records, 1):
-            res = str(r["result"])
-            if len(res) > self.result_chars:
-                res = res[: self.result_chars] + "...(truncated)"
-            lines.append(f"{i}. {r['tool_name']}({json.dumps(r['arguments'], default=str)}) -> {res}")
-        return "\n".join(lines)
+        return format_tool_results(records, self.result_chars)
 
     async def run(self, input: Union[str, List[Message]], additional_instructions: str = None) -> AgentResponse:
         question = input if isinstance(input, str) else next(
@@ -355,7 +363,7 @@ class PlanExecuteAgent(AgentInterface):
         fallback = False
         try:
             system = FINAL_SYSTEM_GROUNDED if self.ground_prompt else FINAL_SYSTEM_PLAIN
-            user = f"Question: {question}\nTool results:\n{self._history_text(step_records)}\n\nAnswer:"
+            user = FINAL_USER_TEMPLATE.format(question=question, results=self._history_text(step_records))
             final_llm = self._llm.bind(temperature=0, max_tokens=FINAL_MAX_TOKENS)
             ai = await self._call_llm(final_llm, [SystemMessage(content=system), HumanMessage(content=user)], deadline)
             content = strip_think(ai.content)

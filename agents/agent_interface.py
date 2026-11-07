@@ -27,6 +27,7 @@ Benchmark runner examples:
 """
 import json
 import logging
+import os
 import re
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
@@ -366,6 +367,13 @@ INITIAL DATA:
             len(final_content),
         )
 
+        # BASELINE_GROUND_ANSWER=1 (default off): rewrite the final answer with ONE tool-free call that uses
+        # PlanExecuteAgent's grounded prompt, cap and result cutting. Only when there were tool calls.
+        metadata = {}
+        if tool_calls and os.environ.get("BASELINE_GROUND_ANSWER", "0").strip().lower() in ("1", "true", "yes", "on"):
+            final_content, metadata["baseline_ground_answer"] = await self._ground_answer(
+                query_preview, tool_calls, final_content, trajectory)
+
         # FALLBACK: If no tool calls captured but final_content looks like a JSON tool call,
         # manually parse and execute it (for models that output tool calls as text)
         if not tool_calls and final_content and self._initial_data_handle is None:
@@ -401,11 +409,34 @@ INITIAL DATA:
             content=final_content,
             tool_calls=tool_calls,
             messages=response_messages,
-            metadata={},
+            metadata=metadata,
             trajectory=trajectory,
             all_tools=all_tool_names,
             shortlisted_tools=active_tool_names,
         )
+
+    async def _ground_answer(self, question: str, tool_calls: List[dict], original: str, trajectory: List[dict]):
+        """Return (answer, status). status: used | empty | error; the original answer is kept unless used."""
+        from agents.plan_execute_agent import (FINAL_MAX_TOKENS, FINAL_SYSTEM_GROUNDED, FINAL_USER_TEMPLATE,
+                                               RESULT_CHARS_DEFAULT, format_tool_results, strip_think)
+        try:
+            result_chars = int(os.environ.get("PLAN_RESULT_CHARS", RESULT_CHARS_DEFAULT))
+        except ValueError:
+            result_chars = RESULT_CHARS_DEFAULT
+        user = FINAL_USER_TEMPLATE.format(question=question, results=format_tool_results(tool_calls, result_chars))
+        try:
+            llm = self._llm.bind(temperature=0, max_tokens=FINAL_MAX_TOKENS)
+            ai = await llm.ainvoke([SystemMessage(content=FINAL_SYSTEM_GROUNDED), HumanMessage(content=user)])
+            answer = strip_think(ai.content)
+        except Exception as e:
+            logger.warning("run: BASELINE_GROUND_ANSWER call failed, keeping original answer: %s", e)
+            return original, "error"
+        if not answer:
+            logger.warning("run: BASELINE_GROUND_ANSWER returned empty, keeping original answer")
+            return original, "empty"
+        trajectory.append({"type": "AIMessage", "content": answer, "tool_calls": [],
+                           "grounded_answer": True, "original_content": original})
+        return answer, "used"
 
     def restart(self):
         """Clear per-query state between queries."""
