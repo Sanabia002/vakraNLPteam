@@ -364,6 +364,27 @@ def save_tools_log(results: List[BenchmarkResult], output_dir: Path) -> None:
         print(f"  Tools log saved to: {output_file}")
 
 
+def save_trajectories(results: List[BenchmarkResult], output_dir: Path) -> None:
+    """Save per-item agent trajectories to {domain}_trajectory.json files.
+
+    Off by default; benchmark_runner.py calls this only when SAVE_TRAJECTORY=1. Separate file so
+    {domain}.json (the evaluator input) is unchanged. Entries: {uuid, domain, status, trajectory}.
+    """
+    by_domain: Dict[str, List[BenchmarkResult]] = {}
+    for r in results:
+        by_domain.setdefault(r.domain, []).append(r)
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    for domain, domain_results in by_domain.items():
+        records = [{"uuid": r.uuid, "domain": r.domain, "status": r.status, "trajectory": r.trajectory}
+                   for r in domain_results]
+        output_file = output_dir / f"{domain}_trajectory.json"
+        with open(output_file, "w") as f:
+            json.dump(records, f, indent=2, default=str)
+        print(f"  Trajectories saved to: {output_file}")
+
+
 class CapabilityLogger:
     """Tee-style logger for a single task run.
 

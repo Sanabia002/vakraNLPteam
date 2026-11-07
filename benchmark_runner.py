@@ -127,6 +127,7 @@ from benchmark.mcp_client import (
 from benchmark.runner_helpers import (
     save_results_ground_truth,
     save_tools_log,
+    save_trajectories,
     load_benchmark_data,
     log_trajectory,
     log_message_history,
@@ -436,6 +437,8 @@ async def run_capability(
         all_results.extend(domain_results)
         save_results_ground_truth(domain_results, out_dir)
         save_tools_log(domain_results, out_dir)
+        if os.environ.get("SAVE_TRAJECTORY", "0").strip().lower() in ("1", "true", "yes", "on"):
+            save_trajectories(domain_results, out_dir)
 
     results = all_results
 
