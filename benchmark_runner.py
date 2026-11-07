@@ -281,6 +281,8 @@ async def run_benchmark_for_domain(
                     result.answer = response.content
                     result.tool_calls = response.tool_calls
                     result.trajectory = response.trajectory
+                    if response.shortlisted_tools:
+                        result.shortlisted_tools = response.shortlisted_tools
                     result.status = "success"
                     elapsed = time.perf_counter() - start_time
                     tlog(
@@ -339,6 +341,10 @@ async def run_benchmark_for_domain(
 
 def _get_agent(capability_id: int, llm, tools, top_k_tools: int = 0, max_iterations: Optional[int] = None) -> AgentInterface:
     """Return the appropriate agent for the given capability_id."""
+    if os.environ.get("PLAN_AGENT", "0").strip().lower() in ("1", "true", "yes", "on"):
+        from agents.plan_execute_agent import PlanExecuteAgent
+        return PlanExecuteAgent(llm=llm, tools=tools, max_iterations=max_iterations,
+                                timeout_s=AGENT_TIMEOUT_SECONDS)
     kwargs = dict(llm=llm, tools=tools, top_k_tools=top_k_tools)
     if max_iterations is not None:
         kwargs["max_iterations"] = max_iterations
@@ -359,10 +365,19 @@ async def run_capability(
     max_iterations: Optional[int] = None,
     restart: bool = False,
     temperature: float = 0.0,
+    uuids_file: Optional[str] = None,
 ) -> List[BenchmarkResult]:
     """Run benchmark for a given capability_id, iterating over all domain files."""
 
     all_items, _ = load_benchmark_data(capability_id=capability_id, domains=domains)
+    if uuids_file:
+        with open(uuids_file) as fh:
+            wanted = set(json.load(fh))
+        all_items = [it for it in all_items if it.uuid in wanted]
+        missing = len(wanted - {it.uuid for it in all_items})
+        if missing:
+            print(f"WARNING: {missing} of {len(wanted)} uuids in {uuids_file} not found in the"
+                  f" selected domains; the --domain list must include every domain in the file")
 
     # Group items by domain
     items_by_domain: Dict[str, List[BenchmarkItem]] = {}
@@ -561,6 +576,12 @@ def main():
         default=0.0,
         help="LLM temperature (default: 0.0)"
     )
+    parser.add_argument(
+        "--uuids-file",
+        type=str,
+        default=None,
+        help="JSON list of item uuids; run only those items (default: all)"
+    )
 
     args = parser.parse_args()
     capability_ids = args.capability_id  # list of ints now
@@ -596,7 +617,8 @@ def main():
             top_k_tools=args.top_k_tools,
             max_iterations=args.max_iterations,
             restart=args.restart,
-            temperature=args.temperature
+            temperature=args.temperature,
+            uuids_file=args.uuids_file,
         )
 
     def _make_list_tools_coro(tid: int):

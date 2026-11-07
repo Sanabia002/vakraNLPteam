@@ -19,6 +19,7 @@ p.add_argument("--temperature", default="")
 p.add_argument("--thinking", default="")
 p.add_argument("--build", default="")
 p.add_argument("--notes", default="")
+p.add_argument("--uuids-file", default="", help="passed through to benchmark_runner.py --uuids-file")
 a = p.parse_args()
 
 if os.path.exists(a.out):
@@ -32,6 +33,7 @@ if a.top_k != "0": cmd += ["--top-k-tools", a.top_k]
 if a.max_iter: cmd += ["--max-iterations", a.max_iter]
 if a.samples: cmd += ["--max-samples-per-domain", a.samples]
 if a.temperature: cmd += ["--temperature", a.temperature]
+if a.uuids_file: cmd += ["--uuids-file", a.uuids_file]
 
 t0 = time.time()
 rc = subprocess.run(cmd).returncode

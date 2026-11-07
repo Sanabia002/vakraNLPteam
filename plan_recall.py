@@ -5,6 +5,7 @@ import argparse, csv, glob, json, os, random, re
 import numpy as np
 from openai import OpenAI
 from sentence_transformers import SentenceTransformer
+from frozen_split import FROZEN_TEST, SEEN_UUIDS, assert_no_frozen
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--variant", choices=["q", "qnames"], default="q", help="qnames also shows the planner the operation names")
@@ -16,6 +17,7 @@ a = ap.parse_args()
 
 CAP = "capability_3_multihop_reasoning"
 dev = set(json.load(open("splits/dev_split.json"))["capability_3"]["dev_domains"])
+EXCLUDED = dev | FROZEN_TEST | {"hockey"}  # hockey: analysis only, not tuned
 
 def load_tools(domain):
     lines = open(f"tool_dumps/{domain}.txt").read().splitlines()
@@ -28,8 +30,9 @@ def load_tools(domain):
 questions = []
 for f in sorted(glob.glob(f"data/train/{CAP}/output/*.json")):
     dom = os.path.basename(f)[:-5]
-    if dom in dev: continue
+    if dom in EXCLUDED: continue
     for it in json.load(open(f)):
+        if it["uuid"] in SEEN_UUIDS: continue
         for t in it["output"]:
             calls = [c["name"] for c in t["sequence"]["tool_call"]]
             if len(calls) >= 2:
@@ -39,6 +42,7 @@ rng = random.Random(a.seed)
 three = [x for x in questions if x["hops"] >= 3]
 two = [x for x in questions if x["hops"] == 2]
 sample = three + rng.sample(two, min(a.n2, len(two)))
+assert_no_frozen([x["uuid"] for x in sample], {x["uuid"]: x["domain"] for x in sample})
 os.makedirs("results", exist_ok=True)
 json.dump([x["uuid"] for x in sample], open("results/tune_sample_uuids.json", "w"))
 print(f"tune sample: {len(three)} three-call + {len(sample) - len(three)} two-call questions")

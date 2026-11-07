@@ -34,3 +34,10 @@ llama.cpp build b11960 (Vulkan), model bartowski/Qwen_Qwen3.5-4B-GGUF:Q4_K_M:
 - Proxy (NOT the VAKRA metric): `python proxy_score.py output/RUN`
 - Official-format: `evaluator/evaluator.py` with `JUDGE_BACKEND=groq` and `API_KEY=<groq key>` (key kept in `~/.groq_key`, never in git).
 - Retrieval study: `python shortlist_recall.py` (needs `tool_dumps/` from list_tools.py).
+
+## Frozen test domains and disclosures (Nov 6)
+- Frozen course test set (S3): bike_share_1, computer_student, disney, olympics, restaurant, student_loan. Never tune, run, or read outputs on these. hockey is analysis-only. Tune pool = remaining non-dev domains.
+- Disclosure: after the freeze, Claude Code ran two one-question smoke tests on bike_share_1 (it found a generic bug: tools return JSON objects like {"count": 0}, not bare lists). Nothing was tuned on it; the question may be dropped from the test set.
+- An early tune run (output/base_tune75_k20) used a sample that included frozen-test domains and hockey. It was quarantined and not scored.
+- Judge runs on Groq's free on-demand tier: a 413 (request over the 8000 tokens/min cap) and a hidden `{e}` error made 2 items unjudgeable on the first pass; they were re-judged into results/eval_tune_plan_merged.json (check_eval.py: VALID). Always run check_eval.py: judge failures score 0 silently.
+- Tune comparison (68 q, k=20 baseline vs PlanExecuteAgent with all flags): 16/68 vs 23/68. Tune result only, not a reported score.
