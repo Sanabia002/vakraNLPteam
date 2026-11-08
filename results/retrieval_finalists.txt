@@ -1,0 +1,5 @@
+Chosen from TUNE results on Nov 8, before looking at dev:
+ A: hybrid: MiniLM full + BM25
+ B: hybrid: MiniLM full clause-max + BM25
+ C: hybrid: bge-small full + BM25
+Rule: dev only confirms; adopt best tune @20 unless a simpler finalist is within 5 questions; do not adopt if dev net gain over base at k=20 is below about +5 questions; do not re-pick among finalists using dev.
