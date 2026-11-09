@@ -35,6 +35,7 @@ from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from langchain_core.tools import StructuredTool
 
 from agents.agent_interface import AgentInterface, AgentResponse, Message
+from agents.components.hybrid_retriever import HybridRetriever, retriever_mode
 from agents.components.tool_shortlister import ToolShortlister
 
 logger = logging.getLogger(__name__)
@@ -217,7 +218,12 @@ class PlanExecuteAgent(AgentInterface):
         self._initial_data_peek = None
         # Tool embeddings via ToolShortlister.encode_tools, once per agent (= once per domain).
         self._retriever = retriever or ToolShortlister(top_k=max(1, self.m + self.n))
-        if self._tools:
+        # RETRIEVER=hybrid: rank with HybridRetriever (reuses the MiniLM instance); base keeps the dense code path.
+        self.retriever_mode = retriever_mode()
+        self._hybrid = None
+        if self._tools and self.retriever_mode == "hybrid":
+            self._hybrid = HybridRetriever(self._tools, model=self._retriever.model)
+        elif self._tools:
             self._retriever.encode_tools(self._tools)
             self._E = self._norm(self._retriever._tool_embeddings)
         logger.info("PlanExecuteAgent: tools=%d step_retrieval=%s verify=%s ground=%s record_failed=%s "
@@ -230,10 +236,14 @@ class PlanExecuteAgent(AgentInterface):
         n = np.linalg.norm(x, axis=-1, keepdims=True)
         return x / np.where(n == 0, 1, n)
 
-    def _rank(self, texts: List[str], k: int) -> List[List[str]]:
-        """Top-k tool names per text. Texts are encoded in one batch; tools are never re-encoded."""
+    def _rank(self, texts: List[str], k: int, clauses: Optional[List[bool]] = None) -> List[List[str]]:
+        """Top-k tool names per text. Texts are encoded in one batch; tools are never re-encoded.
+        clauses (hybrid only): per text, whether to use clause-max; base ignores it."""
         if k <= 0 or not self._tools or not texts:
             return [[] for _ in texts]
+        if self._hybrid is not None:
+            ranked = self._hybrid.rank_many(texts, clauses or [True] * len(texts))
+            return [[self._tools[i].name for i in r[:k]] for r in ranked]
         V = self._norm(self._retriever.model.encode(texts, convert_to_numpy=True))
         return [[self._tools[int(i)].name for i in np.argsort(-(self._E @ v))[:k]] for v in V]
 
@@ -261,6 +271,8 @@ class PlanExecuteAgent(AgentInterface):
         t0 = time.monotonic()
         deadline = t0 + self._budget_s
         trajectory: List[dict] = [{"type": "HumanMessage", "content": question}]
+        if self._hybrid is not None:  # hybrid only, so base trajectories stay byte-identical
+            trajectory[0].update(retriever="hybrid", retriever_build_s=self._hybrid.build_s)
         tool_calls: List[dict] = []    # returned to the runner (all attempts, or kept only)
         n_exec = 0                     # every execution, retries included, counts toward max_iterations
         step_records: List[dict] = []  # kept result per step, shown to later steps and the final answer
@@ -286,10 +298,10 @@ class PlanExecuteAgent(AgentInterface):
             trajectory.append({"type": "AIMessage", "content": plan_raw, "plan": steps, "tool_calls": []})
 
             if self.step_retrieval:
-                ranked = self._rank([question] + steps, max(self.m, self.n))
+                ranked = self._rank([question] + steps, max(self.m, self.n), [True] + [False] * len(steps))
                 q_top, step_tops = ranked[0][: self.n], [r[: self.m] for r in ranked[1:]]
             else:
-                q_top, step_tops = self._rank([question], self.m + self.n)[0], [[] for _ in steps]
+                q_top, step_tops = self._rank([question], self.m + self.n, [True])[0], [[] for _ in steps]
 
             # 2. EXECUTE
             for si, step in enumerate(steps):
@@ -380,13 +392,17 @@ class PlanExecuteAgent(AgentInterface):
         trajectory.append({"type": "AIMessage", "content": content, "final": True, "tool_calls": [],
                            "stop_reason": stop_reason, "final_fallback": fallback,
                            "elapsed_s": round(time.monotonic() - t0, 1), "n_executions": n_exec})
+        metadata = {"stop_reason": stop_reason,
+                    "flags": {"STEP_RETRIEVAL": self.step_retrieval, "VERIFY": self.verify,
+                              "GROUND_PROMPT": self.ground_prompt,
+                              "RECORD_FAILED_RETRIES": self.record_failed_retries}}
+        if self._hybrid is not None:
+            metadata["flags"]["RETRIEVER"] = "hybrid"
+            metadata["retriever_build_s"] = self._hybrid.build_s
         return AgentResponse(content=content, tool_calls=tool_calls,
                              messages=[Message(role="user", content=question),
                                        Message(role="assistant", content=content)],
-                             metadata={"stop_reason": stop_reason,
-                                       "flags": {"STEP_RETRIEVAL": self.step_retrieval, "VERIFY": self.verify,
-                                                 "GROUND_PROMPT": self.ground_prompt,
-                                                 "RECORD_FAILED_RETRIES": self.record_failed_retries}},
+                             metadata=metadata,
                              trajectory=trajectory, all_tools=[t.name for t in self._tools],
                              shortlisted_tools=offered_union)
 

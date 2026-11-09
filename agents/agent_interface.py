@@ -305,6 +305,8 @@ INITIAL DATA:
         trajectory = []
 
         tool_call_args = {}  # Map tool_call_id → {name, args}
+        # RETRIEVER=hybrid only: record which retriever ran (base output stays byte-identical)
+        hybrid = getattr(self._shortlister, "_hybrid", None) if self._shortlister else None
 
         if result and "messages" in result:
             for msg in result["messages"]:
@@ -317,6 +319,8 @@ INITIAL DATA:
 
                 if msg_class == "HumanMessage":
                     response_messages.append(Message(role="user", content=msg.content))
+                    if hybrid is not None and not any(e.get("type") == "HumanMessage" for e in trajectory):
+                        trajectory_entry.update(retriever="hybrid", retriever_build_s=hybrid.build_s)
                     trajectory.append(trajectory_entry)
 
                 elif msg_class == "AIMessage":
@@ -370,6 +374,8 @@ INITIAL DATA:
         # BASELINE_GROUND_ANSWER=1 (default off): rewrite the final answer with ONE tool-free call that uses
         # PlanExecuteAgent's grounded prompt, cap and result cutting. Only when there were tool calls.
         metadata = {}
+        if hybrid is not None:
+            metadata.update(retriever="hybrid", retriever_build_s=hybrid.build_s)
         if tool_calls and os.environ.get("BASELINE_GROUND_ANSWER", "0").strip().lower() in ("1", "true", "yes", "on"):
             final_content, metadata["baseline_ground_answer"] = await self._ground_answer(
                 query_preview, tool_calls, final_content, trajectory)

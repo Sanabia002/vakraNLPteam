@@ -3,6 +3,8 @@ from typing import Any, Dict, List, Union
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
+from agents.components.hybrid_retriever import HybridRetriever, retriever_mode
+
 
 class ToolShortlister:
     """Retrieve the most relevant tools for a query via semantic similarity.
@@ -22,6 +24,9 @@ class ToolShortlister:
         # Populated by encode_tools()
         self._tool_embeddings: np.ndarray | None = None
         self._tools: list | None = None
+        # RETRIEVER=hybrid: shortlist() delegates to HybridRetriever; "base" (default) keeps the code below.
+        self.retriever_mode = retriever_mode()
+        self._hybrid: HybridRetriever | None = None
 
     @staticmethod
     def _tool_text(tool: Any) -> str:
@@ -53,6 +58,9 @@ class ToolShortlister:
             ``List[StructuredTool]``.
         """
         self._tools = list(tools)
+        if getattr(self, "retriever_mode", "base") == "hybrid":
+            self._hybrid = HybridRetriever(self._tools, model=self.model)  # encodes once; base encode skipped
+            return
         texts = [self._tool_text(t) for t in self._tools]
         self._tool_embeddings = self.model.encode(texts, convert_to_numpy=True)
 
@@ -85,6 +93,9 @@ class ToolShortlister:
         list
             A subset of *tools* (same element type) ranked by relevance.
         """
+        if getattr(self, "retriever_mode", "base") == "hybrid":
+            return self._hybrid_shortlist(query, tools)
+
         if len(tools) <= self.top_k:
             return tools
 
@@ -131,3 +142,11 @@ class ToolShortlister:
         top_indices = np.argsort(similarities)[::-1][:remaining_slots]
 
         return pinned + [candidates[i] for i in top_indices]
+
+    def _hybrid_shortlist(self, query: str, tools: list) -> list:
+        if len(tools) <= self.top_k:
+            return tools  # same list object, as in the base path
+        names = [self._tool_name(t) for t in tools]
+        if self._hybrid is None or self._hybrid.names != names:
+            self._hybrid = HybridRetriever(tools, model=self.model)  # catalog changed / not encoded: build on the fly
+        return self._hybrid.shortlist(query, self.top_k)
