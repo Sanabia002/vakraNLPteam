@@ -37,6 +37,7 @@ from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import StructuredTool
+from langgraph.errors import GraphRecursionError
 from langgraph.prebuilt import create_react_agent
 
 from agents.components.tool_shortlister import ToolShortlister
@@ -44,6 +45,11 @@ from agents.llm import create_llm
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
+
+
+def _flag_on(name: str) -> bool:
+    """Env flags default off; same truthy values as the other BASELINE_* flags."""
+    return os.environ.get(name, "0").strip().lower() in ("1", "true", "yes", "on")
 
 
 @dataclass
@@ -296,17 +302,116 @@ INITIAL DATA:
 
         # Run the agent
         logger.debug("run: invoking LangGraph agent with %d input messages", len(lc_messages))
-        result = await agent.ainvoke({"messages": lc_messages}, config=config)
-        logger.debug("run: agent invocation complete, result message count=%d", len(result.get("messages", [])))
-        # Extract results
+        limit_error = None
+        if _flag_on("BASELINE_ANSWER_ON_LIMIT"):
+            # BASELINE_ANSWER_ON_LIMIT=1 (default off): stream so the partial state survives a recursion-limit hit.
+            # Only GraphRecursionError is caught; context-window errors, timeouts and cancellation propagate.
+            # recursion_limit is odd here (2N+1, or LangGraph's default 10007), so the "Sorry, need more steps" path doesn't occur.
+            result = None
+            try:
+                async for state in agent.astream({"messages": lc_messages}, config=config, stream_mode="values"):
+                    result = state
+            except GraphRecursionError as e:
+                limit_error = e
+                logger.warning("run: recursion limit hit; BASELINE_ANSWER_ON_LIMIT will try to answer from partial state")
+        else:
+            result = await agent.ainvoke({"messages": lc_messages}, config=config)
+            logger.debug("run: agent invocation complete, result message count=%d", len(result.get("messages", [])))
+        # RETRIEVER=hybrid only: record which retriever ran (base output stays byte-identical)
+        hybrid = getattr(self._shortlister, "_hybrid", None) if self._shortlister else None
+        response_messages, tool_calls, final_content, trajectory = self._extract_result(result, hybrid)
+
+        logger.debug(
+            "run: extracted %d tool calls, final_content length=%d",
+            len(tool_calls),
+            len(final_content),
+        )
+
+        metadata = {}
+        if hybrid is not None:
+            metadata.update(retriever="hybrid", retriever_build_s=hybrid.build_s)
+
+        if limit_error is not None:
+            # Needs >= 1 completed ToolMessage; otherwise keep today's behavior (raise).
+            if not tool_calls:
+                raise limit_error
+            trajectory.append({"type": "AnswerOnLimit", "answered_on_limit": True, "error": str(limit_error),
+                               "content": f"recursion limit hit; answering from {len(tool_calls)} tool result(s)"})
+            # Exactly one grounded call (even if BASELINE_GROUND_ANSWER is also set). It costs roughly 5-10 s on the
+            # local server and runs inside the runner's AGENT_TIMEOUT_SECONDS budget.
+            final_content, status = await self._ground_answer(query_preview, tool_calls, final_content, trajectory)
+            if status != "used":
+                raise limit_error
+            metadata.update(baseline_ground_answer=status, answered_on_limit=True)
+            return AgentResponse(
+                content=final_content,
+                tool_calls=tool_calls,
+                messages=response_messages,
+                metadata=metadata,
+                trajectory=trajectory,
+                all_tools=all_tool_names,
+                shortlisted_tools=active_tool_names,
+            )
+
+        # BASELINE_GROUND_ANSWER=1 (default off): rewrite the final answer with ONE tool-free call that uses
+        # PlanExecuteAgent's grounded prompt, cap and result cutting. Only when there were tool calls.
+        if tool_calls and _flag_on("BASELINE_GROUND_ANSWER"):
+            final_content, metadata["baseline_ground_answer"] = await self._ground_answer(
+                query_preview, tool_calls, final_content, trajectory)
+
+        # FALLBACK: If no tool calls captured but final_content looks like a JSON tool call,
+        # manually parse and execute it (for models that output tool calls as text)
+        if not tool_calls and final_content and self._initial_data_handle is None:
+            parsed_call = self._parse_json_tool_call(final_content)
+            if parsed_call:
+                tool_name = parsed_call.get("name", "")
+                tool_args = parsed_call.get("arguments", {})
+                logger.debug("run: [FALLBACK] detected text tool call: %s(%s)", tool_name, tool_args)
+
+                if tool_name in tool_map:
+                    try:
+                        tool_result = await tool_map[tool_name].ainvoke(tool_args)
+                        tool_result_str = str(tool_result)
+                        logger.debug("run: [FALLBACK] tool result: %.200s", tool_result_str)
+                        tool_calls.append({
+                            "tool_name": tool_name,
+                            "arguments": tool_args,
+                            "result": tool_result_str,
+                        })
+                        final_content = tool_result_str
+                    except Exception as e:
+                        logger.warning("run: [FALLBACK] tool error for %s: %s", tool_name, e)
+                        tool_calls.append({
+                            "tool_name": tool_name,
+                            "arguments": tool_args,
+                            "result": f"Error: {e}",
+                        })
+                else:
+                    logger.warning("run: [FALLBACK] tool '%s' not found in available tools", tool_name)
+
+        logger.debug("run: returning AgentResponse with %d tool calls", len(tool_calls))
+        return AgentResponse(
+            content=final_content,
+            tool_calls=tool_calls,
+            messages=response_messages,
+            metadata=metadata,
+            trajectory=trajectory,
+            all_tools=all_tool_names,
+            shortlisted_tools=active_tool_names,
+        )
+
+    def _extract_result(self, result, hybrid):
+        """Turn a LangGraph state dict into (response_messages, tool_calls, final_content, trajectory).
+
+        Shared by the normal path and the BASELINE_ANSWER_ON_LIMIT partial-state path. Only completed
+        ToolMessages become tool_calls; a pending AI tool call appears in the trajectory only.
+        """
         response_messages = []
         tool_calls = []
         final_content = ""
         trajectory = []
 
         tool_call_args = {}  # Map tool_call_id → {name, args}
-        # RETRIEVER=hybrid only: record which retriever ran (base output stays byte-identical)
-        hybrid = getattr(self._shortlister, "_hybrid", None) if self._shortlister else None
 
         if result and "messages" in result:
             for msg in result["messages"]:
@@ -365,61 +470,7 @@ INITIAL DATA:
                 elif msg_class == "SystemMessage":
                     trajectory.append(trajectory_entry)
 
-        logger.debug(
-            "run: extracted %d tool calls, final_content length=%d",
-            len(tool_calls),
-            len(final_content),
-        )
-
-        # BASELINE_GROUND_ANSWER=1 (default off): rewrite the final answer with ONE tool-free call that uses
-        # PlanExecuteAgent's grounded prompt, cap and result cutting. Only when there were tool calls.
-        metadata = {}
-        if hybrid is not None:
-            metadata.update(retriever="hybrid", retriever_build_s=hybrid.build_s)
-        if tool_calls and os.environ.get("BASELINE_GROUND_ANSWER", "0").strip().lower() in ("1", "true", "yes", "on"):
-            final_content, metadata["baseline_ground_answer"] = await self._ground_answer(
-                query_preview, tool_calls, final_content, trajectory)
-
-        # FALLBACK: If no tool calls captured but final_content looks like a JSON tool call,
-        # manually parse and execute it (for models that output tool calls as text)
-        if not tool_calls and final_content and self._initial_data_handle is None:
-            parsed_call = self._parse_json_tool_call(final_content)
-            if parsed_call:
-                tool_name = parsed_call.get("name", "")
-                tool_args = parsed_call.get("arguments", {})
-                logger.debug("run: [FALLBACK] detected text tool call: %s(%s)", tool_name, tool_args)
-
-                if tool_name in tool_map:
-                    try:
-                        tool_result = await tool_map[tool_name].ainvoke(tool_args)
-                        tool_result_str = str(tool_result)
-                        logger.debug("run: [FALLBACK] tool result: %.200s", tool_result_str)
-                        tool_calls.append({
-                            "tool_name": tool_name,
-                            "arguments": tool_args,
-                            "result": tool_result_str,
-                        })
-                        final_content = tool_result_str
-                    except Exception as e:
-                        logger.warning("run: [FALLBACK] tool error for %s: %s", tool_name, e)
-                        tool_calls.append({
-                            "tool_name": tool_name,
-                            "arguments": tool_args,
-                            "result": f"Error: {e}",
-                        })
-                else:
-                    logger.warning("run: [FALLBACK] tool '%s' not found in available tools", tool_name)
-
-        logger.debug("run: returning AgentResponse with %d tool calls", len(tool_calls))
-        return AgentResponse(
-            content=final_content,
-            tool_calls=tool_calls,
-            messages=response_messages,
-            metadata=metadata,
-            trajectory=trajectory,
-            all_tools=all_tool_names,
-            shortlisted_tools=active_tool_names,
-        )
+        return response_messages, tool_calls, final_content, trajectory
 
     async def _ground_answer(self, question: str, tool_calls: List[dict], original: str, trajectory: List[dict]):
         """Return (answer, status). status: used | empty | error; the original answer is kept unless used."""
