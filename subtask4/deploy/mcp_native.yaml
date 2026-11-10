@@ -1,0 +1,8 @@
+# Subtask 4 MCP server launched natively (no Docker), from the repository root, with the servers' own venv.
+# The REST and retriever servers must be up first: python -m subtask4.deploy.services start
+tasks:
+  4:
+    mode: stdio
+    command: .venv-env/bin/python
+    args:
+      - environment/retrievers/capability_4_mcp_server.py

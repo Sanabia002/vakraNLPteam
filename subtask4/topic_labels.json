@@ -1,0 +1,19 @@
+{
+ "address": "Geography & Demographics",
+ "airline": "Transportation & Mobility",
+ "app_store": "Technology & Software",
+ "authors": "Literature, Language & Publishing",
+ "book_publishing_company": "Retail, Sales & Commerce",
+ "books": "Literature, Language & Publishing",
+ "cars": "Transportation & Mobility",
+ "cookbook": "Food, Restaurants & Beverage",
+ "food_inspection": "Food, Restaurants & Beverage",
+ "hockey": "Sports & Athletics",
+ "image_and_language": "Technology & Software",
+ "music_tracker": "Movies, TV & Entertainment, Social Media",
+ "shakespeare": "Literature, Language & Publishing",
+ "soccer_2016": "Sports & Athletics",
+ "talkingdata": "Movies, TV & Entertainment, Social Media",
+ "university": "Education & Students",
+ "world": "Geography & Demographics"
+}

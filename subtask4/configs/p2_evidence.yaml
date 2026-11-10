@@ -1,0 +1,3 @@
+# P2 alone (H3): search the domain's documents once; refuse only if they do not answer the question.
+name: p2-evidence
+gate: evidence

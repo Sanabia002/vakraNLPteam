@@ -1,0 +1,6 @@
+# Two-minute end-to-end check on a tune domain: every part on, 3 dialogues.
+name: smoke
+domains: [books]
+max_per_domain: 3
+router: true
+gate: evidence

@@ -1,0 +1,119 @@
+{
+ "seed": 0,
+ "exclude": [
+  "beer_factory",
+  "college_completion",
+  "genes",
+  "hockey",
+  "ice_hockey_draft",
+  "law_episode",
+  "mondial_geo",
+  "professional_basketball"
+ ],
+ "criteria": {
+  "n_shared": 6,
+  "n_cap4_only": 1,
+  "frac_range": [
+   0.15,
+   0.27
+  ],
+  "min_3hop_dev_cap3": 3
+ },
+ "capability_3": {
+  "dev_domains": [
+   "bike_share_1",
+   "computer_student",
+   "disney",
+   "olympics",
+   "restaurant",
+   "student_loan"
+  ],
+  "train_domains": [
+   "authors",
+   "beer_factory",
+   "book_publishing_company",
+   "books",
+   "cars",
+   "citeseer",
+   "codebase_comments",
+   "coinmarketcap",
+   "college_completion",
+   "european_football_1",
+   "genes",
+   "hockey",
+   "ice_hockey_draft",
+   "image_and_language",
+   "law_episode",
+   "mondial_geo",
+   "music_tracker",
+   "soccer_2016",
+   "trains",
+   "university",
+   "world",
+   "world_development_indicators"
+  ],
+  "dev_questions": 67,
+  "train_questions": 279,
+  "dev_per_domain": {
+   "bike_share_1": 2,
+   "computer_student": 20,
+   "disney": 31,
+   "olympics": 7,
+   "restaurant": 6,
+   "student_loan": 1
+  }
+ },
+ "capability_4": {
+  "dev_domains": [
+   "bike_share_1",
+   "computer_student",
+   "disney",
+   "olympics",
+   "restaurant",
+   "sales_in_weather",
+   "student_loan"
+  ],
+  "train_domains": [
+   "address",
+   "airline",
+   "app_store",
+   "authors",
+   "beer_factory",
+   "book_publishing_company",
+   "books",
+   "cars",
+   "codebase_comments",
+   "coinmarketcap",
+   "college_completion",
+   "cookbook",
+   "european_football_1",
+   "food_inspection",
+   "genes",
+   "hockey",
+   "ice_hockey_draft",
+   "image_and_language",
+   "law_episode",
+   "menu",
+   "mondial_geo",
+   "music_tracker",
+   "professional_basketball",
+   "shakespeare",
+   "soccer_2016",
+   "talkingdata",
+   "university",
+   "world",
+   "world_development_indicators"
+  ],
+  "dev_questions": 188,
+  "train_questions": 710,
+  "dev_per_domain": {
+   "bike_share_1": 36,
+   "computer_student": 20,
+   "disney": 6,
+   "olympics": 46,
+   "restaurant": 26,
+   "sales_in_weather": 16,
+   "student_loan": 38
+  }
+ }
+}

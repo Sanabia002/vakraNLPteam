@@ -1,0 +1,3 @@
+# P1 (H7): hide the tools an applicable rule forbids; the model decides per domain whether a topic rule applies.
+name: p1
+router: true

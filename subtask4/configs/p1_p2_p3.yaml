@@ -1,0 +1,5 @@
+# P1 + P2 + P3: Melissa's hybrid (dense + BM25) tool shortlist.
+name: p1-p2-p3
+router: true
+gate: evidence
+picker: hybrid

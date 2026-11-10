@@ -58,7 +58,7 @@ import json
 import argparse
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Callable, Dict, List, Optional
 
 from dotenv import load_dotenv
 from tqdm import tqdm
@@ -194,7 +194,7 @@ async def run_benchmark_for_domain(
             tools = await wrapper.get_tools()
             tlog(f"  Loaded {len(tools)} tools for domain '{domain}'")
 
-            agent = _get_agent(capability_id, llm, tools, top_k_tools, max_iterations)
+            agent = _get_agent(capability_id, llm, tools, top_k_tools, max_iterations, domain=domain)
 
             get_data_tool = next(
                 (t for t in tools if t.name == "get_data"), None
@@ -340,8 +340,17 @@ async def run_benchmark_for_domain(
     return results
 
 
-def _get_agent(capability_id: int, llm, tools, top_k_tools: int = 0, max_iterations: Optional[int] = None) -> AgentInterface:
+# Optional agent factory, called with (llm, tools, top_k_tools, max_iterations, domain). Team 9's subtask4.run
+# sets it in-process; None (the default) keeps the agents below.
+AGENT_FACTORY: Optional[Callable[..., AgentInterface]] = None
+
+
+def _get_agent(capability_id: int, llm, tools, top_k_tools: int = 0, max_iterations: Optional[int] = None,
+               domain: Optional[str] = None) -> AgentInterface:
     """Return the appropriate agent for the given capability_id."""
+    if AGENT_FACTORY is not None:
+        return AGENT_FACTORY(llm=llm, tools=tools, top_k_tools=top_k_tools, max_iterations=max_iterations,
+                             domain=domain)
     if os.environ.get("PLAN_AGENT", "0").strip().lower() in ("1", "true", "yes", "on"):
         from agents.plan_execute_agent import PlanExecuteAgent
         return PlanExecuteAgent(llm=llm, tools=tools, max_iterations=max_iterations,

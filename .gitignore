@@ -46,3 +46,6 @@ helpers/data/**/__pycache__/
 gpt-oss-120b*
 
 !runs_log*.csv
+
+# Team 9: link to data/databases made by subtask4.deploy.services
+environment/m3/rest/db

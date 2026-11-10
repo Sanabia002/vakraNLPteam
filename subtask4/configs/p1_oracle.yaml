@@ -1,0 +1,4 @@
+# P1 with gold topic labels: the upper bound of P1 if the topic decision were perfect. Tune and dev only.
+name: p1-oracle
+router: true
+topics: oracle

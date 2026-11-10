@@ -238,6 +238,32 @@ INITIAL DATA:
 
         return None
 
+    def _select_tools(self, input: Union[str, List[Message]], additional_instructions: str = None) -> list:
+        """Tools shown to the model for this input: the shortlist, or self._tools itself when not shortlisting.
+
+        A hook for subclasses (Team 9's Subtask 4 agent filters by rule here); behaviour is upstream's.
+        """
+        if not self._shortlister:
+            return self._tools
+        if isinstance(input, str):
+            query = input
+        else:
+            query = next((m.content for m in reversed(input) if m.role == "user"), "")
+        return self._shortlister.shortlist(query, self._tools)
+
+    def _input_messages(self, input: Union[str, List[Message]], additional_instructions: str = None) -> list:
+        """LangChain messages for the input. As upstream, the rule is only delivered for message-list input.
+
+        A hook for subclasses (Team 9's Subtask 4 agent also delivers it for plain-string input).
+        """
+        if isinstance(input, str):
+            return [HumanMessage(content=input)]
+        lc_messages = []
+        if additional_instructions and additional_instructions not in ["", " "]:
+            lc_messages.append(self._build_policy_guidance(additional_instructions=additional_instructions))
+        lc_messages.extend(self._messages_to_langchain(input))
+        return lc_messages
+
     async def run(
         self,
         input: Union[str, List[Message]],
@@ -250,21 +276,13 @@ INITIAL DATA:
         logger.debug("run: starting agent run, query_preview=%.200s", query_preview)
 
         # Determine active tools (shortlisted or full set)
-        if self._shortlister:
-            if isinstance(input, str):
-                query = input
-            else:
-                query = next(
-                    (m.content for m in reversed(input) if m.role == "user"),
-                    "",
-                )
-            active_tools = self._shortlister.shortlist(query, self._tools)
-            logger.debug("run: shortlisted to %d tools: %s", len(active_tools), [t.name for t in active_tools])
-            agent = self._build_agent(active_tools)
-        else:
-            active_tools = self._tools
+        active_tools = self._select_tools(input, additional_instructions)
+        if active_tools is self._tools:
             agent = self._agent
             logger.debug("run: using all %d tools (shortlisting disabled)", len(active_tools))
+        else:
+            logger.debug("run: shortlisted to %d tools: %s", len(active_tools), [t.name for t in active_tools])
+            agent = self._build_agent(active_tools)
 
         all_tool_names = [t.name for t in self._tools]
         active_tool_names = [t.name for t in active_tools]
@@ -273,13 +291,7 @@ INITIAL DATA:
         tool_map = {t.name: t for t in active_tools}
 
         # Convert input to LangChain messages
-        lc_messages=[]
-        if isinstance(input, str):
-            lc_messages.append(HumanMessage(content=input))
-        else:
-            if (additional_instructions) and (additional_instructions not in [""," "]):
-                lc_messages.append(self._build_policy_guidance(additional_instructions=additional_instructions))
-            lc_messages.extend(self._messages_to_langchain(input))
+        lc_messages = self._input_messages(input, additional_instructions)
 
         # Inject system message when using server-side handle system
         if self._initial_data_handle is not None:
