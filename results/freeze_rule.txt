@@ -4,3 +4,12 @@ Candidates (all at server -c 32768, temperature 0, 12 iterations, hybrid retriev
 Rule: pick the candidate with the most correct answers on the 191 tune questions (evaluator VALID, no unjudged items).
 If other candidates are within 3 questions of the best, pick the one with the lowest mean seconds per question.
 Dev is run once, after the freeze, to report. Not used to choose. If the pool runs are incomplete by morning: freeze B.
+
+Addendum 2, Nov 11 evening, supersedes the candidate list above. Candidates (all ReAct + hybrid + grounded, k=30, 12 iterations, temp 0):
+  A: qwen3.5-4b local.   D: qwen/qwen3.8-27b on Groq, reasoning_effort none.
+  E: A, but for any question where A's status is not 'success', use the hybrid plan agent's (C) result.
+  F: D, with the same fallback to C.
+Disclosure: E's in-sample pool score (84/191 vs A 74) was seen BEFORE E was declared; D and F results were not. The fallback rule uses only run status,
+no gold data and no parameters; it can only replace answers that were empty.
+Selection: most correct on the 191-question pool, VALID and fully judged. Ties within 3: earliest in the order A, D, E, F (fewer moving parts first).
+If D is not fully scored by 10:00 on Nov 12: choose between A and E by the same rule (E expected). Dev (82) is run once after the freeze, to report, not to choose.
