@@ -1,5 +1,6 @@
-# P1 + P2 + P3: Melissa's hybrid (dense + BM25) tool shortlist.
+# P1 + P2 + P3: Melissa's hybrid (dense + BM25) tool shortlist, on top of the P1 + P2 setting that won on tune
+# (gate: refuse, +15.0 refusal-checked points over baseline; evidence +14.0).
 name: p1-p2-p3
 router: true
-gate: evidence
+gate: refuse
 picker: hybrid
