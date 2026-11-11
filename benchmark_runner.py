@@ -337,14 +337,22 @@ async def run_benchmark_for_domain(
     return results
 
 
-def _get_agent(capability_id: int, llm, tools, top_k_tools: int = 0, max_iterations: Optional[int] = None) -> AgentInterface:
-    """Return the appropriate agent for the given capability_id."""
+
+def _get_agent(capability_id, llm, tools, top_k_tools=0, max_iterations=None):
     kwargs = dict(llm=llm, tools=tools, top_k_tools=top_k_tools)
+
     if max_iterations is not None:
         kwargs["max_iterations"] = max_iterations
+
     if capability_id == 1:
         kwargs["initial_data_handle"] = "placeholder"
+
+    if capability_id == 3 and os.getenv("SUBTASK3_AGENT", "react") == "plan":
+        from subtask3.plan_execute_agent import PlanExecuteAgent
+        return PlanExecuteAgent(**kwargs)
+
     return LangGraphReActAgent(**kwargs)
+
 
 
 async def run_capability(
