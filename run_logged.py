@@ -41,7 +41,7 @@ wall = round(time.time() - t0, 1)
 
 statuses, durs = collections.Counter(), []
 for f in glob.glob(os.path.join(a.out, "*.json")):
-    if f.endswith("_tools.json"): continue
+    if f.endswith("_tools.json") or f.endswith("_trajectory.json"): continue
     try:
         for it in json.load(open(f)):
             statuses[it.get("status", "?")] += 1
