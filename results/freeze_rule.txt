@@ -1,0 +1,6 @@
+Written Nov 11 before the 191-question tune-pool results.
+Candidates (all at server -c 32768, temperature 0, 12 iterations, hybrid retriever, grounded final answer):
+  A: ReAct + hybrid + grounded, k=30      B: ReAct + hybrid + grounded, k=20      C: hybrid plan-execute agent (all flags)
+Rule: pick the candidate with the most correct answers on the 191 tune questions (evaluator VALID, no unjudged items).
+If other candidates are within 3 questions of the best, pick the one with the lowest mean seconds per question.
+Dev is run once, after the freeze, to report. Not used to choose. If the pool runs are incomplete by morning: freeze B.
