@@ -1,0 +1,45 @@
+{
+  "input_records": 346,
+  "gold_records": 346,
+  "matched_rows": 346,
+  "unique_domains": 28,
+  "examples_by_domain": {
+    "authors": 1,
+    "beer_factory": 28,
+    "bike_share_1": 2,
+    "book_publishing_company": 8,
+    "books": 12,
+    "cars": 7,
+    "citeseer": 2,
+    "codebase_comments": 1,
+    "coinmarketcap": 6,
+    "college_completion": 22,
+    "computer_student": 20,
+    "disney": 31,
+    "european_football_1": 11,
+    "genes": 1,
+    "hockey": 6,
+    "ice_hockey_draft": 3,
+    "image_and_language": 9,
+    "law_episode": 6,
+    "mondial_geo": 22,
+    "music_tracker": 3,
+    "olympics": 7,
+    "restaurant": 6,
+    "soccer_2016": 78,
+    "student_loan": 1,
+    "trains": 13,
+    "university": 15,
+    "world": 6,
+    "world_development_indicators": 19
+  },
+  "gold_hop_distribution": {
+    "1": 8,
+    "2": 312,
+    "3": 26
+  },
+  "review_flags": {
+    "affiliation_needs_review": 1
+  },
+  "note": "Hop counts describe reference tool calls, not agent accuracy. Review flags are heuristics, not confirmed dataset errors."
+}
