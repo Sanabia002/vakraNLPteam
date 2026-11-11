@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 
@@ -26,6 +27,32 @@ timeout = httpx.Timeout(
     write=30.0,
     pool=10.0,
 )
+
+# LLM_EXTRA_KWARGS (litellm only, default unset): JSON object merged into ChatLiteLLM's model_kwargs.
+# langchain-litellm merges model_kwargs LAST into its default params, so these keys would silently
+# override explicit settings (or redirect requests) and are rejected. max_tokens is allowed; a
+# per-call .bind(max_tokens=...) still wins because bind kwargs are merged after model_kwargs.
+LLM_EXTRA_KWARGS_DENY = ("model", "custom_llm_provider", "api_base", "api_key", "messages", "tools",
+                         "tool_choice", "stream", "temperature")
+
+
+def _llm_extra_kwargs() -> Optional[Dict[str, Any]]:
+    """Parse LLM_EXTRA_KWARGS. Unset or empty -> None; otherwise a JSON object without deny-listed keys."""
+    raw = os.environ.get("LLM_EXTRA_KWARGS", "")
+    if not raw.strip():
+        return None
+    try:
+        extra = json.loads(raw)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"LLM_EXTRA_KWARGS must be a JSON object; could not parse it: {e}") from None
+    if not isinstance(extra, dict):
+        raise ValueError(f"LLM_EXTRA_KWARGS must be a JSON object, got {type(extra).__name__}")
+    denied = sorted(k for k in extra if k in LLM_EXTRA_KWARGS_DENY)
+    if denied:
+        raise ValueError(f"LLM_EXTRA_KWARGS may not set {denied}: these override explicit settings. "
+                         f"Not allowed: {list(LLM_EXTRA_KWARGS_DENY)}")
+    return extra
+
 
 class RITSChatModel(BaseChatModel):
     """LangChain-compatible chat model using httpx for internal RITS inference service."""
@@ -422,6 +449,11 @@ def create_llm(
         # the allow-list [e.g. GCP/gemini-2.0-flash] and the check for an
         # existing provider (GCP isn't an existing provider)
         params["custom_llm_provider"] = "openai"
+
+        extra = _llm_extra_kwargs()
+        if extra is not None:  # unset: params (and the ChatLiteLLM call) stay exactly as before
+            logger.info("LLM_EXTRA_KWARGS: passing model_kwargs keys %s", sorted(extra))
+            params["model_kwargs"] = extra
 
         return ChatLiteLLM(**params)
 
