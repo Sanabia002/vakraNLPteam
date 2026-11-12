@@ -1,0 +1,15 @@
+A: ReAct+hybrid+grounded k=30, qwen3.5-4b    correct  74/191  unjudged 0  mean  32.0 s/question
+D: same, qwen3.8-27b on Groq                 correct  97/191  unjudged 0  mean  12.5 s/question
+E: A with plan-agent fallback on errors      correct  84/191  unjudged 0  mean  35.0 s/question
+F: D with plan-agent fallback on errors      correct 104/191  unjudged 0  mean  15.2 s/question
+
+Paired flips:
+  A vs D: both  62 | only A  12 | only D  35
+  A vs E: both  73 | only A   1 | only E  11
+  A vs F: both  63 | only A  11 | only F  41
+  D vs E: both  67 | only D  30 | only E  17
+  D vs F: both  97 | only D   0 | only F   7
+  E vs F: both  71 | only E  13 | only F  33
+
+Best 104. Within 3 of the best: ['F']
+PRE-DECLARED RULE PICKS: F: D with plan-agent fallback on errors
