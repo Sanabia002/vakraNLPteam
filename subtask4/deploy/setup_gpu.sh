@@ -15,7 +15,11 @@ cd vakra
 OLLAMA_HOST=127.0.0.1:11434 OLLAMA_CONTEXT_LENGTH=32768 OLLAMA_NUM_PARALLEL=4 OLLAMA_KEEP_ALIVE=-1 \
   setsid nohup ollama serve > ~/ollama.log 2>&1 < /dev/null &
 until curl -sf localhost:11434/api/tags > /dev/null; do sleep 1; done
-( ollama pull qwen3.5:4b && ollama cp qwen3.5:4b qwen3.5-4b && ollama pull gpt-oss:120b ) > ~/pull.log 2>&1 &
+# The judge (65 GB) must load without mmap: with mmap, a machine with less RAM than the model thrashes and the load
+# never finishes (seen on an A100 with 62 GB RAM, 2026-11-12).
+( ollama pull qwen3.5:4b && ollama cp qwen3.5:4b qwen3.5-4b && ollama pull gpt-oss:120b \
+  && printf 'FROM gpt-oss:120b\nPARAMETER use_mmap false\n' > ~/judge.Modelfile \
+  && ollama create gpt-oss:120b -f ~/judge.Modelfile ) > ~/pull.log 2>&1 &
 PULLS=$!
 
 # 3. Python: the agent side as on the team's machines (Python 3.14, pinned), the servers apart (mcp 1.x).

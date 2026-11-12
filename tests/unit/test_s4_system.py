@@ -330,3 +330,22 @@ def test_graph_agent_runs_a_dialogue_for_the_runner():
     assert response.trajectory[0]["type"] == "Subtask4Decision" and response.trajectory[0]["mode"] == "apis"
     assert response.trajectory[-1]["type"] == "Subtask4Log"
     assert llm.bound == ["get_team_wins"]  # the search tool is never shown under APIs-only
+
+
+def test_studio_loads_training_dialogues_but_never_the_course_test():
+    from subtask4 import data
+    from subtask4.system import studio
+    question, rule = studio.dialogue("books", None)
+    assert question and isinstance(rule, str)
+    with pytest.raises(data.FrozenSplitError):
+        studio.dialogue(sorted(data.test_domains())[0], None)
+
+
+def test_helper_prompts_get_a_short_history_but_the_argument_check_sees_all():
+    from subtask4.system.graph import HISTORY_CHARS, HISTORY_TURNS
+    history = [{"role": "user", "content": "Which papers?"}, {"role": "assistant", "content": "x" * 100_000 + " Canadiens"}]
+    llm = FakeLLM(steps=[("get_team_wins", {"team": "Canadiens"}), "24."])
+    final, log = run(APIS, llm, history=history, question="How many did they win?", api_reply='[{"wins": 24}]')
+    rewrite = next(p for p in llm.prompts if "Rewrite the last question" in p)
+    assert len(rewrite) < HISTORY_TURNS * (HISTORY_CHARS + 50) + 600
+    assert log == [("get_team_wins", "Canadiens")]  # traced to the end of the long answer: not warned

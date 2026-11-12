@@ -33,6 +33,8 @@ REFUSAL = ("I can not answer this question: I may only use document retrievers h
            "and the documents do not contain the answer.")
 PASSAGE_CHARS = 1200   # per passage shown to the retriever and the critic
 PASSAGES_SHOWN = 6
+HISTORY_TURNS = 6      # earlier turns shown in helper prompts (standalone rewrite, retriever)
+HISTORY_CHARS = 500    # per turn
 _MENU = "\n".join(f"{i}. {name}: {text}" for i, (name, text) in enumerate(CATEGORIES.items(), 1))
 _CATEGORY = list(CATEGORIES)
 
@@ -117,8 +119,15 @@ class System:
         except Exception as error:  # a failing tool is a result the model sees, as in the baseline
             return f"Error: {error}"
 
-    def _history_text(self, state: State) -> str:
-        return "\n".join(f"{t['role']}: {t['content']}" for t in state.get("history", []))
+    def _history_text(self, state: State, full: bool = False) -> str:
+        """Earlier turns as text. For prompts: the last HISTORY_TURNS turns, each cut to HISTORY_CHARS (earlier answers
+        can be lists of thousands of rows; one 4.9-million-character history made a single call take 300 s).
+        full=True keeps everything, for the argument check's search for values."""
+        turns = state.get("history", [])
+        if not full:
+            turns = [{**t, "content": t["content"] if len(t["content"]) <= HISTORY_CHARS
+                      else t["content"][:HISTORY_CHARS] + " ..."} for t in turns[-HISTORY_TURNS:]]
+        return "\n".join(f"{t['role']}: {t['content']}" for t in turns)
 
     async def _standalone(self, state: State) -> Optional[str]:
         if state.get("standalone") is not None or not state.get("history"):
@@ -296,7 +305,7 @@ class System:
         return "evidence" if is_retriever(state["pending"]["name"]) else "arg_check"
 
     def _seen(self, state: State) -> str:
-        return " ".join([state["question"], self._history_text(state),
+        return " ".join([state["question"], self._history_text(state, full=True),
                          *(c["result"] for c in state.get("tool_calls", []))])
 
     def arg_check(self, state: State) -> State:

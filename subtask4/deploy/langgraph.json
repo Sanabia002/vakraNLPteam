@@ -1,0 +1,4 @@
+{
+  "dependencies": [".."],
+  "graphs": {"system": "../system/studio.py:make_graph"}
+}
