@@ -1,0 +1,16 @@
+# Parity: the agent graph with every new component off and the interim settings (tool filter + refuse at once).
+# Must land within 1.5 points of p1-p2-refuse on tune and dev before any component is judged.
+name: system-parity
+max_iterations: 12
+system:
+  rule_fallback: false
+  topic_check: domain
+  own_search: false
+  evidence: refuse
+  loop_docs: plain
+  ranker: once
+  rewrite: false
+  api_first: "off"
+  arg_check: "off"
+  empty: "off"
+  grounded: false

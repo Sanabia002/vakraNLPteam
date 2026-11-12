@@ -86,14 +86,16 @@ def run(config: RunConfig, final: bool = False, allow_dirty: bool = False, resum
     from benchmark.mcp_client import MCPConnectionConfig, load_mcp_config
 
     from .agent import Subtask4Agent
+    from .system.agent import GraphAgent
 
     topics = None
 
     def make_agent(llm, tools, top_k_tools, max_iterations, domain):
         nonlocal topics
         topics = topics or _topics(config, domains, llm)
-        return Subtask4Agent(config=config, domain=domain, topics=topics, llm=llm, tools=tools,
-                             top_k_tools=top_k_tools, max_iterations=max_iterations)
+        agent_class = GraphAgent if config.system else Subtask4Agent
+        return agent_class(config=config, domain=domain, topics=topics, llm=llm, tools=tools,
+                           top_k_tools=top_k_tools, max_iterations=max_iterations)
 
     from .deploy.services import apply_env
     apply_env()

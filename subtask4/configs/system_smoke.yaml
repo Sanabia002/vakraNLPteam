@@ -1,0 +1,6 @@
+# Smoke: the full system on a few dialogues of three tune domains (documents-only, APIs-only and no-rule paths).
+name: system-smoke
+max_iterations: 20
+domains: [books, cars, hockey]
+max_per_domain: 6
+system: {}

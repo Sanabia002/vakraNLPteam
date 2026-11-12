@@ -1,0 +1,4 @@
+# The new system (design revision 6): the LangGraph agent graph with every component at its design default.
+name: system
+max_iterations: 20     # C12: step budget 20
+system: {}

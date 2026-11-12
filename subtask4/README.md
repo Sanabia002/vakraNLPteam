@@ -12,6 +12,20 @@ its own switch in the run config, so its effect can be measured on its own.
 
 All parts off gives the intermediate report's baseline (20 tools, rule delivered for single-turn input).
 
+## The new system (design revision 6)
+
+`subtask4/system/` rebuilds the agent as one LangGraph state graph: every component is a node, every decision a
+conditional edge, and the evidence procedure (retriever, code check, critic, re-search) a sub-graph shared by the
+documents-only path and the in-loop document lookup. A run config with a `system:` section uses it; its switches are
+`SystemConfig` in `config.py` (defaults = the full design). `spec.py` is the design's graph: Figure 1 is drawn from it
+and `tests/unit/test_s4_system.py` checks the built graph's edges against it.
+
+| Config | What |
+|---|---|
+| `system.yaml` | the full design, step budget 20 |
+| `system_parity.yaml` | the graph with every new component off: must match `p1_p2_refuse` within 1.5 points |
+| `system_smoke.yaml` | the full design on 6 dialogues each of books, cars, hockey |
+
 ## Layout
 
 ```
@@ -24,8 +38,10 @@ subtask4/
   run.py          runs a config through VAKRA's runner in-process and writes the run record
   evaluate.py     VAKRA's evaluator with a chosen judge and a persistent judge cache
   scoreboard.py   per-dialogue table, summary and paired comparison
-  configs/        baseline, p1, p1_oracle, p2_refuse, p2_evidence, p1_p2_*, p1_p2_p3, smoke
+  configs/        baseline, p1, p1_oracle, p2_refuse, p2_evidence, p1_p2_*, p1_p2_p3, smoke, system*
   deploy/         services.py (start/check the servers), nothink_proxy.py, mcp_native.yaml
+  system/         the new system: spec.py (the design's graph), graph.py (nodes, edges, evidence sub-graph),
+                  checks.py (plain checks), prompts.py, agent.py (GraphAgent, for the runner)
 ```
 
 Changes to VAKRA's code (both behaviour-preserving, tested): `benchmark_runner.AGENT_FACTORY` and a `domain` argument
