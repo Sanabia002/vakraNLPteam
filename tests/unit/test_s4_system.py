@@ -177,8 +177,17 @@ def test_guard_blocks_a_forbidden_search_under_apis_only():
     llm = FakeLLM(steps=[("query_hockey", {"query": "cups"}), ("get_team_wins", {"team": "Canadiens"}), "24."])
     final, log = run(APIS, llm, api_reply='[{"wins": 24}]')
     assert ("query_hockey", "cups") not in log
-    assert {"node": "guard", "blocked": "query_hockey"} in final["log"]
+    assert {"node": "guard", "blocked": "query_hockey", "unknown": False} in final["log"]
+    told = [m.content for m in final["messages"] if m.__class__.__name__ == "ToolMessage"][0]
+    assert told.startswith("Blocked: 'query_hockey' is not allowed by the tool rule. Use one of [get_team_wins]")
     assert final["tool_calls"][0]["tool_name"] == "get_team_wins"
+
+
+def test_guard_names_the_valid_tools_for_a_made_up_one():
+    llm = FakeLLM(steps=[("get_team_cups", {"team": "Canadiens"}), "24."])
+    final, _ = run(APIS, llm)
+    told = [m.content for m in final["messages"] if m.__class__.__name__ == "ToolMessage"][0]
+    assert told == "Error: get_team_cups is not a valid tool, try one of [get_team_wins]."
 
 
 def test_empty_result_retries_with_other_letter_cases():

@@ -5,7 +5,9 @@ API_FIRST = """Prefer the database API tools. Use a document search only when no
 
 BUDGET = """You have reached the step limit. Answer the question now, using only the tool results above."""
 
-BLOCKED = """Blocked: the tool '{name}' is not allowed here (the tool rule, or it does not exist). Choose one of the tools you were given, or answer."""
+UNKNOWN_TOOL = """Error: {name} is not a valid tool, try one of [{tools}]."""  # LangGraph ToolNode's wording
+
+FORBIDDEN_TOOL = """Blocked: '{name}' is not allowed by the tool rule. Use one of [{tools}], or answer."""
 
 ARG_PROBLEMS = """The call to '{name}' was not run: {problems}. Fix the arguments and call it again."""
 

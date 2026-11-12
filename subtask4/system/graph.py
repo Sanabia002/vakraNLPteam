@@ -278,10 +278,11 @@ class System:
         procedure."""
         call = state["pending"]
         if call["name"] not in state["allowed"]:
-            message = ToolMessage(content=prompts.BLOCKED.format(name=call["name"]), tool_call_id=call["id"],
-                                  name=call["name"])
+            template = prompts.FORBIDDEN_TOOL if call["name"] in self.tools else prompts.UNKNOWN_TOOL
+            message = ToolMessage(content=template.format(name=call["name"], tools=", ".join(state["shortlist"])),
+                                  tool_call_id=call["id"], name=call["name"])
             return {"messages": [*state["messages"], message], "pending": None,
-                    "log": self._log(state, "guard", blocked=call["name"])}
+                    "log": self._log(state, "guard", blocked=call["name"], unknown=call["name"] not in self.tools)}
         if is_retriever(call["name"]):
             field = text_field(self.tools[call["name"]])
             question = str(call["args"].get(field) or next((v for v in call["args"].values() if isinstance(v, str)),
