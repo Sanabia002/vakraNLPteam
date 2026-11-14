@@ -1,0 +1,13 @@
+test baseline  16/67 = 23.9% (95% interval 15-35%) unjudged 0
+test F         36/67 = 53.7% (95% interval 42-65%) unjudged 0
+paired: both 14 | only baseline 2 | only F 22
+  gold calls = 1: n=1 baseline 0 F 0
+  gold calls = 2: n=62 baseline 16 F 35
+  gold calls = 3: n=4 baseline 0 F 1
+by domain (baseline / F / n):
+  bike_share_1                0 /  1 / 2
+  computer_student            2 /  9 / 20
+  disney                     10 / 21 / 31
+  olympics                    4 /  5 / 7
+  restaurant                  0 /  0 / 6
+  student_loan                0 /  0 / 1
