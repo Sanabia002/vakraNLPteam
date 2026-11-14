@@ -13,3 +13,16 @@ Disclosure: E's in-sample pool score (84/191 vs A 74) was seen BEFORE E was decl
 no gold data and no parameters; it can only replace answers that were empty.
 Selection: most correct on the 191-question pool, VALID and fully judged. Ties within 3: earliest in the order A, D, E, F (fewer moving parts first).
 If D is not fully scored by 10:00 on Nov 12: choose between A and E by the same rule (E expected). Dev (82) is run once after the freeze, to report, not to choose.
+
+TEST PROTOCOL, written Nov 14 BEFORE the frozen-test run (agreed with: [teammate name, date]).
+Set: the 67 questions of bike_share_1 (2), computer_student (20), disney (31), olympics (7), restaurant (6), student_loan (1).
+Runs, one each, through run_set.sh test at the final-config code: (1) F = D (Groq qwen3.8-27b, k=30) + C (local plan agent) + fallback merge,
+(2) plain baseline (provided ReAct agent, k=20, no flags, local Qwen3.5-4B). D and C are scored separately from the SAME outputs as diagnostics only; no extra runs.
+Headline: baseline vs F, with 95% Wilson intervals, paired flips, by-domain and by-gold-call counts, all from final_report.py.
+Reruns: only for infrastructure failure detected BEFORE any scoring (backend down, auth failure, containers down, a hang with no log progress). Delete only that
+stage's output folder; stages that already validated are kept (run_set.sh skips them). Never rerun after seeing any score or any per-question output.
+NOT infrastructure failures (no rerun): step limits, timeouts, hosted-API 400 tool_use_failed, wrong answers, a low score, D's non-determinism.
+If validate_run.py aborts a stage, inspect the error text: connection/auth/5xx => infrastructure; 400s or step limits => system behavior, continue
+with MAX_OTHER_ERR raised (set to 20), no rerun. Judge errors are repaired by re-judging only the failed items (rejudge_test.py); that is rescoring, not rerunning.
+No code changes after tag final-config. Nobody opens output/final_test_* except validators and the scorer until all scoring is finished.
+The run and scoring are done in the owner's terminal, not by Claude Code.
