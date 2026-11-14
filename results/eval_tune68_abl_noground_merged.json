@@ -1,0 +1,2857 @@
+{
+ "capability_name": "capability_multihop_reasoning",
+ "groundtruth_dir": "tmp_gt_tune",
+ "prediction_dir": "output/tune68_abl_noground",
+ "domains": {
+  "authors": {
+   "domain": "authors",
+   "n_groundtruth": 1,
+   "n_prediction": 1,
+   "n_paired": 1,
+   "missing_prediction_uuids": [],
+   "extra_prediction_uuids": [],
+   "dialogues": [
+    {
+     "uuid": "840942187214-79018c165928",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "authors",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Among the authors of the paper published in 2003 by an author with affiliation with Department of Network Science, Graduate School of Information Systems, The University of Electro-Communications, how many of them are affiliated with Cairo Microsoft Innovation Lab?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The query for papers published in 2003 by an author with the affiliation \"Department of Network Science, Graduate School of Information Systems, The University of Electro-Communications\" returned a **count of 0**.\n2.  Since there are no papers matching the specific criteria (2003 publication year + specified affiliation), there are no authors to check for affiliation with the \"Cairo Microsoft Innovation Lab\".\n\nTherefore, the number of authors affiliated with the Cairo Microsoft Innovation Lab is **0**.",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 10,
+         "extra_steps": 8,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The ground truth is the number 1, but the prediction states the answer is 0, which does not match the required number.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"titles\": [\\n    [\\n      \"FIBER: A Generalized Framework for Auto-tuning Software\"\\n    ]\\n  ]\\n}', '{\\n  \"count\": 1\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    }
+   ],
+   "summary": {
+    "num_samples": 1,
+    "num_correct": 0.0,
+    "mean_dialogue_score": 0.0,
+    "min_dialogue_score": 0.0,
+    "max_dialogue_score": 0.0
+   }
+  },
+  "book_publishing_company": {
+   "domain": "book_publishing_company",
+   "n_groundtruth": 1,
+   "n_prediction": 1,
+   "n_paired": 1,
+   "missing_prediction_uuids": [],
+   "extra_prediction_uuids": [],
+   "dialogues": [
+    {
+     "uuid": "5661cd917583-78903bba050f",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "book_publishing_company",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Among the publishers in the country where the publisher of the book \"Life Without Fear\" is located, how many of them have published books that are over $15?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The book \"Life Without Fear\" is published by **New Moon Books** in the **USA**.\n2.  The tool `get_count_publishers_by_country_and_price` was used with the country \"USA\" and a minimum price of 15.\n3.  The result returned is a count of **3**.\n\nTherefore, among the publishers in the USA, **3** of them have published books that are over $15.\n\nAnswer: 3",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 5,
+         "extra_steps": 3,
+         "exactmatch_score": 1.0,
+         "answer_score": null,
+         "groundedness_score": 0.0,
+         "score_explanation": {
+          "answer": null,
+          "exactmatch": "All expected tool_responses are present in actual.",
+          "groundedness": "the response asserts using a tool (get_count_publishers_by_country_and_price) which is not mentioned in the document, so that claim is ungrounded"
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    }
+   ],
+   "summary": {
+    "num_samples": 1,
+    "num_correct": 0.0,
+    "mean_dialogue_score": 0.0,
+    "min_dialogue_score": 0.0,
+    "max_dialogue_score": 0.0
+   }
+  },
+  "books": {
+   "domain": "books",
+   "n_groundtruth": 5,
+   "n_prediction": 5,
+   "n_paired": 5,
+   "missing_prediction_uuids": [],
+   "extra_prediction_uuids": [],
+   "dialogues": [
+    {
+     "uuid": "6e317bcd6839-a8d331bb95c6",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "books",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "What is the percentage of books published by Ace Books that are in the language of the first two published books?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The first tool identifies the earliest book by Ace Books as **\"Dayworld (Dayworld #1)\"**.\n2.  The second tool attempts to find the earliest book by the language \"Dayworld\" but returns an empty list (`[]`). This implies that \"Dayworld\" is the title of the book, not the language.\n3.  The fourth tool calculates the percentage of books published by Ace Books that are in the language \"Dayworld\". Since \"Dayworld\" is a book title, not a language, the result is **0.0%**.\n\nTherefore, the percentage of books published by Ace Books that are in the language of the first two published books (which is effectively 0% because the language \"Dayworld\" does not exist in the dataset) is **0.0%**.\n\nAnswer: **0.0%**",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 10,
+         "extra_steps": 8,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction states 0.0% while the ground truth is 100.0; the answer does not match.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"language_names\": [\\n    \"English\",\\n    \"English\"\\n  ]\\n}', '{\\n  \"percentage\": 100.0\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "6e317bcd6839-0f4115bb6ef0",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "books",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "How many customers ordered the first book written by the author who wrote the most books?",
+        "pred_answer": "To answer this question, we need to combine the information from the tool results:\n\n1.  **Identify the most prolific author:** The first tool result (`get_most_prolific_author`) indicates that **Stephen King** is the author who wrote the most books.\n2.  **Identify the first book by this author:** The second tool result (`get_first_book_by_author`) shows that Stephen King's first book is titled **\"Creepshow\"**.\n3.  **Find the number of customers who ordered this book:** The provided tool results only contain the author's name and the title of their first book. They do not contain any data regarding sales figures, customer counts, or order history for \"Creepshow\".\n\nSince the necessary data about the number of customers is missing from the provided tool results, it is impossible to answer the question with the given information.\n\n**Answer:** The provided tool results do not contain information about the number of customers who ordered the",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 2,
+         "extra_steps": 0,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction does not provide the required number (50) and states uncertainty, so it does not match the ground truth.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"count\": 50\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "6e317bcd6839-36bfd18cd932",
+     "score": 1.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "books",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 1.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "How many orders did Marcelia Goering place in 2021 that uses the shipping method preferred by customers the most?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The most used shipping method is **Priority**.\n2.  The number of orders placed by Marcelia Goering in 2021 using the \"Priority\" shipping method is **2**.\n\nAnswer: 2",
+        "score": 1.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 2,
+         "extra_steps": 0,
+         "exactmatch_score": 1.0,
+         "answer_score": null,
+         "groundedness_score": 1.0,
+         "score_explanation": {
+          "answer": null,
+          "exactmatch": "All expected tool_responses are present in actual.",
+          "groundedness": "All claims directly restate the information given in the document (priority method is most used; count is 2). No ungrounded statements are present."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "6e317bcd6839-47d037a6677e",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "books",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "What is the average of books written in the same language as book id 1405 among all books published by Carole Marsh Mysteries?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  **Book ID 1405** is written in **English**.\n2.  The books published by **Carole Marsh Mysteries** in **English** are:\n    *   \"The Mystery in the Rocky Mountains\"\n    *   \"The Mystery on the Mighty Mississippi\"\n3.  The question asks for the **average** of these books. However, the provided tool results do not contain data regarding the **number of books** or **page counts** for these specific titles.\n    *   Tool result #3 (`get_average_pages_by_author`) returns `null`, indicating no average page count data is available for the author.\n    *   There is no tool result providing the count of books or a calculated average for the specific set of titles identified.\n\nSince the necessary data (such as the count of books or their specific attributes to calculate an average) is missing from the results, the question",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 5,
+         "extra_steps": 3,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction does not provide the numeric answer 1.0; it states missing data and does not answer the question, so score is 0.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"proportion\": 1.0\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "6e317bcd6839-7d8cf8316dc6",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "books",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "What is the title of the oldest book published by the publisher of the book \"The Illuminati\"?",
+        "pred_answer": "Based on the tool results provided, the function `get_earliest_book_by_publisher` returned an empty list (`\"title\": []`) for the publisher name \"The Illuminati\". This indicates that either the publisher name is incorrect (as \"The Illuminati\" is likely the title of a book, not the publisher) or no books were found associated with that specific publisher string in the database.\n\nHowever, since the question asks for the title of the oldest book published by the publisher of the book \"The Illuminati\", and the tool results explicitly show no data for that publisher name, the answer derived strictly from the provided tool results is that no book title was found.\n\n**Answer:** No book title found (based on the provided tool results).",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 9,
+         "extra_steps": 7,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction says no book title was found, which does not match the ground truth answer 'the collected works of c.s. lewis'.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"publisher_name\": \"Thomas Nelson\"\\n}', '{\\n  \"title\": \"The Collected Works of C.S. Lewis\"\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    }
+   ],
+   "summary": {
+    "num_samples": 5,
+    "num_correct": 1.0,
+    "mean_dialogue_score": 0.2,
+    "min_dialogue_score": 0.0,
+    "max_dialogue_score": 1.0
+   }
+  },
+  "cars": {
+   "domain": "cars",
+   "n_groundtruth": 3,
+   "n_prediction": 3,
+   "n_paired": 3,
+   "missing_prediction_uuids": [],
+   "extra_prediction_uuids": [],
+   "dialogues": [
+    {
+     "uuid": "1f58b1e965af-00321eafff86",
+     "score": 1.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "cars",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 1.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "What is the name of the most expensive car that was produced by the origin country of the car model Ford Torino produced in 1970?",
+        "pred_answer": "The most expensive car produced by the origin country of the Ford Torino (USA) in 1970 is the **Plymouth Fury Gran Sedan**.",
+        "score": 1.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 4,
+         "extra_steps": 2,
+         "exactmatch_score": 1.0,
+         "answer_score": null,
+         "groundedness_score": 1.0,
+         "score_explanation": {
+          "answer": null,
+          "exactmatch": "All expected tool_responses are present in actual.",
+          "groundedness": "The response restates the car name given in the document as the most expensive car from the USA, matching the provided information."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "1f58b1e965af-cb82c56d48c0",
+     "score": 1.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "cars",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 1.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "What percentage of cars belong to the country that produced the most expensive car in 1970?",
+        "pred_answer": "65.46242774566474%",
+        "score": 1.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 2,
+         "extra_steps": 0,
+         "exactmatch_score": 1.0,
+         "answer_score": null,
+         "groundedness_score": 1.0,
+         "score_explanation": {
+          "answer": null,
+          "exactmatch": "All expected tool_responses are present in actual.",
+          "groundedness": "The response directly states the percentage given in the document, matching the provided data."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "1f58b1e965af-663969601a74",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "cars",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Among the cars produced in 1975 with the maximum number of cylinders, how many of them have the USA as their origin country and were introduced in the market in 1970?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  **Cars produced in 1975 with the maximum number of cylinders**: The tool `get_most_cylinders_by_model_year` identifies the **\"pontiac catalina\"** (ID: 9) as the car with the maximum number of cylinders for the year 1975.\n2.  **Origin country**: The result for the pontiac catalina shows the country is **\"USA\"**.\n3.  **Introduced in the market in 1970**: The tool `get_count_cars_by_country_and_model_year` returns a count of **45** for cars from the USA introduced in 1970. However, this tool counts *all* cars from the USA introduced in 1970, not specifically the Pontiac Catalina.\n\nThe provided tools do not contain specific data linking the \"pontiac catalina\" to its introduction year (1970).",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 3,
+         "extra_steps": 1,
+         "exactmatch_score": 1.0,
+         "answer_score": null,
+         "groundedness_score": 0.0,
+         "score_explanation": {
+          "answer": null,
+          "exactmatch": "All expected tool_responses are present in actual.",
+          "groundedness": "The response asserts specific tool-derived facts (max cylinders in 1975, count of USA cars introduced in 1970) that are not present in the provided document; only the car\u2019s country and a generic count are given, so the claims are ungrounded."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    }
+   ],
+   "summary": {
+    "num_samples": 3,
+    "num_correct": 2.0,
+    "mean_dialogue_score": 0.6666666666666666,
+    "min_dialogue_score": 0.0,
+    "max_dialogue_score": 1.0
+   }
+  },
+  "citeseer": {
+   "domain": "citeseer",
+   "n_groundtruth": 1,
+   "n_prediction": 1,
+   "n_paired": 1,
+   "missing_prediction_uuids": [],
+   "extra_prediction_uuids": [],
+   "dialogues": [
+    {
+     "uuid": "4ee813c5e32d-07999d0d8553",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "citeseer",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Among all the citations, what is the percentage of the paper ID that is cited the most under the Agents classification?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The most frequently cited word in the \"Agents\" classification is **word66** (from the first tool call).\n2.  The second tool call returns a list of paper IDs that cite this word. The list starts with: `[\"100157\", \"103027\", \"105684\", \"111958\", \"11264\", \"114630\", \"11510\", \"115390\", \"115971\", \"11708\", \"119409\", \"125615\", \"126894\", \"130387\", \"155240\", \"162298\", \"17752\", \"184682\",",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 3,
+         "extra_steps": 1,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction does not provide the numeric percentage (17.995169082125603) required by the ground truth; it instead lists a word and some paper IDs, so it does not match.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"paper_id\": \"kinny96methodology\",\\n  \"class_label\": \"Agents\"\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    }
+   ],
+   "summary": {
+    "num_samples": 1,
+    "num_correct": 0.0,
+    "mean_dialogue_score": 0.0,
+    "min_dialogue_score": 0.0,
+    "max_dialogue_score": 0.0
+   }
+  },
+  "codebase_comments": {
+   "domain": "codebase_comments",
+   "n_groundtruth": 1,
+   "n_prediction": 1,
+   "n_paired": 1,
+   "missing_prediction_uuids": [],
+   "extra_prediction_uuids": [],
+   "dialogues": [
+    {
+     "uuid": "1960f609e439-a237ace34704",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "codebase_comments",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "How many solution paths need to be compiled if a user wants to implement the repository that contains files used by solution ID12?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The first tool call `get_repo_url_by_solution_path` for solution \"ID12\" returned an empty list of URLs (`\"urls\": []`). This indicates that no repository URL was found associated with this solution path.\n2.  The second tool call `get_count_solution_paths` was performed on a specific URL (likely the one returned or a default), but since the first result was empty, there are no repositories to check. Furthermore, the count returned is `0`.\n\nSince no repository URL was found for solution ID12, there are no solution paths to compile.\n\n**Answer: 0**",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 6,
+         "extra_steps": 4,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The ground truth is the number 12, but the prediction answers 0, which does not match the required number.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"url\": \"https://github.com/jeffdik/tachy.git\"\\n}', '{\\n  \"count\": 12\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    }
+   ],
+   "summary": {
+    "num_samples": 1,
+    "num_correct": 0.0,
+    "mean_dialogue_score": 0.0,
+    "min_dialogue_score": 0.0,
+    "max_dialogue_score": 0.0
+   }
+  },
+  "coinmarketcap": {
+   "domain": "coinmarketcap",
+   "n_groundtruth": 6,
+   "n_prediction": 6,
+   "n_paired": 6,
+   "missing_prediction_uuids": [],
+   "extra_prediction_uuids": [],
+   "dialogues": [
+    {
+     "uuid": "06e387dae8db-4c209d70aaa0",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "coinmarketcap",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Had the price of the cryptocurrency that was ranked the first by CoinMarketCap on the best time to purchase Bitcoin increased or decreased 7 days after the best time to purchase Bitcoin compared with the price 7 days before?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  **Identify the cryptocurrency:** The question asks about the cryptocurrency ranked first by CoinMarketCap. While the first tool (`get_coin_name_highest_market_cap`) returned an empty list for 2024, the subsequent tools specifically analyze **Bitcoin**. In the context of the provided data, Bitcoin is treated as the primary subject (and historically the highest market cap coin).\n2.  **Identify the specific date:** The question refers to the \"best time to purchase Bitcoin\" and compares prices 7 days before and after. Tool #4 identifies the highest price date for Bitcoin as **2021-04-13**. In the context of the provided tools, this date is used as the reference point for the analysis.\n3.  **Determine the price change:** Tool #5 (`get_percent_change_7d_status`) is called with the date **2021-04-1",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 3,
+         "pred_steps": 9,
+         "extra_steps": 6,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction does not provide a clear answer (decreased) to the question; it stops mid\u2011sentence and never states the price change, thus it fails to match the ground truth.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"data\": \"2013-04-28\"\\n}', '{\\n  \"names\": [\\n    \"Bitcoin\"\\n  ]\\n}', '{\\n  \"status\": \"DECREASED\"\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "06e387dae8db-118d68d95fd9",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "coinmarketcap",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "What was the price of the cryptocurrency that was ranked the first by CoinMarketCap on the best time to purchase Bitcoin when it closed at the end of the day following the best time to purchase Bitcoin?",
+        "pred_answer": "Based on the tool results provided, none of the queries returned valid data (all returned empty lists `[]`). Specifically:\n\n1.  The query for the time high on 2024-01-01 returned an empty list.\n2.  The query for the close price on 2024-01-02 returned an empty list.\n3.  The query for the CoinMarketCap rank 1 on 2024-01-02 returned an empty list of names.\n4.  The query for the price on 2024-01-02 returned an empty list.\n\nSince the necessary data (the specific price of the cryptocurrency ranked first by CoinMarketCap on the day following the best time to purchase Bitcoin) was not retrieved from the tools, it is impossible to provide the specific price.\n\n**Answer:** The tool results did not contain the necessary data to determine the price.",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 3,
+         "pred_steps": 10,
+         "extra_steps": 7,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction states uncertainty and does not provide the numeric price matching the ground truth, so it receives a score of 0.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"data\": \"2013-04-28\"\\n}', '{\\n  \"names\": [\\n    \"Bitcoin\"\\n  ]\\n}', '{\\n  \"close_price\": 144.5399932861328\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "06e387dae8db-a6c5e8517583",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "coinmarketcap",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "State the transaction date and the price when the cryptocurrency that was ranked the first by CoinMarketCap on the best time to purchase Bitcoin was bottomed?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  **Identify the cryptocurrency:** The question asks about the cryptocurrency ranked first by CoinMarketCap on the \"best time to purchase Bitcoin\" article. The tool `get_coin_cmc_rank` for \"2024-01-01\" returned an empty list, but the context of the question implies we are looking for Bitcoin itself (as it is the subject of the \"best time to purchase Bitcoin\" article and the only coin mentioned in the other tools).\n2.  **Identify the bottoming event:** The tool `get_coin_lowest_price_date` for \"Bitcoin\" returned the lowest price date as **2013-07-05** with a price of **68.4309921264648**. This represents the bottom of the price action for Bitcoin.\n3.  **Combine the data:** The transaction date is 201",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 3,
+         "pred_steps": 5,
+         "extra_steps": 2,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction does not exactly match the ground truth (it adds extra text and is incomplete), and it is not a concise summary of the single-date answer, so it receives a score of 0.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"data\": \"2013-04-28\"\\n}', '{\\n  \"names\": [\\n    \"Bitcoin\"\\n  ]\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "06e387dae8db-39e476d074a3",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "coinmarketcap",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "What was the number of units of the cryptocurrency verifiably burned until the best time to purchase the cryptocurrency that was ranked first by CoinMarketCap on 2013/4/28?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  **Identify the Cryptocurrency:** The first tool call `get_coin_cmc_rank` confirms that on **2013-04-28**, the cryptocurrency ranked first by CoinMarketCap was **Bitcoin**.\n2.  **Find the Burned Units:** The provided tool results do not contain information regarding the number of units of Bitcoin that were \"verifiably burned.\"\n    *   Tool 1 only returns the name of the top-ranked coin.\n    *   Tool 2 returns data about \"Uquid Coin\" (which is unrelated to Bitcoin).\n    *   Tool 3 returns time high/low data for Bitcoin in April 2013 but does not mention burned units.\n\nSince none of the provided tool results include data on burned units for Bitcoin, the question cannot be answered using the given information.\n\n**Answer:** The provided tool results do not contain information about the number",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 3,
+         "pred_steps": 3,
+         "extra_steps": 0,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction states that the information is unavailable and does not provide the numeric answer 9908675.0, so it does not match the ground truth.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"data\": \"2013-04-28\"\\n}', '{\\n  \"difference\": 9908675.0\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "06e387dae8db-7402a6aae250",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "coinmarketcap",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "How much dollars was the cryptocurrency that was ranked first by CoinMarketCap worth on the best day to purchase it according to the coin market, which is the best time to purchase the cryptocurrency that was ranked first by CoinMarketCap on 2013/4/28?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The cryptocurrency ranked first by CoinMarketCap on **2013/4/28** is **Bitcoin**.\n2.  The best day to purchase Bitcoin (highest market cap) according to the data is **2021-04-13**.\n3.  The price of Bitcoin on that date was **$63,503.457930187105**.\n\nAnswer: **63503.457930187105**",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 3,
+         "pred_steps": 3,
+         "extra_steps": 0,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The ground truth is the number 1488566971.9558687. The model's answer gives a different number (63503.457930187105), so it does not match the ground truth.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"data\": \"2013-04-28\"\\n}', '{\\n  \"market_cap\": 1488566971.9558687\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "06e387dae8db-f6b3e8dd6211",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "coinmarketcap",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "What was the average price of the cryptocurrency that was ranked the first by CoinMarketCap on the best time to purchase Bitcoin in the year 2013?",
+        "pred_answer": "The average price of Bitcoin, which was ranked first by CoinMarketCap in 2013, was **257.4744598327145**.",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 3,
+         "pred_steps": 5,
+         "extra_steps": 2,
+         "exactmatch_score": 0.0,
+         "answer_score": 1.0,
+         "groundedness_score": 0.0,
+         "score_explanation": {
+          "answer": "The prediction provides the exact number 257.4744598327145, matching the ground truth.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"data\": \"2013-04-28\"\\n}', '{\\n  \"names\": [\\n    \"Bitcoin\"\\n  ]\\n}']\n",
+          "groundedness": "The response correctly states the average price from the document, but the claim that Bitcoin was ranked first relies on external knowledge/inference not explicitly provided in the document."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    }
+   ],
+   "summary": {
+    "num_samples": 6,
+    "num_correct": 0.0,
+    "mean_dialogue_score": 0.0,
+    "min_dialogue_score": 0.0,
+    "max_dialogue_score": 0.0
+   }
+  },
+  "european_football_1": {
+   "domain": "european_football_1",
+   "n_groundtruth": 2,
+   "n_prediction": 2,
+   "n_paired": 2,
+   "missing_prediction_uuids": [],
+   "extra_prediction_uuids": [],
+   "dialogues": [
+    {
+     "uuid": "6d05804bb8d7-d88f05339149",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "european_football_1",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "For a game that had a score of 1-8 in the year 2011, how many times did the team Werder Bremen win as the away team in matches of the division that game was in?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The first tool call `get_min_date_total_goals` returns a minimum date of \"2006-02-11\" for a match with 9 total goals.\n2.  The second tool call `get_division_names_by_match_details` confirms that on \"2006-02-11\", the match between Werder Bremen and Borussia Dortmund took place in a division (though the result list is empty, the context implies the division is relevant).\n3.  The third tool call `get_count_away_wins_team_division` specifically queries for the number of times **Werder Bremen** won as the **away team** in the **Bundesliga** (the division identified in the context). It returns a count of **83**.\n\nAlthough the question mentions a score of 1-8 in 2011, the provided tool results do not contain specific data for",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 5,
+         "extra_steps": 3,
+         "exactmatch_score": 0.0,
+         "answer_score": 1.0,
+         "groundedness_score": 0.0,
+         "score_explanation": {
+          "answer": "The prediction provides the number 83 as the count of Werder Bremen away wins, which exactly matches the ground truth number.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"divisions\": [\\n    {\\n      \"division\": \"D1\",\\n      \"name\": \"Bundesliga\"\\n    }\\n  ]\\n}']\n",
+          "groundedness": "The response includes several claims (e.g., a 9\u2011goal match, a Werder\u202fBremen vs\u202fBorussia\u202fDortmund game, and that the division is the Bundesliga) that are not present in the document, making it ungrounded."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "6d05804bb8d7-84f1f7ac9850",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "european_football_1",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "For a game that had a score of 1-8 in the year 2011, what is the home win ratio of the division that game was in for the year 2021?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The game with a score of 1-8 in 2011 is not explicitly detailed in the results, but the third tool call directly addresses the home win ratio for the **Premier League** in the **2021** season.\n2.  The result from `get_percentage_home_wins` for the Premier League in 2021 is **37.89473684210526**.\n\nTherefore, the home win ratio of the division (Premier League) for the year 2021 is approximately **37.89%**.",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 5,
+         "extra_steps": 3,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction gives a numeric answer (37.89473684210526) that does not match the ground truth number (42.15686274509804), so it receives a score of 0.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"divisions\": [\\n    {\\n      \"division\": \"D1\",\\n      \"name\": \"Bundesliga\"\\n    }\\n  ]\\n}', '{\\n  \"percentage\": 42.15686274509804\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    }
+   ],
+   "summary": {
+    "num_samples": 2,
+    "num_correct": 0.0,
+    "mean_dialogue_score": 0.0,
+    "min_dialogue_score": 0.0,
+    "max_dialogue_score": 0.0
+   }
+  },
+  "image_and_language": {
+   "domain": "image_and_language",
+   "n_groundtruth": 1,
+   "n_prediction": 1,
+   "n_paired": 1,
+   "missing_prediction_uuids": [],
+   "extra_prediction_uuids": [],
+   "dialogues": [
+    {
+     "uuid": "3608e5ae1d0e-7821e8c61860",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "image_and_language",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "How many images have at least one pair of object samples with the same relation as that between object sample no.8 and object sample no.4 in image no.1?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  **Identify the relation:** The first tool call attempts to find the object sample ID for object sample no.4 in image no.1 with the prediction class \"object\". The result is an empty list (`[]`). This indicates that either the object sample no.4 does not exist in the specified context or the specific relation cannot be determined from this query.\n2.  **Count matching images:** The second tool call attempts to count images that have at least one pair of object samples with the same relation as the target pair in image no.1. The result is `0`.\n\nSince the count of images with the matching relation is explicitly returned as 0, the answer is 0.\n\nAnswer: 0",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 4,
+         "extra_steps": 2,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction states the answer is 0, which does not match the ground truth answer of 1269.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"predicate_classes\": [\\n    \"parked on\"\\n  ]\\n}', '{\\n  \"sum\": 1269\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    }
+   ],
+   "summary": {
+    "num_samples": 1,
+    "num_correct": 0.0,
+    "mean_dialogue_score": 0.0,
+    "min_dialogue_score": 0.0,
+    "max_dialogue_score": 0.0
+   }
+  },
+  "music_tracker": {
+   "domain": "music_tracker",
+   "n_groundtruth": 1,
+   "n_prediction": 1,
+   "n_paired": 1,
+   "missing_prediction_uuids": [],
+   "extra_prediction_uuids": [],
+   "dialogues": [
+    {
+     "uuid": "afabd538bbfe-f3fe933d379d",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "music_tracker",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Among id from 10 to 50, which artist tagged with the same tags as the release \"sugarhill gang\" has the most downloads?",
+        "pred_answer": "Based on the tool results provided, the query `get_artist_by_tag_id_range({\"id_min\": 10, \"id_max\": 50, \"tag\": \"sugarhill gang\"})` returned an empty list of artists (`\"artist\": []`) in all three attempts.\n\nTherefore, there are no artists in the ID range 10 to 50 tagged with \"sugarhill gang\" according to the available data. Consequently, it is impossible to determine which of them has the most downloads.\n\n**Answer:** No artists were found matching the criteria.",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 9,
+         "extra_steps": 7,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction says no artists were found, while the ground truth is 'grandmaster flash & the furious five'; the answers do not match.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"tags\": [\\n    \"new.york\"\\n  ]\\n}', '{\\n  \"artist\": \"grandmaster flash & the furious five\"\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    }
+   ],
+   "summary": {
+    "num_samples": 1,
+    "num_correct": 0.0,
+    "mean_dialogue_score": 0.0,
+    "min_dialogue_score": 0.0,
+    "max_dialogue_score": 0.0
+   }
+  },
+  "soccer_2016": {
+   "domain": "soccer_2016",
+   "n_groundtruth": 29,
+   "n_prediction": 29,
+   "n_paired": 29,
+   "missing_prediction_uuids": [],
+   "extra_prediction_uuids": [],
+   "dialogues": [
+    {
+     "uuid": "fe971e7f850a-43feb3867e22",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Which season played the highest number of matches at the venue of Bandladore?",
+        "pred_answer": "Based on the tool results provided, the query to find the venue by city \"Bandladore\" returned an empty list for the venue name, and the subsequent queries to find the top season by that venue also returned empty lists. This indicates that the system could not identify a specific venue associated with the city \"Bandladore\" or retrieve any match data for it.\n\nTherefore, the answer is: **No venue was found for Bandladore, so no season played matches there.**",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 9,
+         "extra_steps": 7,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction says no venue was found and provides no numeric answer, which does not match the ground truth answer of 9.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"venue_names\": [\\n    \"M Chinnaswamy Stadium\"\\n  ]\\n}', '{\\n  \"season_id\": 9\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-6a61ff247a0a",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "How many matches did the second team in the match with the lowest winning margin play in Season 8?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The match with the highest winning margin (which the first tool call seems to have returned, despite the question asking for the lowest, or perhaps the tool name is misleading and it actually retrieved the relevant match data) occurred on **2016-05-14**.\n2.  The second tool call attempted to get the losing team name for `match_id: 1`, but returned an empty list `[]`. This suggests that either the match ID is incorrect or the team name could not be determined from the available data.\n3.  The third tool call attempted to get the sum of matches for Season 8 for a team named `[]` (empty), which also returned `null`.\n\nSince the team name for the match could not be retrieved (resulting in an empty list), it is impossible to determine how many matches that specific team played in Season 8 using the provided tool results.\n\n**Answer",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 3,
+         "extra_steps": 1,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction does not provide the number 14 and expresses uncertainty, so it does not match the ground truth.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"team_name\": \"Rajasthan Royals\"\\n}', '{\\n  \"sum\": 14\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-9d3322b03cec",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Calculate the win rate of the team that played in a match with the point of winning margin of 38 on April 30, 2009.",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The team that played in a match with a winning margin of 38 on April 30, 2009, is **Chennai Super Kings**.\n2.  The win percentage for Chennai Super Kings in 2009 is **57.142857142857146%**.\n\nAnswer: **57.142857142857146%**",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 3,
+         "extra_steps": 1,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The ground truth is the number 60.30534351145038. The prediction gives a different number (57.142857142857146%), which does not match the ground truth. Therefore the score is 0.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"team_names\": [\\n    \"Chennai Super Kings\"\\n  ]\\n}', '{\\n  \"win_percentage\": 60.30534351145038\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-712ecbbed54f",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "In the database, how many times is the number of cities in the country of the city named \"Rajkot\" to the South African cities?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The city named \"Rajkot\" is in the country **India**.\n2.  The number of cities in India is **20**.\n3.  The question asks for the number of South African cities. However, the provided tool results **do not contain information** regarding the number of cities in South Africa.\n\nTherefore, based strictly on the provided tool results, it is **impossible to answer** the question. The data required to calculate the ratio or count of South African cities is missing.\n\n**Answer:** The provided tool results do not contain the number of cities in South Africa, so the question cannot be answered with the given information.",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 2,
+         "extra_steps": 0,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction states it cannot answer and does not provide the required number 2.5, so it does not match the ground truth.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"ratio\": 2.5\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-44eaa4f40f82",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "What is the average of players born between 1975 and 1985 in the country of the city named \"Rajkot\" among all players?",
+        "pred_answer": "To find the average of players born between 1975 and 1985 in the country of the city named \"Rajkot\", we can use the provided tool results:\n\n1.  **Identify the country**: The city \"Rajkot\" is in **India**.\n2.  **Get the proportion**: The proportion of players born between 1975 and 1985 in India is **0.47257383966244726**.\n3.  **Get the count**: The total count of players born between 1975 and 1985 (globally, based on the tool's context) is **237**.\n\nHowever, the question asks for the **average** of these players. The term \"average\" in this context likely refers to the **proportion** (or percentage) of the total player population that falls into this category",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 3,
+         "extra_steps": 1,
+         "exactmatch_score": 0.0,
+         "answer_score": 1.0,
+         "groundedness_score": 0.0,
+         "score_explanation": {
+          "answer": "The prediction provides the exact number 0.47257383966244726, which matches the ground truth numeric answer.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"country_name\": \"India\"\\n}']\n",
+          "groundedness": "The response restates the proportion and count from the document (grounded) but also asserts that Rajkot is in India and interprets \u201caverage\u201d as the proportion, which rely on external common\u2011sense knowledge and reasoning."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-fd728c9dbf58",
+     "score": 1.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 1.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "In the database, how many times is the number of Indian cities where the last match was held to the number of South African cities?",
+        "pred_answer": "To determine how many times the number of Indian cities where the last match was held is greater than the number of South African cities, we use the provided tool results:\n\n1.  **Number of Indian cities**: The tool `get_sum_cities_by_country({\"country_name\": \"India\"})` returns a sum of **20**.\n2.  **Number of South African cities**: The tool `get_sum_cities_by_country({\"country_name\": \"South Africa\"})` returns a sum of **8**.\n\nNow, we calculate the ratio:\n$$ \\frac{20}{8} = 2.5 $$\n\n**Answer:** 2.5",
+        "score": 1.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 3,
+         "extra_steps": 1,
+         "exactmatch_score": 0.0,
+         "answer_score": 1.0,
+         "groundedness_score": 1.0,
+         "score_explanation": {
+          "answer": "The prediction provides the exact number 2.5, matching the ground truth numeric answer.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"venue_name\": \"M Chinnaswamy Stadium\",\\n  \"city_name\": \"Bangalore\",\\n  \"country_name\": \"India\"\\n}', '{\\n  \"ratio\": 2.5\\n}']\n",
+          "groundedness": "All numerical values and the ratio are directly taken from or trivially computed from the sums (20 and 8) provided in the document. No unsupported claims are present."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-19fb8fe6fb5e",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "How many players with a left-hand batting style are from the country where the last match was held?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The last match was held in **India** (M Chinnaswamy Stadium, Bangalore).\n2.  The count of players with a **left-hand batting style** from **India** is **0**.\n\nAnswer: 0",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 4,
+         "extra_steps": 2,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The ground truth answer is 61, but the model predicted 0, which does not match the correct number.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"count\": 61\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-09d9094c449d",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "How many players with a left-hand batting style are from the country of the youngest player?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The youngest player is **Ishan Kishan**.\n2.  His country is **India**.\n3.  The count of players from India with a **left-hand batting style** is **0**.\n\nAnswer: **0**",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 5,
+         "extra_steps": 3,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The ground truth is the number 61, but the prediction gives the number 0, which does not match.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"count\": 61\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-5c499ddf79f2",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "What percentage of toss-winners decided to bowl first on the pitch from 2010 to 2016, considering the toss decision in match ID 336011?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The function `get_toss_decision_percentage` was called with `toss_name` set to \"bowl\" (which corresponds to the team deciding to bowl first) for the period from 2010-01-01 to 2016-12-31.\n2.  The result returned for this query is `0.0`.\n\nTherefore, **0.0%** of toss-winners decided to bowl first on the pitch from 2010 to 2016.",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 8,
+         "extra_steps": 6,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The ground truth number is 56.493506493506494, but the prediction gives 0.0%, which does not match the required value.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"toss_details\": {\\n    \"toss_name\": \"field\",\\n    \"toss_decide\": 1,\\n    \"toss_winner\": 4\\n  }\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-b803f3c61e24",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Of the matches that were won by runs by the team that won the toss during match ID 336011, what percentage have the team that won the toss during match ID 336011 won the toss and decided to field?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  **Match ID 336011 Toss Details**: The team that won the toss (Team 4) chose to **field** (`toss_name`: \"field\", `toss_decide`: 1).\n2.  **Matches Won by Runs**: The question asks for the percentage of matches won by runs where the toss winner chose to field.\n3.  **Relevant Tool**: Tool result #5 (`get_percentage_matches_win_type({\"win_type\": 2})`) returns a percentage of **53.20623916811092**. In the context of cricket match data tools, `win_type` 2 typically corresponds to \"won by runs\".\n4.  **Verification**: The question asks for the percentage of matches won by runs *by the team that won the toss* (specifically those where they chose to field). The tool `",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 5,
+         "extra_steps": 3,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction does not provide the ground truth number (19.183673469387756) and instead gives a different value (53.20623916811092), so it does not match the correct answer.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"percentage\": 19.183673469387756\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-7745076568c5",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "In what year did the player who became the man of the series in the year 2012 win the Orange Cap?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The player who became the man of the series in 2012 is **SP Narine**.\n2.  The tool `get_player_season_orange_cap` shows SP Narine's Orange Cap statistics. The first entry in the list corresponds to the year **2012**, where he scored 162 runs.\n\nTherefore, the player won the Orange Cap in **2012**.",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 2,
+         "extra_steps": 0,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The ground truth lists five years (2012, 2013, 2014, 2015, 2016). The prediction only mentions the year 2012, so it does not contain the exact set of items required.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"man_of_the_series\": [\\n    {\\n      \"player_name\": \"SP Narine\",\\n      \"country_name\": \"West Indies\"\\n    }\\n  ]\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-10b1091ecf1c",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "How many matches did the team that won match ID 336000 win in season year 2008?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  **Identify the team:** Match ID 336000 was played by **Kings XI Punjab**.\n2.  **Determine the winner count:** The tool `get_match_winner_count_by_team_and_date` indicates that Kings XI Punjab won **15** matches in the year 2008.\n3.  **Verify the season:** The tool `get_match_count_by_team_season` confirms that Kings XI Punjab played 10 matches in the 2008 season. The question asks for the number of matches the team *that won* match 336000 (Kings XI Punjab) won in the *season year 2008*.\n\nThe result from the winner count tool specifically filters for the team and the year 2008.\n\nAnswer: **15**",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 3,
+         "extra_steps": 1,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The ground truth is the number 10, but the prediction states 15, which does not match the required number.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"team_name\": \"Kings XI Punjab\"\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-77818dab4775",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Which team did CK Kapugedera belong to? How many matches did he play? Also, calculate the win rate of the team he belonged to.",
+        "pred_answer": "Based on the tool results provided:\n\n1.  **Team:** The first tool call (`get_team_names_by_match_id_and_player_name`) returned an empty list (`[]`), indicating that no team name was found for CK Kapugedera in the provided data (likely due to the specific match ID or player name format not matching the database).\n2.  **Matches Played:** The second tool call (`get_total_matches_player`) confirms that CK Kapugedera played **5** matches.\n3.  **Win Rate Calculation:** Since the team name could not be identified from the first tool call, and the third tool call (`get_team_win_percentage`) returned `null` for the team \"Kandy\" (which was not confirmed as his team), it is **impossible to calculate the win rate** of the team he belonged to with the current information.\n\n**Summary:**\n*   **Team:** Unknown (Data returned empty)\n*   **Matches Played",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 7,
+         "extra_steps": 5,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The ground truth is the number 60.30534351145038, but the prediction does not contain this number (it only mentions 5 matches and says win rate cannot be calculated). Therefore it does not match the ground truth.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"teams\": [\\n    [\\n      \"Chennai Super Kings\",\\n      5\\n    ]\\n  ]\\n}', '{\\n  \"win_percentage\": 60.30534351145038\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-a7d11d0e307f",
+     "score": 1.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 1.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "What was the winning margin in points in the match between the team that played in match ID 335990 and Royal Challengers Bangalore on May 28, 2008?",
+        "pred_answer": "The winning margin in points in the match between Royal Challengers Bangalore and Mumbai Indians on May 28, 2008, was **9 points**.",
+        "score": 1.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 3,
+         "extra_steps": 1,
+         "exactmatch_score": 1.0,
+         "answer_score": null,
+         "groundedness_score": 1.0,
+         "score_explanation": {
+          "answer": null,
+          "exactmatch": "All expected tool_responses are present in actual.",
+          "groundedness": "The response directly restates the win_margin of 9 points provided in the document, with no additional unsupported claims."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-49eac77584e3",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "In the database, how many times is the number of Indian cities to the number of cities in the country where St. George's Park is located?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  **Identify the country for St. George's Park**: The first tool call `get_country_by_venue({\"venue_name\": \"St. George's Park\"})` returned `{\"country_name\": []}`. This indicates that the database does not contain a record linking \"St. George's Park\" to a specific country name.\n2.  **Analyze the ratio calculation**: The question asks for the ratio of Indian cities to the cities in the country where St. George's Park is located. Since the country for St. George's Park is not found in the database (result is empty), it is impossible to retrieve the number of cities in that country to perform the division.\n3.  **Evaluate the third tool**: The third tool `get_city_ratio_by_countries` was called with \"India\" and \"United Kingdom\" (likely an assumption based on general knowledge that St. George's Park is in the UK),",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 7,
+         "extra_steps": 5,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction does not provide the numeric answer 2.5, nor does it match the ground truth; it merely discusses missing data and does not answer the question.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"country_name\": \"South Africa\"\\n}', '{\\n  \"ratio\": 2.5\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-c6a05b06c2d0",
+     "score": 1.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 1.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Which venue did the team with the highest number of losses of all time play most of their matches as Team 1?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The team with the highest number of losses of all time is the **Kolkata Knight Riders**.\n2.  The venue associated with this team is **Eden Gardens**.\n\nAnswer: Eden Gardens",
+        "score": 1.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 2,
+         "extra_steps": 0,
+         "exactmatch_score": 1.0,
+         "answer_score": null,
+         "groundedness_score": 1.0,
+         "score_explanation": {
+          "answer": null,
+          "exactmatch": "All expected tool_responses are present in actual.",
+          "groundedness": "All claims (team name, venue name, and answer) are directly provided in the document, requiring no additional inference."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-7c12a97e2851",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "What is the average of players born between 1975 and 1985 from the country where the majority of the players are from?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  **Identify the country:** The majority of players are from **India** (Result 1).\n2.  **Identify the players:** The list of players born between 1975 and 1985 includes names like RP Singh, S Dhawan, RV Uthappa, etc. (Result 2).\n3.  **Calculate the average:** The tool `get_proportion_players_country_birth_years` returns a value of **0.47257383966244726** for India within that specific date range. In the context of these specific tool results, this value represents the calculated average metric requested.\n\nAnswer: **0.47257383966244726**",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 3,
+         "extra_steps": 1,
+         "exactmatch_score": 1.0,
+         "answer_score": null,
+         "groundedness_score": 0.0,
+         "score_explanation": {
+          "answer": null,
+          "exactmatch": "All expected tool_responses are present in actual.",
+          "groundedness": "The response asserts specific players were born between 1975\u20111985, but the document provides no birth\u2011year information for those names, making that claim ungrounded."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-832bb8f821ff",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "How many players with a left-hand batting style are from the country where the majority of the players are from?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The country with the majority of players is **India**.\n2.  The count of players from India with a **left-hand batting style** is **0**.\n\nAnswer: 0",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 4,
+         "extra_steps": 2,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The ground truth answer is the number 61, but the prediction states the answer is 0, which does not match the ground truth number.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"count\": 61\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-dab012218138",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Among all the players born after the year 1985, what is the percentage of the players who use the same batting hand as MK Pandey?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  **MK Pandey's Batting Hand**: The first tool confirms that MK Pandey uses a **Right-hand bat**.\n2.  **Total Players Born After 1985**: The third tool (`get_count_players_by_dob_and_name`) returns a count of **235** for players born on or after \"1985-01-01\". This represents the total population of players born after the year 1985.\n3.  **Players with Right-hand Bat Born After 1985**: The second tool (`get_player_count_by_batting_hand_and_year`) returns a count of **343** for players born in 1985 with a Right-hand bat. However, this count includes players born *in* 1985, not strictly *after* 1985.\n\n**Analysis of the Data Discrepan",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 4,
+         "extra_steps": 2,
+         "exactmatch_score": 1.0,
+         "answer_score": null,
+         "groundedness_score": 0.0,
+         "score_explanation": {
+          "answer": null,
+          "exactmatch": "All expected tool_responses are present in actual.",
+          "groundedness": "The response includes a claim that the 343 count pertains to players born in 1985 (not after), which is not supported by the document; therefore the response is not fully grounded."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-f692b2c64c41",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "How many cities are there in the database from the country to which Ranchi city belongs?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The city **Ranchi** belongs to a country with `country_id: 1`.\n2.  The tool `get_count_cities_by_country` was called with the country name \"India\" (which corresponds to the country containing Ranchi).\n3.  The result indicates there are **20** cities in that country.\n\nAnswer: **20**",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 2,
+         "extra_steps": 0,
+         "exactmatch_score": 0.0,
+         "answer_score": 1.0,
+         "groundedness_score": 0.0,
+         "score_explanation": {
+          "answer": "The prediction provides the exact number 20, matching the ground truth answer.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"country_names\": [\\n    \"India\"\\n  ]\\n}']\n",
+          "groundedness": "The response adds information (the country name \"India\" and the tool call) that is not present in the document, making those claims ungrounded."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-d9f08428b0f9",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "How many players with a left-hand batting style are from the country to which Ranchi city belongs?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The city **Ranchi** belongs to the country **India**.\n2.  The number of players from **India** with a **left-hand batting style** is **0**.\n\nAnswer: **0**",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 4,
+         "extra_steps": 2,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction states the answer is 0, which does not match the ground truth answer of 61.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"count\": 61\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-fd45248f1f92",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "List down the match ID of matches that the \"man of the match\" award was given to the player who won the \"man of the match\" award in the match on 2008/4/18.",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The match on **2008/4/18** has the match ID **335987**.\n2.  The \"man of the match\" for that specific date was **BB McCullum**.\n3.  The tool `get_match_ids_by_man_of_the_match` returned a list of match IDs where **BB McCullum** was the \"man of the match\".\n\nThe question asks for the match ID(s) where the \"man of the match\" award was given to the player who won it on 2008/4/18 (which is BB McCullum).\n\nThe match IDs returned for BB McCullum are:\n*   335987\n*   501215\n*   501220\n*   829716\n*   82",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 3,
+         "extra_steps": 1,
+         "exactmatch_score": 1.0,
+         "answer_score": null,
+         "groundedness_score": 0.0,
+         "score_explanation": {
+          "answer": null,
+          "exactmatch": "All expected tool_responses are present in actual.",
+          "groundedness": "The response misstates the final match ID (shows \u201c82\u201d instead of the documented \u201c829758\u201d), making at least one claim ungrounded."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-1b27cd7a873a",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Which season played the highest number of matches at the venue name of the city of M Chinnaswamy Stadium?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The venue name \"M Chinnaswamy Stadium\" is located in the city of **Bangalore**.\n2.  The tool `get_top_season_by_venue` was called for \"M Chinnaswamy Stadium\" with a limit of 1.\n3.  The result returned `season_id: 9`.\n\nTherefore, the season that played the highest number of matches at M Chinnaswamy Stadium is **Season 9**.",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 3,
+         "pred_steps": 3,
+         "extra_steps": 0,
+         "exactmatch_score": 0.0,
+         "answer_score": 1.0,
+         "groundedness_score": 0.0,
+         "score_explanation": {
+          "answer": "The prediction states the season is 9, which exactly matches the ground truth answer.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"venue_names\": [\\n    \"M Chinnaswamy Stadium\"\\n  ]\\n}']\n",
+          "groundedness": "The response mentions tool calls and results that are not present in the document, making those claims ungrounded."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-626d3b24e534",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "How many times does the venue name of the city of M Chinnaswamy Stadium host games than Maharashtra Cricket Association Stadium?",
+        "pred_answer": "Based on the tool results provided, specifically result #5 which calculates the difference in match counts between the two venues:\n\nThe venue name of the city of **M Chinnaswamy Stadium** hosts games **50** times more than the **Maharashtra Cricket Association Stadium**.\n\n(Note: Result #3 shows M Chinnaswamy Stadium had 9 matches in 2016, and result #4 shows Maharashtra Cricket Association Stadium had 4 matches in the same period. The difference is 5, but the specific tool `get_match_venue_difference` explicitly returns a difference of 50, likely accounting for a broader dataset or different timeframes not fully detailed in the individual date range queries.)",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 3,
+         "pred_steps": 7,
+         "extra_steps": 4,
+         "exactmatch_score": 0.0,
+         "answer_score": 1.0,
+         "groundedness_score": 0.0,
+         "score_explanation": {
+          "answer": "The prediction includes the number 50, which exactly matches the ground truth numeric answer, and it directly answers the question without uncertainty or contradiction.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"city_name\": \"Bangalore\"\\n}', '{\\n  \"venue_names\": [\\n    \"M Chinnaswamy Stadium\"\\n  ]\\n}']\n",
+          "groundedness": "The response adds details (e.g., the match counts occurring in 2016) that are not present in the document, making at least one claim ungrounded."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-2c64ffb674cd",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Indicate the name of the most versatile players of the winning team for the match ID 392194.",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The winning team for match ID 392194 is **Delhi Daredevils**.\n2.  The tool `get_top_player_by_roles_in_team` identifies **V Sehwag** as the most versatile player for the Delhi Daredevils.\n\nAnswer: **V Sehwag**",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 3,
+         "extra_steps": 1,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction contains the correct answer \"v sehwag\" but adds extra information and is not a concise summary that exactly matches the ground truth. Therefore it does not meet the exact\u2011match or concise\u2011summary criteria.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"venue_and_team\": [\\n    {\\n      \"venue_name\": \"Kingsmead\",\\n      \"team_name\": \"Delhi Daredevils\"\\n    }\\n  ]\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-b6c49ad41e75",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "In the match ID 419135, what was the point of the winning margin for the team that won by runs in their match against Royal Challengers Bangalore on May 28, 2008?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The first tool call (`get_match_ids_by_date`) returned match IDs **336017** and **336024** for the date **2008-05-28**. The requested match ID is **419135**, which is **not** in this list.\n2.  The second tool call (`get_win_margin_by_teams_and_date`) returned an empty list (`[]`), indicating no win margin data was found for Royal Challengers Bangalore on that specific date with the provided parameters.\n\nSince the match ID **419135** does not appear in the list of matches played on May 28, 2008, according to the first tool result, the specific data requested cannot be retrieved from the provided tools.\n\n**Answer:** The match ID 419135 is not listed in the matches played on",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 4,
+         "extra_steps": 2,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction does not provide the number 9 and instead says the match ID is not listed, which does not match the ground truth answer.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"team_names\": [\\n    \"Mumbai Indians\"\\n  ]\\n}', '{\\n  \"win_margin\": 9\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-0c13729ccebd",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Among the matches of the team that won by wickets in match ID 335993 in 2009, what is the percentage of their matches won by wickets?",
+        "pred_answer": "Based on the tool results provided, it is not possible to determine the percentage of matches won by wickets for the team that won match ID 335993 in 2009.\n\nHere is the breakdown of the results:\n*   **Match Details:** The function `get_match_details_by_venue` returned an empty list `[]`, indicating no details were found for the venue or match ID \"335993\".\n*   **Win Percentage:** The function `get_win_percentage_by_wickets` was called with the team name \"335993\" (likely a placeholder or error in the query parameters since the match ID was used instead of a team name), but it returned `null` for the win percentage.\n*   **Team Match Count:** The function `get_team_match_count_by_player` also returned null data.\n\nSince the specific match details and the team's win statistics are missing from the results, the",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 5,
+         "extra_steps": 3,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction states uncertainty and does not provide the required numeric percentage matching the ground truth.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"team_names\": [\\n    \"Delhi Daredevils\"\\n  ]\\n}', '{\\n  \"win_percentage\": 67.85714285714286\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-46335996de32",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "In the database, how many times is the number of cities in the country where SB Joshi came from to the number of South African cities?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  **Identify the country where SB Joshi came from:**\n    *   Tool result 1 (`get_player_country_out_types`) lists players and their countries. Although the name \"SB Joshi\" is truncated in the snippet, the context implies we are looking for a player from India (as seen with \"A Singh\", \"AA Bilakhia\", \"AN Ghosh\", etc., all listed as \"India\"). The question explicitly asks about the country where SB Joshi came from, and given the options in the data, it is **India**.\n\n2.  **Find the number of cities in that country (India):**\n    *   Tool result 2 (`get_count_cities_by_country` for \"India\") returns a count of **20**.\n    *   Tool result 4 confirms this count is **20**.\n\n3.  **Find the number of South African cities:**\n    *",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 4,
+         "extra_steps": 2,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction is incomplete, does not provide a final answer or the number 2.5, and thus does not match the ground truth.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"country_name\": \"India\"\\n}', '{\\n  \"ratio\": 2.5\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "fe971e7f850a-ad24619ebb65",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "soccer_2016",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Among the matches of Delhi Daredevils in 2009, what is the percentage of their matches won by the type that match ID 336000 won?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  **Identify the win type for match ID 336000**:\n    Tool result `1` shows that for match ID `336000`, the winner was \"Kings XI Punjab\". While the tool doesn't explicitly state the *type* of win (e.g., wickets, chase, etc.) in the output, we need to look at the other tools to find the percentage associated with a specific win type.\n\n2.  **Analyze the win type percentage**:\n    Tool result `4` calculates the percentage of matches won by a specific win type where `win_type` is `3`. The result is `0.5199306759098787`.\n\n3.  **Correlate the data**:\n    The question asks for the percentage of matches won by the *type* that match ID 336",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 4,
+         "extra_steps": 2,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction does not provide the ground\u2011truth number 67.85714285714286 (it gives a different value and does not answer the question directly), so it fails to match.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"win_type\": \"wickets\"\\n}', '{\\n  \"win_percentage\": 67.85714285714286\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    }
+   ],
+   "summary": {
+    "num_samples": 29,
+    "num_correct": 3.0,
+    "mean_dialogue_score": 0.10344827586206896,
+    "min_dialogue_score": 0.0,
+    "max_dialogue_score": 1.0
+   }
+  },
+  "trains": {
+   "domain": "trains",
+   "n_groundtruth": 6,
+   "n_prediction": 6,
+   "n_paired": 6,
+   "missing_prediction_uuids": [],
+   "extra_prediction_uuids": [],
+   "dialogues": [
+    {
+     "uuid": "3e2b8f7655a2-0b36c536007b",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "trains",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Among the trains that have 2 or less cars, how many of them have more than 2 long cars?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The first tool call (`get_train_ids_by_direction_and_max_cars`) returned an empty list (`[]`), indicating there are **0** trains with 2 or less cars.\n2.  Since there are no trains in the specified category, the count of those trains having more than 2 long cars is also **0**.\n\nAnswer: 0",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 6,
+         "extra_steps": 4,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The ground truth answer is the number 1, but the model prediction states the answer is 0, which does not match the ground truth.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"directions\": [\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\"\\n  ]\\n}', '{\\n  \"count\": 1\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "3e2b8f7655a2-1ee671430197",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "trains",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "How many trains with rectangle-shaped second cars running in the same direction have double sided cars in 3rd position?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The first tool (`get_count_cars_with_shapes_in_direction`) returned `null` for trains with rectangle-shaped second cars running in the same direction. This implies there are no such trains or the data is unavailable, but more critically, it suggests the specific combination of criteria (rectangle second car + same direction) yields no results.\n2.  The second tool (`get_count_train_ids_by_position_direction_sides`) specifically queried for trains in the **3rd position**, running in the **same direction**, with **double-sided** cars. It returned a count of **0**.\n3.  The third tool (`get_count_trains_direction_position_sides`) queried for trains running in the **same direction** with **double-sided** cars (without specifying the 3rd position constraint explicitly in the parameters, though the result is 0). It also returned a count of **0**.\n\nSince the specific query for trains in the",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 9,
+         "extra_steps": 7,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction states a count of 0 (or no trains), which does not match the ground truth answer of 2.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"direction\": \"west\"\\n}', '{\\n  \"count\": 2\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "3e2b8f7655a2-d1da589e3136",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "trains",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Among the trains that run in the opposite direction to most of the trains with rectangle-shaped second cars, how many of them have more than 2 long cars?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  **Identify trains with rectangle-shaped second cars**: The first tool call returns train IDs `[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]`.\n2.  **Determine the \"most common direction\" for these trains**: The second tool call indicates that for trains with a rectangle-shaped second car (position 2), the most common direction is **\"west\"**.\n3.  **Identify trains running in the opposite direction**: The opposite of \"west\" is **\"east\"**. The third tool call returns the train IDs running east: `[1, 2, 3, 4, 5, 6,",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 6,
+         "extra_steps": 4,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction is incomplete and does not provide a definitive answer (e.g., the number 1) matching the ground truth; therefore it does not satisfy the criteria.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"count\": 1\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "3e2b8f7655a2-67ecb659ec8d",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "trains",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Please list the IDs of all the cars with double sides on trains that run in the opposite direction to the train with an ellipse-shape car.",
+        "pred_answer": "Based on the tool results provided:\n\n1.  **Identify the train with the ellipse-shape car:**\n    *   Tool `get_train_ids_by_car_shapes({\"shape1\": \"ellipse\", \"shape2\": \"ellipse\"})` returns train ID **4**.\n\n2.  **Identify trains running in the opposite direction:**\n    *   Tool `get_train_ids_by_direction({\"direction\": \"opposite\"})` returns an empty list `[]`.\n    *   This indicates there are no trains running in the opposite direction to the train with the ellipse-shape car (or the specific direction context implies no such trains exist in the dataset).\n\n3.  **Identify cars with double sides on those trains:**\n    *   Since there are no trains running in the opposite direction, there are no cars to list.\n    *   Tool `get_car_ids_by_train_direction_and_sides({\"direction\": \"opposite\", \"sides\": \"double",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 10,
+         "extra_steps": 8,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction does not list the IDs 13, 17 as required; it claims no cars exist, which does not match the ground truth.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"directions\": [\\n    \"east\"\\n  ]\\n}', '{\\n  \"car_ids\": [\\n    13,\\n    17\\n  ]\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "3e2b8f7655a2-fd3fc1e5be0f",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "trains",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Among the trains that have 2 or less cars, how many trains have no more than one car with an open roof?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The first tool call (`get_train_ids_by_direction_and_max_cars`) returned an empty list (`[]`), indicating that there are **no trains** with 2 or less cars in the dataset.\n2.  Since there are no trains meeting the initial criteria (2 or less cars), there are consequently no trains to evaluate for the number of cars with open roofs.\n\nTherefore, the count is **0**.\n\nAnswer: 0",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 6,
+         "extra_steps": 4,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The ground truth answer is the number 4, but the model prediction states the answer is 0, which does not match the ground truth.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"directions\": [\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\"\\n  ]\\n}', '{\\n  \"count\": 4\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "3e2b8f7655a2-255c4aa0fa11",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "trains",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "How many trains that have 2 or less cars and are running west have double sided cars in the 3rd position?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  **Filter by Direction and Car Count**: The function `get_train_ids_by_direction_and_max_cars` with `direction: \"west\"` and `max_cars: 2` returns an empty list (`[]`). This indicates there are **0** trains running west that have 2 or less cars.\n2.  **Other Data**: The other results regarding car IDs and counts for double-sided cars are irrelevant because the initial filter for trains meeting the criteria (running west with 2 or less cars) yielded no results.\n\nSince there are no trains matching the primary criteria (running west with 2 or less cars), the count of such trains with double-sided cars in the 3rd position is 0.\n\nAnswer: 0",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 5,
+         "extra_steps": 3,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The ground truth is the number 2, but the prediction states the answer is 0, which does not match the required number.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"directions\": [\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\"\\n  ]\\n}', '{\\n  \"count\": 2\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    }
+   ],
+   "summary": {
+    "num_samples": 6,
+    "num_correct": 0.0,
+    "mean_dialogue_score": 0.0,
+    "min_dialogue_score": 0.0,
+    "max_dialogue_score": 0.0
+   }
+  },
+  "university": {
+   "domain": "university",
+   "n_groundtruth": 5,
+   "n_prediction": 5,
+   "n_paired": 5,
+   "missing_prediction_uuids": [],
+   "extra_prediction_uuids": [],
+   "dialogues": [
+    {
+     "uuid": "adba6c0ec8a8-86474444548b",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "university",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Among the universities in the country that had the highest number of international students in 2015, what is the percentage of female students in the year 2016?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The country with the highest number of international students in 2015 is identified as **China** (country_id: 73).\n2.  The tool `get_percentage_female_students` was called for China in 2016, but it returned **`null`**.\n\nTherefore, the percentage of female students in the year 2016 for the universities in that country is **not available** (or null) according to the provided data.",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 5,
+         "extra_steps": 3,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction says the percentage is not available (null), which does not match the ground truth numeric value 46.80517901259568, and it indicates uncertainty. Therefore the score is 0.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"university_name\": \"Arizona State University\",\\n  \"country_name\": \"United States of America\"\\n}', '{\\n  \"percentage\": 46.80517901259568\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "adba6c0ec8a8-f0de9a7ec5e5",
+     "score": 1.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "university",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 1.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "How many universities are there in the nation where Harvard University is located?",
+        "pred_answer": "There are 273 universities in the United States of America, which is the nation where Harvard University is located.",
+        "score": 1.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 2,
+         "extra_steps": 0,
+         "exactmatch_score": 1.0,
+         "answer_score": null,
+         "groundedness_score": 1.0,
+         "score_explanation": {
+          "answer": null,
+          "exactmatch": "All expected tool_responses are present in actual.",
+          "groundedness": "Both claims (\"there are 273 universities in the United States of America\" and \"the United States of America is the nation where Harvard University is located\") are directly stated in the document."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "adba6c0ec8a8-93220328ba0e",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "university",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Among the universities in the location of the university ID 112, what is the percentage of female students in the year 2016?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The first tool call (`get_country_of_university`) returned an empty list for the country name of \"University ID 112\".\n2.  The second tool call (`get_percentage_female_students`) used this empty country name and returned `null` for the percentage.\n\nSince the country could not be determined, the data required to calculate the percentage of female students in 2016 is unavailable.\n\n**Answer:** The data is unavailable (null) because the country for University ID 112 could not be identified.",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 4,
+         "extra_steps": 2,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction says the data is unavailable (null), which does not match the ground truth numeric value 46.80517901259568.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"country_name\": \"United States of America\"\\n}', '{\\n  \"percentage\": 46.80517901259568\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "adba6c0ec8a8-61695280fbc6",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "university",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "How many universities have no less than 20,000 female students in 2016? Identify how many of the said universities are located in the same country as the university with ID 112.",
+        "pred_answer": "Based on the tool results provided:\n\n1.  **Total number of universities:** The query `get_count_universities_female_students_year({\"country_name\": \"United States of America\", \"year\": 2016, \"min_female_students\": 20000})` (Result 5) returns a count of **17**. This is the total number of universities with no less than 20,000 female students in 2016.\n2.  **Universities in the same country as ID 112:**\n    *   Result 3 identifies that the university with ID 112 is located in the \"United States of America\".\n    *   Result 5 includes a field `nums_in_usa` with the value **9**. This indicates that out of the 17 universities meeting the criteria, 9 are located in the United States of America.\n\n**Answer:**\nThere are **",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 5,
+         "extra_steps": 3,
+         "exactmatch_score": 1.0,
+         "answer_score": null,
+         "groundedness_score": 0.0,
+         "score_explanation": {
+          "answer": null,
+          "exactmatch": "All expected tool_responses are present in actual.",
+          "groundedness": "The response correctly cites the count\u202f=\u202f17 and nums_in_usa\u202f=\u202f9 from the document, but it asserts that university\u202fID\u202f112 is in the United States based on external knowledge rather than information present in the document. This reliance on non\u2011trivial common\u2011sense knowledge makes the answer only partially grounded."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "adba6c0ec8a8-604bfc0a2ab7",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "university",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "How many universities have no less than 20,000 female students in 2016? Identify how many of the said universities are located in the country that has the most universities.",
+        "pred_answer": "Based on the tool results provided:\n\n1.  **Total universities with no less than 20,000 female students in 2016:**\n    The result from `get_count_universities_female_students_year` for the \"United States of America\" (which is confirmed as the country with the most universities in result #2) shows a count of **17**. Since the question asks for the total number of such universities and the country with the most universities is the USA, and the specific query for the USA yields 17, we assume the context implies these are the relevant universities within the top country or the total is derived from this specific dataset. However, strictly reading the tools:\n    *   Tool #1 queries \"USA\" (string) and returns 17.\n    *   Tool #3 queries \"United States of America\" (full name) and returns 17.\n    *   Tool #2 confirms \"United",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 3,
+         "extra_steps": 1,
+         "exactmatch_score": 1.0,
+         "answer_score": null,
+         "groundedness_score": 0.0,
+         "score_explanation": {
+          "answer": null,
+          "exactmatch": "All expected tool_responses are present in actual.",
+          "groundedness": "The response asserts that the USA query returns a count of 17 universities, but the document only gives an overall count of 17 and USA-specific numbers of 0 or 9, so this claim is not supported."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    }
+   ],
+   "summary": {
+    "num_samples": 5,
+    "num_correct": 1.0,
+    "mean_dialogue_score": 0.2,
+    "min_dialogue_score": 0.0,
+    "max_dialogue_score": 1.0
+   }
+  },
+  "world": {
+   "domain": "world",
+   "n_groundtruth": 3,
+   "n_prediction": 3,
+   "n_paired": 3,
+   "missing_prediction_uuids": [],
+   "extra_prediction_uuids": [],
+   "dialogues": [
+    {
+     "uuid": "486ea46224d1-f0d077261c5e",
+     "score": 1.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "world",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 1.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Among the countries that have a GNP greater than 1500, what is the percentage of the countries that have the language of the smallest population country as their language?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The language of the country with the smallest population is **English** (from results 1 and 2).\n2.  The percentage of countries with a GNP greater than 1500 that have **English** as their language is **3.120936280884265** (from results 3 and 5).\n\nAnswer: **3.120936280884265**",
+        "score": 1.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 5,
+         "extra_steps": 3,
+         "exactmatch_score": 1.0,
+         "answer_score": null,
+         "groundedness_score": 1.0,
+         "score_explanation": {
+          "answer": null,
+          "exactmatch": "All expected tool_responses are present in actual.",
+          "groundedness": "All claims in the response directly restate information explicitly present in the document (language = english, percentage = 3.120936280884265), so they are fully grounded."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "486ea46224d1-a861a49fc248",
+     "score": 1.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "world",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 1.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Among the countries that use the official language of the country with the smallest surface area, what is the percentage of republic countries?",
+        "pred_answer": "Based on the tool results provided:\n\n1.  The country with the smallest surface area is the **Holy See (Vatican City State)**.\n2.  The official language of this country is **Italian**.\n3.  The percentage of countries that are republics among those that use Italian as an official language is **20.0%**.\n\nAnswer: 20.0",
+        "score": 1.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 6,
+         "extra_steps": 4,
+         "exactmatch_score": 0.0,
+         "answer_score": 1.0,
+         "groundedness_score": 1.0,
+         "score_explanation": {
+          "answer": "The prediction provides the exact number 20.0, matching the ground truth answer.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"countries\": [\\n    [\\n      \"Holy See (Vatican City State)\",\\n      1000,\\n      3538,\\n      \"Italian\"\\n    ]\\n  ]\\n}']\n",
+          "groundedness": "All three claims (smallest country, its official language, and the 20.0% figure) are directly stated in the document. No extra unsupported information is introduced."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "486ea46224d1-a9cb53b53679",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "world",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "Among the countries that have a GNP greater than 1500, what is the percentage of countries that have the same language as the country with the shortest life expectancy?",
+        "pred_answer": "Based on the tool results provided, here is the step-by-step deduction:\n\n1.  **Identify the country with the shortest life expectancy:**\n    *   The tool `get_country_with_highest_life_expectancy` returns \"Antarctica\" as the country with the *highest* life expectancy.\n    *   The tool `get_capital_language_highest_life_expectancy` returns a list containing `[763, \"English\"]`. The number `763` likely represents the life expectancy value (in years or a specific metric unit) associated with the highest value, and the language is \"English\".\n    *   *Correction/Refinement based on typical dataset patterns in such queries:* Usually, questions about \"shortest\" life expectancy refer to countries like Lesotho or Namibia. However, looking strictly at the provided tools, there is no direct tool to find the *shortest* life expectancy.\n    *   Let's re-examine",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 5,
+         "extra_steps": 3,
+         "exactmatch_score": 1.0,
+         "answer_score": null,
+         "groundedness_score": 0.0,
+         "score_explanation": {
+          "answer": null,
+          "exactmatch": "All expected tool_responses are present in actual.",
+          "groundedness": "The response makes several assertions (tool names, interpretation of 763, examples of shortest-life-expectancy countries) that are not supported by the provided document."
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    }
+   ],
+   "summary": {
+    "num_samples": 3,
+    "num_correct": 2.0,
+    "mean_dialogue_score": 0.6666666666666666,
+    "min_dialogue_score": 0.0,
+    "max_dialogue_score": 1.0
+   }
+  },
+  "world_development_indicators": {
+   "domain": "world_development_indicators",
+   "n_groundtruth": 3,
+   "n_prediction": 3,
+   "n_paired": 3,
+   "missing_prediction_uuids": [],
+   "extra_prediction_uuids": [],
+   "dialogues": [
+    {
+     "uuid": "2ffd766bcf59-176de8978de4",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "world_development_indicators",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "In the country that had the highest population in its largest city for 19 consecutive years starting from 1960, how many female out-of-school children of primary school age are there in the country with the highest number of female out-of-school children of primary school age in Sub-Saharan Africa? Indicate the year when it was recorded.",
+        "pred_answer": "Based on the tool results provided, here is the step-by-step deduction:\n\n1.  **Identify the country:** The first tool result confirms that **Japan** had the highest population in its largest city for 19 consecutive years starting from 1960.\n2.  **Identify the specific data point:** The question asks for the number of **female out-of-school children of primary school age** in Japan (the country identified above) within the context of Sub-Saharan Africa having the highest number.\n3.  **Analyze the second tool result:** The tool `get_top_country_by_indicator_year({\"year\": 2023, \"indicator_name\": \"Female out-of-school children, primary\"})` returned an empty list `[]`. This indicates that the tool does not have data available for this specific indicator in the provided context or year.\n4.  **Analyze the third tool result:** This tool only lists the data source (UNESCO",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 5,
+         "extra_steps": 3,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction does not provide the required number (4963815) and thus does not match the ground truth answer.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"country_code\": \"AGO\",\\n  \"region\": \"Sub-Saharan Africa\"\\n}', '{\\n  \"max_value\": 4963815,\\n  \"year\": 2010\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "2ffd766bcf59-9921520eb280",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "world_development_indicators",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "What is the percentage of Sub-Saharan African countries that share the same system of trade as Bulgaria, which carried passengers via air transport from 1970 to 1980?",
+        "pred_answer": "Based on the tool results provided, the percentage of Sub-Saharan African countries that share the same system of trade as Bulgaria is **null** (or not available).\n\nThe specific tool call `get_percentage_countries({\"region\": \"Sub-Saharan Africa\", \"system_of_trade\": \"Bulgaria\"})` returned `{\"percentage\": null}`, indicating that the data required to answer this specific question is missing from the system. Additionally, the tool `get_long_names_by_trade_system` returned an empty list for Bulgaria's trade system, further suggesting that the trade system identifier for Bulgaria could not be resolved to match against other countries.",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 9,
+         "extra_steps": 7,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction does not provide the numeric percentage given in the ground truth (23.404255319148938) and instead says the data is unavailable, so it does not match the correct answer.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"average_value\": 1288781.8181818181,\\n  \"system_of_trade\": \"Special trade system\"\\n}', '{\\n  \"percentage\": 23.404255319148938\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    },
+    {
+     "uuid": "2ffd766bcf59-39ea52ea3009",
+     "score": 0.0,
+     "metadata": {
+      "capability": "capability_multihop_reasoning",
+      "domain": "world_development_indicators",
+      "policy": {
+       "dialogue_aggregate": "mean",
+       "execute_mcp_tools": true
+      }
+     },
+     "details": {
+      "dialogue_score": 0.0,
+      "num_turns": 1,
+      "per_turn": [
+       {
+        "turn_id": 0,
+        "query": "How many countries have their footnotes described in the same way as the footnote on the series code AG.LND.FRST.K2 in 1990 for Aruba? Please provide the full names of any three of those countries.",
+        "pred_answer": "Based on the tool results provided, there are **0** countries that have their footnotes described in the same way as the footnote on the series code AG.LND.FRST.K2 in 1990 for Aruba.\n\nThe results indicate:\n- `get_footnotes_description` returned an empty list `[]`.\n- `get_distinct_country_codes_by_description` returned an empty list `[]`.\n- `get_distinct_country_long_names_by_description` returned an empty list `[]`.\n\nSince no countries were found matching this description, it is not possible to provide the full names of three such countries.",
+        "score": 0.0,
+        "metadata": {
+         "gt_steps": 2,
+         "pred_steps": 9,
+         "extra_steps": 7,
+         "exactmatch_score": 0.0,
+         "answer_score": 0.0,
+         "groundedness_score": null,
+         "score_explanation": {
+          "answer": "The prediction says there are 0 countries, while the ground truth states there are 6 countries (aruba, faeroe islands, greenland). The answer does not match the ground truth.",
+          "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"descriptions\": [\\n    [\\n      \"Not specified\"\\n    ]\\n  ]\\n}', '{\\n  \"countries\": [\\n    [\\n      6\\n    ],\\n    [\\n      \"Aruba\"\\n    ],\\n    [\\n      \"Faeroe Islands\"\\n    ],\\n    [\\n      \"Greenland\"\\n    ]\\n  ]\\n}']\n",
+          "groundedness": null
+         }
+        }
+       }
+      ],
+      "aggregate": "mean"
+     }
+    }
+   ],
+   "summary": {
+    "num_samples": 3,
+    "num_correct": 0.0,
+    "mean_dialogue_score": 0.0,
+    "min_dialogue_score": 0.0,
+    "max_dialogue_score": 0.0
+   }
+  }
+ },
+ "summary": {
+  "n_domains": 15,
+  "n_paired_dialogues": 68,
+  "n_missing_predictions": 0,
+  "n_extra_predictions": 0,
+  "n_samples": 68,
+  "n_correct": 9.0,
+  "mean_dialogue_score": 0.1323529411764706,
+  "min_dialogue_score": 0.0,
+  "max_dialogue_score": 1.0
+ }
+}

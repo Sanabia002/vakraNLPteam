@@ -1,0 +1,318 @@
+{
+  "capability_name": "capability_multihop_reasoning",
+  "groundtruth_dir": "tmp_gt_tune",
+  "prediction_dir": "output/tune68_plan_all",
+  "domains": {
+    "citeseer": {
+      "domain": "citeseer",
+      "n_groundtruth": 1,
+      "n_prediction": 1,
+      "n_paired": 1,
+      "missing_prediction_uuids": [],
+      "extra_prediction_uuids": [],
+      "dialogues": [
+        {
+          "uuid": "4ee813c5e32d-07999d0d8553",
+          "score": 1.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "citeseer",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 1.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "Among all the citations, what is the percentage of the paper ID that is cited the most under the Agents classification?",
+                "pred_answer": "17.995169082125603",
+                "score": 1.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 3,
+                  "extra_steps": 1,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 1.0,
+                  "groundedness_score": 1.0,
+                  "score_explanation": {
+                    "answer": "The prediction exactly matches the ground truth number.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"paper_id\": \"kinny96methodology\",\\n  \"class_label\": \"Agents\"\\n}']\n",
+                    "groundedness": "The response directly provides the percentage value that is explicitly given in the document, requiring no additional inference."
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        }
+      ],
+      "summary": {
+        "num_samples": 1,
+        "num_correct": 1.0,
+        "mean_dialogue_score": 1.0,
+        "min_dialogue_score": 1.0,
+        "max_dialogue_score": 1.0
+      }
+    },
+    "trains": {
+      "domain": "trains",
+      "n_groundtruth": 6,
+      "n_prediction": 6,
+      "n_paired": 6,
+      "missing_prediction_uuids": [],
+      "extra_prediction_uuids": [],
+      "dialogues": [
+        {
+          "uuid": "3e2b8f7655a2-0b36c536007b",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "trains",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "Among the trains that have 2 or less cars, how many of them have more than 2 long cars?",
+                "pred_answer": "0",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 6,
+                  "extra_steps": 4,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 0.0,
+                  "groundedness_score": null,
+                  "score_explanation": {
+                    "answer": "The ground truth is the number 1, but the model predicted 0, which does not match the required number.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"directions\": [\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\"\\n  ]\\n}', '{\\n  \"count\": 1\\n}']\n",
+                    "groundedness": null
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "3e2b8f7655a2-1ee671430197",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "trains",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "How many trains with rectangle-shaped second cars running in the same direction have double sided cars in 3rd position?",
+                "pred_answer": "0",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 9,
+                  "extra_steps": 7,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 0.0,
+                  "groundedness_score": null,
+                  "score_explanation": {
+                    "answer": "The ground truth answer is the number 2, but the model predicted 0, which does not match the required number.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"direction\": \"west\"\\n}', '{\\n  \"count\": 2\\n}']\n",
+                    "groundedness": null
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "3e2b8f7655a2-d1da589e3136",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "trains",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "Among the trains that run in the opposite direction to most of the trains with rectangle-shaped second cars, how many of them have more than 2 long cars?",
+                "pred_answer": "0",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 6,
+                  "extra_steps": 4,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 0.0,
+                  "groundedness_score": null,
+                  "score_explanation": {
+                    "answer": "The ground truth is the number 1, but the model predicted 0, which does not match the required number.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"direction\": \"west\"\\n}', '{\\n  \"count\": 1\\n}']\n",
+                    "groundedness": null
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "3e2b8f7655a2-67ecb659ec8d",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "trains",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "Please list the IDs of all the cars with double sides on trains that run in the opposite direction to the train with an ellipse-shape car.",
+                "pred_answer": "[]",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 10,
+                  "extra_steps": 8,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 0.0,
+                  "groundedness_score": null,
+                  "score_explanation": {
+                    "answer": "The prediction is an empty list, which does not match the ground truth answer \"13, 17\".",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"directions\": [\\n    \"east\"\\n  ]\\n}', '{\\n  \"car_ids\": [\\n    13,\\n    17\\n  ]\\n}']\n",
+                    "groundedness": null
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "3e2b8f7655a2-fd3fc1e5be0f",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "trains",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "Among the trains that have 2 or less cars, how many trains have no more than one car with an open roof?",
+                "pred_answer": "0",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 6,
+                  "extra_steps": 4,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 0.0,
+                  "groundedness_score": null,
+                  "score_explanation": {
+                    "answer": "The ground truth answer is the number 4, but the model predicted 0, which does not match the required number.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"directions\": [\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\"\\n  ]\\n}', '{\\n  \"count\": 4\\n}']\n",
+                    "groundedness": null
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "3e2b8f7655a2-255c4aa0fa11",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "trains",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "How many trains that have 2 or less cars and are running west have double sided cars in the 3rd position?",
+                "pred_answer": "0",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 4,
+                  "extra_steps": 2,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 0.0,
+                  "groundedness_score": null,
+                  "score_explanation": {
+                    "answer": "The ground truth is the number 2, but the model predicted 0, which does not match the required number.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"directions\": [\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\"\\n  ]\\n}', '{\\n  \"count\": 2\\n}']\n",
+                    "groundedness": null
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        }
+      ],
+      "summary": {
+        "num_samples": 6,
+        "num_correct": 0.0,
+        "mean_dialogue_score": 0.0,
+        "min_dialogue_score": 0.0,
+        "max_dialogue_score": 0.0
+      }
+    }
+  },
+  "summary": {
+    "n_domains": 2,
+    "n_paired_dialogues": 7,
+    "n_missing_predictions": 0,
+    "n_extra_predictions": 0,
+    "n_samples": 7,
+    "n_correct": 1.0,
+    "mean_dialogue_score": 0.14285714285714285,
+    "min_dialogue_score": 0.0,
+    "max_dialogue_score": 1.0
+  }
+}

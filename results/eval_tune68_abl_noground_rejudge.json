@@ -1,0 +1,73 @@
+{
+  "capability_name": "capability_multihop_reasoning",
+  "groundtruth_dir": "tmp_rejudge/tune68_abl_noground/gt",
+  "prediction_dir": "tmp_rejudge/tune68_abl_noground/pred",
+  "domains": {
+    "world": {
+      "domain": "world",
+      "n_groundtruth": 1,
+      "n_prediction": 1,
+      "n_paired": 1,
+      "missing_prediction_uuids": [],
+      "extra_prediction_uuids": [],
+      "dialogues": [
+        {
+          "uuid": "486ea46224d1-f0d077261c5e",
+          "score": 1.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "world",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 1.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "Among the countries that have a GNP greater than 1500, what is the percentage of the countries that have the language of the smallest population country as their language?",
+                "pred_answer": "Based on the tool results provided:\n\n1.  The language of the country with the smallest population is **English** (from results 1 and 2).\n2.  The percentage of countries with a GNP greater than 1500 that have **English** as their language is **3.120936280884265** (from results 3 and 5).\n\nAnswer: **3.120936280884265**",
+                "score": 1.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 5,
+                  "extra_steps": 3,
+                  "exactmatch_score": 1.0,
+                  "answer_score": null,
+                  "groundedness_score": 1.0,
+                  "score_explanation": {
+                    "answer": null,
+                    "exactmatch": "All expected tool_responses are present in actual.",
+                    "groundedness": "All claims in the response directly restate information explicitly present in the document (language = english, percentage = 3.120936280884265), so they are fully grounded."
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        }
+      ],
+      "summary": {
+        "num_samples": 1,
+        "num_correct": 1.0,
+        "mean_dialogue_score": 1.0,
+        "min_dialogue_score": 1.0,
+        "max_dialogue_score": 1.0
+      }
+    }
+  },
+  "summary": {
+    "n_domains": 1,
+    "n_paired_dialogues": 1,
+    "n_missing_predictions": 0,
+    "n_extra_predictions": 0,
+    "n_samples": 1,
+    "n_correct": 1.0,
+    "mean_dialogue_score": 1.0,
+    "min_dialogue_score": 1.0,
+    "max_dialogue_score": 1.0
+  }
+}

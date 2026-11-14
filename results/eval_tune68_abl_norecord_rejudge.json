@@ -1,0 +1,1015 @@
+{
+  "capability_name": "capability_multihop_reasoning",
+  "groundtruth_dir": "tmp_rejudge/tune68_abl_norecord/gt",
+  "prediction_dir": "tmp_rejudge/tune68_abl_norecord/pred",
+  "domains": {
+    "soccer_2016": {
+      "domain": "soccer_2016",
+      "n_groundtruth": 7,
+      "n_prediction": 7,
+      "n_paired": 7,
+      "missing_prediction_uuids": [],
+      "extra_prediction_uuids": [],
+      "dialogues": [
+        {
+          "uuid": "fe971e7f850a-1b27cd7a873a",
+          "score": 1.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "soccer_2016",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 1.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "Which season played the highest number of matches at the venue name of the city of M Chinnaswamy Stadium?",
+                "pred_answer": "Season 9",
+                "score": 1.0,
+                "metadata": {
+                  "gt_steps": 3,
+                  "pred_steps": 3,
+                  "extra_steps": 0,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 1.0,
+                  "groundedness_score": 1.0,
+                  "score_explanation": {
+                    "answer": "The ground truth is the number 9. The prediction contains the same number (9), satisfying the rule for numeric answers.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"venue_names\": [\\n    \"M Chinnaswamy Stadium\"\\n  ]\\n}']\n",
+                    "groundedness": "The response “season 9” directly restates the season_id value present in the document, so it is fully grounded."
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "fe971e7f850a-626d3b24e534",
+          "score": 1.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "soccer_2016",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 1.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "How many times does the venue name of the city of M Chinnaswamy Stadium host games than Maharashtra Cricket Association Stadium?",
+                "pred_answer": "50",
+                "score": 1.0,
+                "metadata": {
+                  "gt_steps": 3,
+                  "pred_steps": 5,
+                  "extra_steps": 2,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 1.0,
+                  "groundedness_score": 1.0,
+                  "score_explanation": {
+                    "answer": "The prediction exactly matches the ground truth answer \"50\".",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"city_name\": \"Bangalore\"\\n}', '{\\n  \"venue_names\": [\\n    \"M Chinnaswamy Stadium\"\\n  ]\\n}']\n",
+                    "groundedness": "The response directly states the \"difference\" value of 50 that is explicitly given in the document."
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "fe971e7f850a-2c64ffb674cd",
+          "score": 1.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "soccer_2016",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 1.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "Indicate the name of the most versatile players of the winning team for the match ID 392194.",
+                "pred_answer": "V Sehwag",
+                "score": 1.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 3,
+                  "extra_steps": 1,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 1.0,
+                  "groundedness_score": 1.0,
+                  "score_explanation": {
+                    "answer": "The prediction exactly matches the ground truth answer \"v sehwag\".",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"venue_and_team\": [\\n    {\\n      \"venue_name\": \"Kingsmead\",\\n      \"team_name\": \"Delhi Daredevils\"\\n    }\\n  ]\\n}']\n",
+                    "groundedness": "The response directly provides the player name \"v sehwag\" which is explicitly listed in the document as the relevant player, matching the query without requiring additional inference."
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "fe971e7f850a-b6c49ad41e75",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "soccer_2016",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "In the match ID 419135, what was the point of the winning margin for the team that won by runs in their match against Royal Challengers Bangalore on May 28, 2008?",
+                "pred_answer": "The provided tool results do not contain information about match ID 419135 or the winning margin for the match against Royal Challengers Bangalore on May 28, 2008. The available data only lists match IDs 336017 and 336024 for that date and returns an empty list for the win margin query. Therefore, the answer cannot be determined from the given tool results.",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 2,
+                  "extra_steps": 0,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 0.0,
+                  "groundedness_score": null,
+                  "score_explanation": {
+                    "answer": "The prediction states uncertainty and does not provide the required number 9, so it fails to match the ground truth.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"team_names\": [\\n    \"Mumbai Indians\"\\n  ]\\n}', '{\\n  \"win_margin\": 9\\n}']\n",
+                    "groundedness": null
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "fe971e7f850a-0c13729ccebd",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "soccer_2016",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "Among the matches of the team that won by wickets in match ID 335993 in 2009, what is the percentage of their matches won by wickets?",
+                "pred_answer": "null",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 5,
+                  "extra_steps": 3,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 0.0,
+                  "groundedness_score": null,
+                  "score_explanation": {
+                    "answer": "The prediction is 'null', which does not provide the required numeric answer and shows uncertainty, so it does not match the ground truth.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"team_names\": [\\n    \"Delhi Daredevils\"\\n  ]\\n}', '{\\n  \"win_percentage\": 67.85714285714286\\n}']\n",
+                    "groundedness": null
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "fe971e7f850a-46335996de32",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "soccer_2016",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "In the database, how many times is the number of cities in the country where SB Joshi came from to the number of South African cities?",
+                "pred_answer": "2.5",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 4,
+                  "extra_steps": 2,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 1.0,
+                  "groundedness_score": 0.0,
+                  "score_explanation": {
+                    "answer": "The prediction exactly matches the ground truth answer \"2.5\".",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"country_name\": \"India\"\\n}', '{\\n  \"ratio\": 2.5\\n}']\n",
+                    "groundedness": "- The response \"2.5\" cannot be derived from any information in the document; there is no data about SB Joshi, cities, or a ratio that would support this value."
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "fe971e7f850a-ad24619ebb65",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "soccer_2016",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "Among the matches of Delhi Daredevils in 2009, what is the percentage of their matches won by the type that match ID 336000 won?",
+                "pred_answer": "0",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 4,
+                  "extra_steps": 2,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 0.0,
+                  "groundedness_score": null,
+                  "score_explanation": {
+                    "answer": "The prediction '0' does not match the ground truth number 67.85714285714286, nor does it indicate uncertainty; therefore the score is 0.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"win_type\": \"wickets\"\\n}']\n",
+                    "groundedness": null
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        }
+      ],
+      "summary": {
+        "num_samples": 7,
+        "num_correct": 3.0,
+        "mean_dialogue_score": 0.42857142857142855,
+        "min_dialogue_score": 0.0,
+        "max_dialogue_score": 1.0
+      }
+    },
+    "trains": {
+      "domain": "trains",
+      "n_groundtruth": 6,
+      "n_prediction": 6,
+      "n_paired": 6,
+      "missing_prediction_uuids": [],
+      "extra_prediction_uuids": [],
+      "dialogues": [
+        {
+          "uuid": "3e2b8f7655a2-0b36c536007b",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "trains",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "Among the trains that have 2 or less cars, how many of them have more than 2 long cars?",
+                "pred_answer": "0",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 2,
+                  "extra_steps": 0,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 0.0,
+                  "groundedness_score": null,
+                  "score_explanation": {
+                    "answer": "The ground truth answer is the number 1, but the model predicted 0, which does not match the required number.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"directions\": [\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\"\\n  ]\\n}', '{\\n  \"count\": 1\\n}']\n",
+                    "groundedness": null
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "3e2b8f7655a2-1ee671430197",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "trains",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "How many trains with rectangle-shaped second cars running in the same direction have double sided cars in 3rd position?",
+                "pred_answer": "0",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 3,
+                  "extra_steps": 1,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 0.0,
+                  "groundedness_score": null,
+                  "score_explanation": {
+                    "answer": "The ground truth answer is the number 2, but the model predicted 0, which does not match the required number.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"direction\": \"west\"\\n}', '{\\n  \"count\": 2\\n}']\n",
+                    "groundedness": null
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "3e2b8f7655a2-d1da589e3136",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "trains",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "Among the trains that run in the opposite direction to most of the trains with rectangle-shaped second cars, how many of them have more than 2 long cars?",
+                "pred_answer": "0",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 4,
+                  "extra_steps": 2,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 0.0,
+                  "groundedness_score": null,
+                  "score_explanation": {
+                    "answer": "Prediction gives 0, but ground truth is 1; numbers do not match.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"direction\": \"west\"\\n}', '{\\n  \"count\": 1\\n}']\n",
+                    "groundedness": null
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "3e2b8f7655a2-67ecb659ec8d",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "trains",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "Please list the IDs of all the cars with double sides on trains that run in the opposite direction to the train with an ellipse-shape car.",
+                "pred_answer": "[]",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 4,
+                  "extra_steps": 2,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 0.0,
+                  "groundedness_score": null,
+                  "score_explanation": {
+                    "answer": "The prediction is an empty list, which does not match the ground truth answer \"13, 17\".",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"directions\": [\\n    \"east\"\\n  ]\\n}', '{\\n  \"car_ids\": [\\n    13,\\n    17\\n  ]\\n}']\n",
+                    "groundedness": null
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "3e2b8f7655a2-fd3fc1e5be0f",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "trains",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "Among the trains that have 2 or less cars, how many trains have no more than one car with an open roof?",
+                "pred_answer": "0",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 2,
+                  "extra_steps": 0,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 0.0,
+                  "groundedness_score": null,
+                  "score_explanation": {
+                    "answer": "The ground truth answer is the number 4, but the model predicted 0, which does not match the required number.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"directions\": [\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\"\\n  ]\\n}', '{\\n  \"count\": 4\\n}']\n",
+                    "groundedness": null
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "3e2b8f7655a2-255c4aa0fa11",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "trains",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "How many trains that have 2 or less cars and are running west have double sided cars in the 3rd position?",
+                "pred_answer": "0",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 2,
+                  "extra_steps": 0,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 0.0,
+                  "groundedness_score": null,
+                  "score_explanation": {
+                    "answer": "The ground truth answer is the number 2, but the model predicted 0, which does not match the required number.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"directions\": [\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\",\\n    \"west\"\\n  ]\\n}', '{\\n  \"count\": 2\\n}']\n",
+                    "groundedness": null
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        }
+      ],
+      "summary": {
+        "num_samples": 6,
+        "num_correct": 0.0,
+        "mean_dialogue_score": 0.0,
+        "min_dialogue_score": 0.0,
+        "max_dialogue_score": 0.0
+      }
+    },
+    "university": {
+      "domain": "university",
+      "n_groundtruth": 5,
+      "n_prediction": 5,
+      "n_paired": 5,
+      "missing_prediction_uuids": [],
+      "extra_prediction_uuids": [],
+      "dialogues": [
+        {
+          "uuid": "adba6c0ec8a8-86474444548b",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "university",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "Among the universities in the country that had the highest number of international students in 2015, what is the percentage of female students in the year 2016?",
+                "pred_answer": "null",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 3,
+                  "extra_steps": 1,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 0.0,
+                  "groundedness_score": null,
+                  "score_explanation": {
+                    "answer": "The prediction is 'null', which does not provide the required numeric answer and shows uncertainty, so it does not match the ground truth.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"university_name\": \"Arizona State University\",\\n  \"country_name\": \"United States of America\"\\n}', '{\\n  \"percentage\": 46.80517901259568\\n}']\n",
+                    "groundedness": null
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "adba6c0ec8a8-f0de9a7ec5e5",
+          "score": 1.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "university",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 1.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "How many universities are there in the nation where Harvard University is located?",
+                "pred_answer": "273",
+                "score": 1.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 2,
+                  "extra_steps": 0,
+                  "exactmatch_score": 1.0,
+                  "answer_score": null,
+                  "groundedness_score": 1.0,
+                  "score_explanation": {
+                    "answer": null,
+                    "exactmatch": "All expected tool_responses are present in actual.",
+                    "groundedness": "The response directly states the count (273) which is explicitly provided in the document, so it is fully grounded."
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "adba6c0ec8a8-93220328ba0e",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "university",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "Among the universities in the location of the university ID 112, what is the percentage of female students in the year 2016?",
+                "pred_answer": "null",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 2,
+                  "extra_steps": 0,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 0.0,
+                  "groundedness_score": null,
+                  "score_explanation": {
+                    "answer": "The prediction is 'null', which does not provide the required numeric percentage and does not match the ground truth.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"country_name\": \"United States of America\"\\n}', '{\\n  \"percentage\": 46.80517901259568\\n}']\n",
+                    "groundedness": null
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "adba6c0ec8a8-61695280fbc6",
+          "score": 1.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "university",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 1.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "How many universities have no less than 20,000 female students in 2016? Identify how many of the said universities are located in the same country as the university with ID 112.",
+                "pred_answer": "17; 0",
+                "score": 1.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 4,
+                  "extra_steps": 2,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 1.0,
+                  "groundedness_score": 1.0,
+                  "score_explanation": {
+                    "answer": "Ground truth is a single number (17). The prediction contains the exact number 17, satisfying the rule for numeric answers despite extra text.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"count\": 17,\\n  \"nums_in_usa\": 9\\n}']\n",
+                    "groundedness": "The response directly reports the count (17) and the same‑country count (0) that are explicitly provided in the document’s JSON snippets."
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "adba6c0ec8a8-604bfc0a2ab7",
+          "score": 1.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "university",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 1.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "How many universities have no less than 20,000 female students in 2016? Identify how many of the said universities are located in the country that has the most universities.",
+                "pred_answer": "17, 9",
+                "score": 1.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 3,
+                  "extra_steps": 1,
+                  "exactmatch_score": 1.0,
+                  "answer_score": null,
+                  "groundedness_score": 1.0,
+                  "score_explanation": {
+                    "answer": null,
+                    "exactmatch": "All expected tool_responses are present in actual.",
+                    "groundedness": "The response directly states the numbers (17 and 9) that appear in the document, requiring no additional inference."
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        }
+      ],
+      "summary": {
+        "num_samples": 5,
+        "num_correct": 3.0,
+        "mean_dialogue_score": 0.6,
+        "min_dialogue_score": 0.0,
+        "max_dialogue_score": 1.0
+      }
+    },
+    "world": {
+      "domain": "world",
+      "n_groundtruth": 3,
+      "n_prediction": 3,
+      "n_paired": 3,
+      "missing_prediction_uuids": [],
+      "extra_prediction_uuids": [],
+      "dialogues": [
+        {
+          "uuid": "486ea46224d1-f0d077261c5e",
+          "score": 1.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "world",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 1.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "Among the countries that have a GNP greater than 1500, what is the percentage of the countries that have the language of the smallest population country as their language?",
+                "pred_answer": "3.120936280884265",
+                "score": 1.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 5,
+                  "extra_steps": 3,
+                  "exactmatch_score": 1.0,
+                  "answer_score": null,
+                  "groundedness_score": 1.0,
+                  "score_explanation": {
+                    "answer": null,
+                    "exactmatch": "All expected tool_responses are present in actual.",
+                    "groundedness": "The response directly repeats the percentage value { \"percentage\": 3.120936280884265 } found in the document, so it is fully grounded."
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "486ea46224d1-a861a49fc248",
+          "score": 1.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "world",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 1.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "Among the countries that use the official language of the country with the smallest surface area, what is the percentage of republic countries?",
+                "pred_answer": "20.0",
+                "score": 1.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 4,
+                  "extra_steps": 2,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 1.0,
+                  "groundedness_score": 1.0,
+                  "score_explanation": {
+                    "answer": "The prediction exactly matches the ground truth value \"20.0\".",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"countries\": [\\n    [\\n      \"Holy See (Vatican City State)\",\\n      1000,\\n      3538,\\n      \"Italian\"\\n    ]\\n  ]\\n}']\n",
+                    "groundedness": "The response states the percentage as 20.0, which directly matches the \"percentage\": 20.0 value provided in the document."
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "486ea46224d1-a9cb53b53679",
+          "score": 1.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "world",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 1.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "Among the countries that have a GNP greater than 1500, what is the percentage of countries that have the same language as the country with the shortest life expectancy?",
+                "pred_answer": "3.120936280884265",
+                "score": 1.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 5,
+                  "extra_steps": 3,
+                  "exactmatch_score": 1.0,
+                  "answer_score": null,
+                  "groundedness_score": 1.0,
+                  "score_explanation": {
+                    "answer": null,
+                    "exactmatch": "All expected tool_responses are present in actual.",
+                    "groundedness": "The response simply repeats the percentage value that is explicitly provided in the document, so it is fully grounded."
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        }
+      ],
+      "summary": {
+        "num_samples": 3,
+        "num_correct": 3.0,
+        "mean_dialogue_score": 1.0,
+        "min_dialogue_score": 1.0,
+        "max_dialogue_score": 1.0
+      }
+    },
+    "world_development_indicators": {
+      "domain": "world_development_indicators",
+      "n_groundtruth": 3,
+      "n_prediction": 3,
+      "n_paired": 3,
+      "missing_prediction_uuids": [],
+      "extra_prediction_uuids": [],
+      "dialogues": [
+        {
+          "uuid": "2ffd766bcf59-176de8978de4",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "world_development_indicators",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "In the country that had the highest population in its largest city for 19 consecutive years starting from 1960, how many female out-of-school children of primary school age are there in the country with the highest number of female out-of-school children of primary school age in Sub-Saharan Africa? Indicate the year when it was recorded.",
+                "pred_answer": "0",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 3,
+                  "extra_steps": 1,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 0.0,
+                  "groundedness_score": null,
+                  "score_explanation": {
+                    "answer": "The prediction '0' does not match the ground truth number 4963815 and does not answer the question, so the score is 0.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"country_code\": \"AGO\",\\n  \"region\": \"Sub-Saharan Africa\"\\n}', '{\\n  \"max_value\": 4963815,\\n  \"year\": 2010\\n}']\n",
+                    "groundedness": null
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "2ffd766bcf59-9921520eb280",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "world_development_indicators",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "What is the percentage of Sub-Saharan African countries that share the same system of trade as Bulgaria, which carried passengers via air transport from 1970 to 1980?",
+                "pred_answer": "null",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 3,
+                  "extra_steps": 1,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 0.0,
+                  "groundedness_score": null,
+                  "score_explanation": {
+                    "answer": "The prediction is 'null', which does not provide the required numeric answer and shows uncertainty, so it does not match the ground truth.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"average_value\": 1288781.8181818181,\\n  \"system_of_trade\": \"Special trade system\"\\n}', '{\\n  \"percentage\": 23.404255319148938\\n}']\n",
+                    "groundedness": null
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        },
+        {
+          "uuid": "2ffd766bcf59-39ea52ea3009",
+          "score": 0.0,
+          "metadata": {
+            "capability": "capability_multihop_reasoning",
+            "domain": "world_development_indicators",
+            "policy": {
+              "dialogue_aggregate": "mean",
+              "execute_mcp_tools": true
+            }
+          },
+          "details": {
+            "dialogue_score": 0.0,
+            "num_turns": 1,
+            "per_turn": [
+              {
+                "turn_id": 0,
+                "query": "How many countries have their footnotes described in the same way as the footnote on the series code AG.LND.FRST.K2 in 1990 for Aruba? Please provide the full names of any three of those countries.",
+                "pred_answer": "0",
+                "score": 0.0,
+                "metadata": {
+                  "gt_steps": 2,
+                  "pred_steps": 3,
+                  "extra_steps": 1,
+                  "exactmatch_score": 0.0,
+                  "answer_score": 0.0,
+                  "groundedness_score": null,
+                  "score_explanation": {
+                    "answer": "The prediction is just \"0\", indicating uncertainty, which does not match the ground truth answer.",
+                    "exactmatch": "Missing expected tool_responses.\nMissing: ['{\\n  \"descriptions\": [\\n    [\\n      \"Not specified\"\\n    ]\\n  ]\\n}', '{\\n  \"countries\": [\\n    [\\n      6\\n    ],\\n    [\\n      \"Aruba\"\\n    ],\\n    [\\n      \"Faeroe Islands\"\\n    ],\\n    [\\n      \"Greenland\"\\n    ]\\n  ]\\n}']\n",
+                    "groundedness": null
+                  }
+                }
+              }
+            ],
+            "aggregate": "mean"
+          }
+        }
+      ],
+      "summary": {
+        "num_samples": 3,
+        "num_correct": 0.0,
+        "mean_dialogue_score": 0.0,
+        "min_dialogue_score": 0.0,
+        "max_dialogue_score": 0.0
+      }
+    }
+  },
+  "summary": {
+    "n_domains": 5,
+    "n_paired_dialogues": 24,
+    "n_missing_predictions": 0,
+    "n_extra_predictions": 0,
+    "n_samples": 24,
+    "n_correct": 9.0,
+    "mean_dialogue_score": 0.375,
+    "min_dialogue_score": 0.0,
+    "max_dialogue_score": 1.0
+  }
+}
