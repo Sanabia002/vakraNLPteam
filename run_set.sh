@@ -6,7 +6,7 @@ cd ~/vakra || exit 1
 source .venv/bin/activate && set -a && source .env && set +a
 LOCAL_KEY=$LITELLM_API_KEY; GT=tmp_gt_$SET; SAMPLE=results/${SET}_uuids.json
 N=$(python3 -c "import json; print(len(json.load(open('$SAMPLE'))))")
-export SAMPLE_FILE=$SAMPLE MAX_OTHER_ERR=8 AGENT_TIMEOUT_SECONDS=300
+export SAMPLE_FILE=$SAMPLE MAX_OTHER_ERR=${MAX_OTHER_ERR:-8} AGENT_TIMEOUT_SECONDS=300
 [ "$SET" = test ] && export ALLOW_FROZEN=1
 LOG=runset_$SET.out; say () { echo "[$(date +%H:%M:%S)] $*" | tee -a $LOG; }
 hl () { [ "$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 http://localhost:8080/v1/models -H "Authorization: Bearer $LOCAL_KEY")" = "200" ]; }
@@ -23,6 +23,10 @@ HASH=$(git rev-parse --short HEAD); DOMS_CSV=$(ls $GT | sed 's/.json//' | paste 
 say "start $SET: $N questions, tag final-config, commit $HASH"
 run () {   # name backend model topk notes [VAR=value ...]
   name=$1; be=$2; model=$3; topk=$4; notes=$5; shift 5
+  if [ -d output/$name ]; then
+    if python3 validate_run.py $name $N | grep -q '^OK'; then say "skip $name: already valid"; return 0; fi
+    say "ABORT: output/$name exists but is not valid; delete it and relaunch"; exit 1
+  fi
   [ -e STOP_RUNSET ] && { say "stopped by STOP_RUNSET"; exit 1; }
   if [ "$be" = groq ]; then hg; else hl; fi || { say "ABORT: $be backend down before $name"; exit 1; }
   ARGS=""; [ "$topk" != "0" ] && ARGS="--top-k $topk"
