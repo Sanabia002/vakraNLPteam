@@ -56,7 +56,7 @@ llama.cpp build b11960 (Vulkan), model bartowski/Qwen_Qwen3.5-4B-GGUF:Q4_K_M:
 - Dev (82 q): plain baseline 12 (14.6%), C alone 26, D alone 31, F 33 (40.2%, 95% interval 30-51%). Paired F vs baseline: 23 only-F, 2 only-baseline.
 - Frozen test (67 q): baseline 16 (23.9%), C alone 23, D alone 35, F 36 (53.7%, 95% interval 42-65%). Paired: 22 only-F, 2 only-baseline.
 - The fallback rescued 3 questions on dev and 2 on test; it appears as +2 and +1 because one question per set was judged correct for D alone and wrong
-  inside F's scoring pass, on identical D output (judge variability on the groundedness check; about 1 question per set).
+  inside F's scoring pass, on identical D output (most likely judge variability on the groundedness check, about 1 question per set; not verified by a rescore).
 - Data quirk: all 9 beer_factory dev questions that mention root beer ID 10054 have gold calls with 100054. The container returns no record for 10054
   ({"root_beer_details":[]} in the default data) and a real record for 100054. Neither agent ever used 100054; F answered 3 of the 9 correctly. A
   one-inserted-digit scan over all 346 public questions found this pattern only in beer_factory (9 questions); the scan is a heuristic.

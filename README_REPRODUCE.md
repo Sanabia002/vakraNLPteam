@@ -117,3 +117,9 @@ this score` (judge failures silently score 0).
 - D runs on a hosted model (Groq preview) and is **not deterministic**; reruns can differ.
 - Groq's free tier limits tokens per minute and per day; 429s on D or judge errors while scoring are expected and
   are handled by the validator and the re-judge step.
+
+## Relaunching after a failure
+`run_set.sh` skips any stage whose output folder already passes `validate_run.py` ("skip ...: already valid" in `runset_<set>.out`).
+A stage folder that exists but fails validation makes the script abort; delete only that stage's folder (`output/final_<set>_<D|C|baseline>`)
+and relaunch. Never delete or rerun a stage after seeing its score: the test protocol (results/freeze_rule.txt) allows reruns only for
+infrastructure failures found before scoring. `MAX_OTHER_ERR` (default 8) can be raised from the shell for hosted-API 400s.
