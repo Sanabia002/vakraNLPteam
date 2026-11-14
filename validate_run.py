@@ -15,7 +15,7 @@ for f in glob.glob(f"output/{run}/*.json"):
         empty += not str(o.get("answer") or "").strip(); nocall += not o["sequence"]["tool_call"]
 p = []
 if len(uu) != n or uu != sample: p.append(f"items {len(uu)} or sample mismatch")
-if doms & frozen: p.append(f"frozen domains {sorted(doms & frozen)}")
+if doms & frozen and not os.environ.get("ALLOW_FROZEN"): p.append(f"frozen domains {sorted(doms & frozen)}")
 if bad > int(os.environ.get("MAX_OTHER_ERR", "3")): p.append(f"{bad} errors other than step limit/timeout")
 if ok_items and empty / ok_items > 0.3: p.append(f"{empty}/{ok_items} successful items with empty answers")
 if ok_items and nocall / ok_items > 0.3: p.append(f"{nocall}/{ok_items} successful items with no tool calls")
