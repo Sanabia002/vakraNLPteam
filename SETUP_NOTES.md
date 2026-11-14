@@ -49,3 +49,19 @@ llama.cpp build b11960 (Vulkan), model bartowski/Qwen_Qwen3.5-4B-GGUF:Q4_K_M:
 - run_hybrid4.sh now checks server health before/after each run and calls validate_run.py (items, frozen domains, error types, empty-answer and zero-tool-call rates). Always run validate_run.py and check_eval.py before using a run.
 - Context overflow (16K): 1 item in each ReAct run (different questions). Plan agent: 0. The ReAct loop does not truncate tool results; the plan agent cuts each to 600 chars (confound).
 - Runs waiting for evaluator scores (Groq free tier cap of 200k tokens/day blocks them): tune68_baseline_k20_ground, tune68_plan_rep2, tune68_plan_rep3, tune68_hyb_plan, tune68_hyb_plan_nostep, tune68_hyb_base, tune68_hyb_base_ground, and the 24 unjudged items of tune68_abl_norecord.
+
+## Nov 14: final dev and frozen-test results, and two findings
+- Frozen system F (see FROZEN_CONFIG.md; code tag final-config; dev run commit 51e855c, test run commit d2d6983, both with agents/ and the runner equal to the tag).
+  Protocol commit e3ac602 (Nov 14 14:17:50) precedes the test run start (14:19:26). Each test stage was run once; no reruns.
+- Dev (82 q): plain baseline 12 (14.6%), C alone 26, D alone 31, F 33 (40.2%, 95% interval 30-51%). Paired F vs baseline: 23 only-F, 2 only-baseline.
+- Frozen test (67 q): baseline 16 (23.9%), C alone 23, D alone 35, F 36 (53.7%, 95% interval 42-65%). Paired: 22 only-F, 2 only-baseline.
+- The fallback rescued 3 questions on dev and 2 on test; it appears as +2 and +1 because one question per set was judged correct for D alone and wrong
+  inside F's scoring pass, on identical D output (judge variability on the groundedness check; about 1 question per set).
+- Data quirk: all 9 beer_factory dev questions that mention root beer ID 10054 have gold calls with 100054. The container returns no record for 10054
+  ({"root_beer_details":[]} in the default data) and a real record for 100054. Neither agent ever used 100054; F answered 3 of the 9 correctly. A
+  one-inserted-digit scan over all 346 public questions found this pattern only in beer_factory (9 questions); the scan is a heuristic.
+- Failure buckets (F's wrong answers): most are missing hops (agent stops early, wrong branch, or never finds the tools), not wrong values; the
+  plan-agent fallback accounts for 31 of 49 dev failures and 16 of 31 test failures. See failure_buckets.py / bucket_examples.py.
+- D is hosted and non-deterministic. The pool run of D sent reasoning_effort at the top level (run_groq27.sh); dev/test runs send it via extra_body
+  (run_set.sh). Request logs show reasoning_effort: none in the sent request in both cases (json_data vs extra_json).
+- Public data has at most 3 gold calls per question; the task describes 1 to 5 hops, so 4-5 hop behavior is untested.
