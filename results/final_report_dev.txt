@@ -1,0 +1,12 @@
+dev baseline  12/82 = 14.6% (95% interval 9-24%) unjudged 0
+dev F         33/82 = 40.2% (95% interval 30-51%) unjudged 0
+paired: both 10 | only baseline 2 | only F 23
+  gold calls = 2: n=71 baseline 12 F 31
+  gold calls = 3: n=11 baseline 0 F 2
+by domain (baseline / F / n):
+  beer_factory                5 / 12 / 28
+  college_completion          0 /  2 / 22
+  genes                       0 /  0 / 1
+  ice_hockey_draft            2 /  3 / 3
+  law_episode                 0 /  3 / 6
+  mondial_geo                 5 / 13 / 22
