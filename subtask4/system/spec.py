@@ -2,88 +2,90 @@
 (src/analysis/s4_system_graph.py) and that tests/unit/test_s4_graph_structure.py checks the built graph against.
 
 Every box is a node of the built graph, under the same name. Diamonds (kind "decision") are conditional edges, not
-nodes. The "evidence" cluster is one sub-graph, added to the main graph as the single node "evidence".
+nodes. The "evidence_check" cluster is one sub-graph, added to the main graph as the single node "evidence_check".
 "input" and "output" are the graph's START and END.
 """
 from __future__ import annotations
 
-# id: (cluster, kind, title, detail)   kind: io | before | inside | decision | after
+# id: (cluster, kind, title, detail)   kind: io | read | act | decision | answer
 NODES = {
-    "input":       (None, "io", "Dialogue + tool rule", "earlier turns, the last question, the rule text"),
-    "rule_reader": ("before", "before", "Rule reader", "4 sentence patterns; the model classifies new wording"),
-    "topic_check": ("before", "before", "Topic check", "is this question about the rule's topic?"),
-    "which_rule":  ("before", "decision", "Which rule applies?", ""),
-    "tool_filter": ("before", "before", "Tool filter", "APIs-only rule: API tools only\nno rule: API tools + the document lookup"),
+    "input":                 (None, "io", "Dialogue + tool rule", "earlier turns, the last question, the rule text"),
+    "rule_reader":           ("read", "read", "Rule Reader", "which tools the rule allows;\nthe model reads a rule in new wording"),
+    "topic_check":           ("read", "read", "Topic Check", "is this question about the rule's topic?"),
+    "which_rule":            ("read", "decision", "Which rule applies?", ""),
+    "tool_filter":           ("read", "read", "Tool Filter", "hides the tools the rule forbids"),
 
-    "retriever":   ("evidence", "inside", "Retriever (Qwen)", "search the domain's own documents, 1-3 phrasings;\npropose an answer and cite up to 3 sentences"),
-    "code_check":  ("evidence", "inside", "Code check", "cited sentences found in the passages (fuzzy);\nthe answer appears in them"),
-    "critic":      ("evidence", "inside", "Critic (same Qwen, fresh conversation)", "supported, including scope?\nif not, name what is missing"),
-    "supported":   ("evidence", "decision", "Code check and critic\nboth say supported?", ""),
-    "verified":    ("evidence", "inside", "Verified answer", "with its citations"),
-    "nothing":     ("evidence", "inside", "Nothing verified", "after the last search round"),
+    "retrieve":              ("evidence_check", "act", "Retrieve", "search the domain's own documents (up to 3 phrasings);\npropose an answer and cite up to 3 sentences"),
+    "check_citations":       ("evidence_check", "act", "Check Citations", "the cited sentences are in the passages,\nand the answer is in them"),
+    "critic":                ("evidence_check", "act", "Critic", "the same model, a fresh conversation:\nsupported, as asked? if not, what is missing"),
+    "is_supported":          ("evidence_check", "decision", "Citations and critic\nboth say supported?", ""),
+    "supported":             ("evidence_check", "act", "Supported", "the answer, with its citations"),
+    "not_found":             ("evidence_check", "act", "Not Found", "nothing verified after the last search"),
 
-    "subgoal":     ("loop", "inside", "1. Sub-goal for this hop", "the question (or its standalone rewrite)\n+ what earlier hops found"),
-    "rank":        ("loop", "inside", "2. Rank the options", "API tools and the document lookup compete\nfor the 20 places shown"),
-    "model":       ("loop", "inside", "3. Model", "picks one shown option, or writes the answer"),
-    "guard":       ("loop", "inside", "4. Rule guard", "is the choice allowed?"),
-    "api_or_docs": ("loop", "decision", "API or\ndocuments?", ""),
-    "arg_check":   ("loop", "inside", "5a. Argument check", "values present, right type, traceable"),
-    "run_api":     ("loop", "inside", "6a. Run the API", "recorded as a tool call"),
-    "empty":       ("loop", "decision", "7a. Empty\nresult?", ""),
-    "hint":        ("loop", "inside", "Hint", "try another form or tool; if still nothing,\nanswer “no matching records”"),
-    "merge":       ("loop", "inside", "Result joins what is known", ""),
+    "plan_step":             ("act", "act", "Plan Step", "the question (or its standalone rewrite)\n+ what the last step found"),
+    "tool_ranker":           ("act", "act", "Tool Ranker", "the 20 tools shown for this step;\nsearch competes for a place (Search on Demand)"),
+    "model":                 ("act", "act", "Model", "calls one shown tool, or answers"),
+    "loop_guard":            ("act", "act", "Loop Guard", "the same call again? point to its result;\ntwice: answer now"),
+    "rule_guard":            ("act", "act", "Rule Guard", "a forbidden or made-up tool is blocked"),
+    "api_or_docs":           ("act", "decision", "API or\ndocuments?", ""),
+    "value_check":           ("act", "act", "Value Check", "values present, right type, traceable"),
+    "call_api":              ("act", "act", "Call API", "recorded as a tool call"),
+    "empty":                 ("act", "decision", "Empty\nresult?", ""),
+    "empty_recovery":        ("act", "act", "Empty-Result Recovery", "a hint: another form of the value, or another tool"),
+    "add_result":            ("act", "act", "Add Result", "the result joins what is known"),
 
-    "answer_docs": (None, "after", "Answer from the cited sentences", ""),
-    "refuse":      (None, "after", "Refuse: “I can not answer”", ""),
-    "grounded":    ("loop", "after", "After the loop: grounded final answer", "rewritten from tool results only;\nevery list item kept"),
-    "output":      (None, "io", "Output", "answer or refusal, every tool call,\nand every component's decision (logged)"),
+    "answer_from_documents": (None, "answer", "Answer from Documents", "from the cited sentences"),
+    "refuse":                (None, "answer", "Refuse", "\u201cI can not answer.\u201d"),
+    "grounded_answer":       ("act", "answer", "Grounded Answer", "rewritten from the tool results only;\nevery list item kept"),
+    "output":                (None, "io", "Output", "answer or refusal, every tool call,\nand the decision log"),
 }
 
-# (from, to, label, style)   style: main | back | caller
+# (from, to, label, style)   style: main | back | caller | caller_free | free | invisible
 EDGES = [
     ("input", "rule_reader", "", "main"),
     ("rule_reader", "topic_check", "", "main"),
     ("topic_check", "which_rule", "", "main"),
-    ("which_rule", "retriever", "documents-only rule", "main"),
+    ("which_rule", "retrieve", "documents-only rule", "main"),
     ("which_rule", "tool_filter", "APIs-only rule,\nor no rule", "main"),
-    ("tool_filter", "subgoal", "", "main"),
+    ("tool_filter", "plan_step", "", "main"),
 
-    ("retriever", "code_check", "", "main"),
-    ("code_check", "critic", "", "main"),
-    ("critic", "supported", "", "main"),
-    ("critic", "retriever", "missing: search again\n(at most 2 more)", "back"),
-    ("supported", "verified", "yes", "main"),
-    ("supported", "nothing", "no", "main"),
-    ("verified", "answer_docs", "documents-only rule", "caller"),
-    ("nothing", "refuse", "documents-only rule", "caller"),
-    ("verified", "merge", "lookup: verified fact", "caller_free"),
-    ("nothing", "merge", "lookup: \u201cnot found\u201d", "caller_free"),
+    ("retrieve", "check_citations", "", "main"),
+    ("check_citations", "critic", "", "main"),
+    ("critic", "is_supported", "", "main"),
+    ("critic", "retrieve", "missing: search again\n(at most 2 more)", "back"),
+    ("is_supported", "supported", "yes", "main"),
+    ("is_supported", "not_found", "no", "main"),
+    ("supported", "answer_from_documents", "documents-only rule", "caller"),
+    ("not_found", "refuse", "documents-only rule", "caller"),
+    ("supported", "add_result", "Verified Lookup: the fact", "caller_free"),
+    ("not_found", "add_result", "Verified Lookup: \u201cnot found\u201d", "caller_free"),
 
-    ("subgoal", "rank", "", "main"),
-    ("rank", "model", "", "main"),
-    ("model", "guard", "picks a tool", "main"),
-    ("guard", "model", "forbidden: blocked,\nthe model is told", "back"),
-    ("guard", "api_or_docs", "allowed", "main"),
-    ("api_or_docs", "arg_check", "API", "main"),
-    ("api_or_docs", "retriever", "documents:\nthe sub-question", "caller_free"),
-    ("arg_check", "model", "untraceable value:\none warning", "back"),
-    ("arg_check", "run_api", "", "main"),
-    ("run_api", "empty", "", "main"),
-    ("empty", "run_api", "retry variant: same API,\nother letter cases (once)", "back"),
-    ("empty", "hint", "yes", "main"),
-    ("empty", "merge", "no", "main"),
-    ("hint", "merge", "", "main"),
-    ("merge", "subgoal", "next hop", "back"),
-    ("model", "grounded", "writes the answer", "free"),
-    ("merge", "grounded", "", "invisible"),
+    ("plan_step", "tool_ranker", "", "main"),
+    ("tool_ranker", "model", "", "main"),
+    ("model", "loop_guard", "calls a tool", "main"),
+    ("loop_guard", "model", "same call again:\npoint to its result", "back"),
+    ("loop_guard", "rule_guard", "new call", "main"),
+    ("rule_guard", "model", "forbidden or made-up:\nblocked", "back"),
+    ("rule_guard", "api_or_docs", "allowed", "main"),
+    ("api_or_docs", "value_check", "API", "main"),
+    ("api_or_docs", "retrieve", "documents:\nVerified Lookup", "caller_free"),
+    ("value_check", "model", "untraceable value:\none warning", "back"),
+    ("value_check", "call_api", "", "main"),
+    ("call_api", "empty", "", "main"),
+    ("empty", "call_api", "retry other forms\nof the values (once)", "back"),
+    ("empty", "empty_recovery", "yes", "main"),
+    ("empty", "add_result", "no", "main"),
+    ("empty_recovery", "add_result", "", "main"),
+    ("add_result", "plan_step", "next step", "back"),
+    ("model", "grounded_answer", "answers", "free"),
+    ("add_result", "grounded_answer", "", "invisible"),
 
-    ("answer_docs", "output", "", "main"),
+    ("answer_from_documents", "output", "", "main"),
     ("refuse", "output", "", "main"),
-    ("grounded", "output", "", "main"),
+    ("grounded_answer", "output", "", "main"),
 ]
 
-
-SUBGRAPH = "evidence"
+SUBGRAPH = "evidence_check"
 
 
 def code_edges() -> tuple[set[tuple[str, str]], set[tuple[str, str]]]:

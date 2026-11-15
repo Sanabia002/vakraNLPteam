@@ -1,0 +1,5 @@
+# Ablation: the Decision Graph without the Grounded Answer (the model's own final answer).
+name: ablate-grounded-answer
+max_iterations: 12
+system:
+  grounded_answer: false

@@ -50,7 +50,7 @@ class GraphAgent(Subtask4Agent):
                     "applies": final.get("applies"), "mode": final.get("mode"), "hops": final.get("hop", 0),
                     "evidence": {k: final["ev"].get(k) for k in ("caller", "verdict", "round", "queries")}
                     if final.get("ev") else None}
-        shown = [e["shown"] for e in final["log"] if e["node"] == "rank"]
+        shown = [e["shown"] for e in final["log"] if e["node"] == "tool_ranker"]
         return AgentResponse(content=final.get("answer") or "", tool_calls=final["tool_calls"],
                              trajectory=[decision, *_trajectory(final["messages"]),
                                          {"type": "Subtask4Log", "events": final["log"]}],

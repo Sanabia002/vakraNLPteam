@@ -1,0 +1,5 @@
+# Ablation: the Decision Graph without the Value Check (no check).
+name: ablate-value-check
+max_iterations: 12
+system:
+  value_check: false

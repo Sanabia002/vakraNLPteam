@@ -1,0 +1,6 @@
+# Smoke: the Decision Graph on 6 dialogues each of books, cars and hockey.
+name: decision-graph-smoke
+max_iterations: 12
+domains: [books, cars, hockey]
+max_per_domain: 6
+system: {}

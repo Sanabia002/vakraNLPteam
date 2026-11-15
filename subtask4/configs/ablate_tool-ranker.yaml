@@ -1,0 +1,5 @@
+# Ablation: the Decision Graph without the step-wise Tool Ranker (one shortlist for the whole dialogue).
+name: ablate-tool-ranker
+max_iterations: 12
+system:
+  tool_ranker: once

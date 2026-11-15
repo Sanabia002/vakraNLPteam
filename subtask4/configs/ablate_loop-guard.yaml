@@ -1,0 +1,5 @@
+# Ablation: the Decision Graph without the Loop Guard (repeated calls run again).
+name: ablate-loop-guard
+max_iterations: 12
+system:
+  loop_guard: false

@@ -1,0 +1,16 @@
+# Rebuild check: the Decision Graph with every component switched off. It must score like the Rule Gate
+# (p1_p2_refuse.yaml), which shows the graph itself changes nothing. Also the last row of the ablation table.
+name: rebuild-check
+max_iterations: 12
+system:
+  rule_reader: patterns
+  topic_check: domain
+  tool_filter: rule
+  tool_ranker: once
+  search_on_demand: "off"
+  evidence_check: refuse
+  verified_lookup: false
+  value_check: false
+  empty_recovery: "off"
+  loop_guard: false
+  grounded_answer: false

@@ -5,12 +5,13 @@
 
 Then, with port 2024 forwarded from the GPU machine, open
 https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024 in Chrome and start a run with the input
-{"domain": "books", "uuid": "<a dialogue uuid>"} (or just {"domain": "books"} for its first dialogue).
+{"uuid": "<a dialogue uuid>"}, after picking the dialogue's domain in Studio's assistant menu (one assistant per
+domain; create them with `python -m subtask4.system.studio assistants`). {} runs the domain's first dialogue.
 
 The graph Studio shows is the system's own graph (graph.System.build) behind one extra node, `load`, which reads the
 dialogue from the training data and builds the starting state exactly as GraphAgent.run does. Only tune and dev
 dialogues can be loaded: data.inputs refuses the frozen course-test domains. The run config is
-subtask4/configs/system.yaml unless STUDIO_CONFIG names another one.
+subtask4/configs/decision_graph.yaml unless STUDIO_CONFIG names another one.
 """
 from __future__ import annotations
 
@@ -55,13 +56,15 @@ def starting_state(agent, domain: str, uuid: Optional[str]) -> dict:
                          messages=agent._input_messages(input, rule))
 
 
-_AGENTS: dict[str, object] = {}
+_AGENTS: dict[tuple, object] = {}
 _STACK = AsyncExitStack()  # keeps each domain's MCP session open for the server's lifetime
 
 
-async def _agent(domain: str):
-    if domain in _AGENTS:
-        return _AGENTS[domain]
+async def _agent(domain: str, config_path: str | None = None):
+    """The GraphAgent for one domain, with the same tools and model as a scored run (cached per domain and config)."""
+    key = (domain, config_path)
+    if key in _AGENTS:
+        return _AGENTS[key]
     from agents.llm import create_llm
     from benchmark.mcp_client import MCPConnectionConfig, create_client_and_connect, load_mcp_config
     from agents.mcp_tool_wrapper import MCPToolWrapper
@@ -70,24 +73,28 @@ async def _agent(domain: str):
     from subtask4.system.agent import GraphAgent
     from subtask4.topics import TopicClassifier
     apply_env()
-    config = RunConfig.load(os.environ.get("STUDIO_CONFIG", REPO / "subtask4" / "configs" / "system.yaml"))
+    config = RunConfig.load(config_path or os.environ.get("STUDIO_CONFIG", REPO / "subtask4" / "configs" / "decision_graph.yaml"))
     llm = create_llm(provider="litellm", model=config.model, temperature=config.temperature)
     mcp = load_mcp_config(str(REPO / "subtask4" / "deploy" / "mcp_native.yaml")).get(4, MCPConnectionConfig())
     session = await _STACK.enter_async_context(create_client_and_connect(mcp, domain))
     tools = await MCPToolWrapper(session).get_tools()
-    _AGENTS[domain] = GraphAgent(config=config, domain=domain, topics=TopicClassifier(llm), llm=llm, tools=tools,
-                                 top_k_tools=config.top_k, max_iterations=config.max_iterations)
-    return _AGENTS[domain]
+    _AGENTS[key] = GraphAgent(config=config, domain=domain, topics=TopicClassifier(llm), llm=llm, tools=tools,
+                              top_k_tools=config.top_k, max_iterations=config.max_iterations)
+    return _AGENTS[key]
 
 
 async def make_graph(config: dict | None = None):
-    """The graph Studio runs: `load`, then the system's graph for the requested domain."""
+    """The graph Studio runs: `load`, then the system's graph for one domain. The server calls this for every run
+    with the run's config, so the domain comes from the assistant's `domain` setting (one assistant per domain);
+    the tools, and the graph Studio draws, are that domain's."""
     domain = ((config or {}).get("configurable") or {}).get("domain") or os.environ.get("STUDIO_DOMAIN", "books")
     agent = await _agent(domain)
 
     async def load(state: StudioState) -> dict:
-        target = await _agent(state.get("domain") or domain)
-        return starting_state(target, state.get("domain") or domain, state.get("uuid"))
+        asked = state.get("domain")
+        if asked and asked != domain:  # the dialogue must run with its own domain's tools
+            raise ValueError(f"This assistant is for '{domain}'; pick the '{asked}' assistant to run a {asked} dialogue.")
+        return starting_state(agent, domain, state.get("uuid"))
 
     outer = StateGraph(StudioState)
     outer.add_node("load", load)
@@ -96,3 +103,21 @@ async def make_graph(config: dict | None = None):
     outer.add_edge("load", "system")
     outer.add_edge("system", END)
     return outer.compile()
+
+
+def create_assistants(url: str = "http://127.0.0.1:2024") -> list[str]:
+    """One Studio assistant per tune and dev domain, each with its `domain` setting (course-test domains excluded)."""
+    import json as _json
+    import urllib.request
+    names = []
+    for domain in data.domains("tune") + data.domains("dev"):
+        body = _json.dumps({"graph_id": "system", "name": domain, "config": {"configurable": {"domain": domain}},
+                            "if_exists": "do_nothing"}).encode()
+        request = urllib.request.Request(f"{url}/assistants", data=body, headers={"Content-Type": "application/json"})
+        with urllib.request.urlopen(request, timeout=30):
+            names.append(domain)
+    return names
+
+
+if __name__ == "__main__" and sys.argv[1:] == ["assistants"]:
+    print("created:", ", ".join(create_assistants()))

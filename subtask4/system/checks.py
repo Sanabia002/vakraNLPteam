@@ -1,19 +1,24 @@
 """Plain checks used by the graph's nodes: no model, no tools, so each one is unit-tested on its own.
 
-  is_empty           an API result with no rows (C11)
-  case_variants      the same arguments in UPPER, Title and lower case (C11 retry)
-  untraceable        text values that appear nowhere in what the agent has seen (C10)
-  schema_problems    missing required values, values of the wrong type (C10)
-  passages           the passage texts in a document-search result (C5)
-  citation_found     a cited sentence is in the passages, allowing small copy differences (C5 code check)
-  answer_in          the answer's names and numbers appear in the cited sentences (C5 code check)
-  back_refers        the question points back to earlier turns ("those", "them", ...) (C7 rewrite)
-  list_items         the items of a list-shaped result (C13 list check)
+  is_empty           an API result with no rows (Empty-Result Recovery)
+  case_variants      the same arguments in UPPER, Title and lower case
+  value_variants     other forms of the values to retry after an empty result (Empty-Result Recovery): letter case
+                     (all arguments, then one at a time), date and number formats, two text values swapped, and
+                     close spellings among values the agent has already seen
+  seen_values        the quoted text values in what the agent has seen (tool results, earlier turns)
+  untraceable        text values that appear nowhere in what the agent has seen (Value Check)
+  schema_problems    missing required values, values of the wrong type (Value Check)
+  passages           the passage texts in a document-search result (Evidence Check)
+  citation_found     a cited sentence is in the passages, allowing small copy differences (Evidence Check)
+  answer_in          the answer's names and numbers appear in the cited sentences (Evidence Check)
+  back_refers        the question points back to earlier turns ("those", "them", ...) (Tool Ranker rewrite)
+  list_items         the items of a list-shaped result (Grounded Answer list check)
   parse_json         the first JSON object in a model reply
 """
 from __future__ import annotations
 
 import collections
+import difflib
 import json
 import re
 
@@ -52,6 +57,73 @@ def case_variants(args: dict) -> list[dict]:
         if variant != args and variant not in out:
             out.append(variant)
     return out
+
+
+_DATE = re.compile(r"^(\d{2,4})([/-])(\d{1,2})\2(\d{1,4})$")
+
+
+def format_forms(value: str) -> list[str]:
+    """Other common forms of a date or number: zero padding removed or added, / and - swapped, periods dropped."""
+    forms, v = [], value.strip()
+    match = _DATE.match(v)
+    if match:
+        a, sep, b, c = match.groups()
+        other = "-" if sep == "/" else "/"
+        unpad = [str(int(a)) if len(a) <= 2 else a, str(int(b)), str(int(c)) if len(c) <= 2 else c]
+        pad = [a if len(a) > 2 else a.zfill(2), b.zfill(2), c if len(c) > 2 else c.zfill(2)]
+        for parts in (unpad, pad):
+            forms += [sep.join(parts), other.join(parts)]
+        forms.append(other.join([a, b, c]))
+    elif re.fullmatch(r"0+\d+", v):
+        forms.append(v.lstrip("0") or "0")
+    if "." in v and not re.fullmatch(r"[\d.]+", v):
+        forms.append(re.sub(r"\.\s*", " ", v).replace("  ", " ").strip())
+    return [f for f in dict.fromkeys(forms) if f != value]
+
+
+def seen_values(texts: list[str], limit: int = 20_000) -> list[str]:
+    """Quoted text values (3-80 characters) in tool results and earlier turns: the only legitimate source of the
+    database's own spellings, since the agent may not read the database directly."""
+    out: dict[str, None] = {}
+    for text in texts:
+        for a, b in re.findall(r"\"([^\"\n]{3,80})\"|'([^'\n]{3,80})'", str(text)):
+            out[a or b] = None
+            if len(out) >= limit:
+                return list(out)
+    return list(out)
+
+
+def close_value(value: str, candidates: list[str], cutoff: float = 0.85) -> str | None:
+    """The candidate closest in spelling to `value` (case-insensitive), if close enough and not the same value."""
+    lowered = {c.lower(): c for c in candidates if c.strip() and c.lower() != value.lower()}
+    match = difflib.get_close_matches(value.lower(), list(lowered), n=1, cutoff=cutoff)
+    return lowered[match[0]] if match else None
+
+
+def value_variants(args: dict, seen: list[str] = (), limit: int = 12) -> list[dict]:
+    """Other forms of the values to try when a call returns nothing, most specific first, at most `limit`."""
+    out: list[dict] = []
+
+    def add(variant: dict) -> None:
+        if variant != args and variant not in out:
+            out.append(variant)
+    texts = [k for k, v in args.items() if isinstance(v, str) and v.strip()]
+    for variant in case_variants(args):                       # every text value in one case
+        add(variant)
+    for key in texts:                                          # a close spelling the agent has seen
+        match = close_value(args[key], list(seen))
+        if match:
+            add({**args, key: match})
+    for key in texts:                                          # date and number formats
+        for form in format_forms(args[key]):
+            add({**args, key: form})
+    if len(texts) == 2:                                        # two text values swapped (first and last name)
+        a, b = texts
+        add({**args, a: args[b], b: args[a]})
+    for key in texts:                                          # one value's case at a time
+        for convert in (str.upper, str.title, str.lower):
+            add({**args, key: convert(args[key])})
+    return out[:limit]
 
 
 def _lenient(value: str) -> bool:

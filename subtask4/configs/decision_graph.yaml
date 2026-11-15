@@ -1,0 +1,4 @@
+# The Decision Graph, final system: every component at its default (config.SystemConfig). Step Budget 12.
+name: decision-graph
+max_iterations: 12
+system: {}

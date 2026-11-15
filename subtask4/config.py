@@ -19,25 +19,31 @@ from .data import SPLIT_NAMES
 
 @dataclass(frozen=True)
 class SystemConfig:
-    """The new system (the LangGraph agent graph, design revision 6). Defaults are the full design; each switch
-    names its component. With every new component off it reduces to the interim system (the parity run)."""
-    rule_fallback: bool = True                       # C1: the model classifies a rule in new wording
-    topic_check: Literal["domain", "question"] = "question"   # C2: once per domain (interim) or per question
-    topic_context: bool = False                      # C2: show the domain's document-search description
-    own_search: bool = True                          # C3: in the no-rule path, keep only the domain's own search
-    evidence: Literal["refuse", "a", "b", "d"] = "d"  # C5 under a documents-only rule: refuse at once (interim),
-    #   a = code check only, b = critic once + code check, d = critic with re-search + code check
-    phrasings: Literal[1, 3] = 3                     # C5: searches per round (as asked, standalone, keywords)
-    max_research: int = 2                            # C5 variant d: extra search rounds
-    fuzzy: float = 0.9                               # C5 code check: word overlap a cited sentence needs
-    scope_check: bool = True                         # C5 critic: database-record questions are out of scope
-    loop_docs: Literal["evidence", "plain"] = "evidence"     # C5 second caller: document searches in the loop
-    ranker: Literal["once", "stepwise"] = "stepwise"  # C7: one shortlist (interim) or one per step
-    rewrite: bool = True                             # C7: standalone rewrite of back-referring questions
-    api_first: Literal["off", "instruct", "hide", "fallback", "relevance"] = "relevance"  # C8 (no-rule path)
-    arg_check: Literal["off", "warn"] = "warn"       # C10
-    empty: Literal["off", "hint", "retry"] = "retry"  # C11: retry = case variants once, then the hint
-    grounded: bool = True                            # C13: rewrite the final answer from the tool results
+    """The Decision Graph's switches, one per component, named after it. Defaults are the final system; switching
+    every component off (configs/rebuild_check.yaml) gives back the Rule Gate.
+
+    Read     rule_reader, topic_check, tool_filter
+    Act      tool_ranker (+ tool_order), search_on_demand, value_check, empty_recovery, loop_guard, verified_lookup
+             (the Rule Guard is always on; the Step Budget is RunConfig.max_iterations)
+    Answer   evidence_check, grounded_answer
+    """
+    rule_reader: Literal["patterns", "patterns+model"] = "patterns+model"    # the model reads a rule in new wording
+    topic_check: Literal["domain", "question"] = "question"                  # decide per domain (Rule Gate) or per question
+    topic_check_context: bool = False                                        # show the domain's document description
+    tool_filter: Literal["rule", "rule+own-search"] = "rule+own-search"      # no-rule path: only the domain's own search
+    tool_ranker: Literal["once", "stepwise", "stepwise+rewrite"] = "stepwise+rewrite"
+    tool_order: Literal["ranked", "shuffled"] = "ranked"                     # shuffled: the order test only
+    search_on_demand: Literal["off", "relevance", "fallback", "instruct", "hide"] = "relevance"  # off: search pinned
+    evidence_check: Literal["refuse", "code", "critic", "critic+research"] = "critic+research"   # refuse: Rule Gate
+    evidence_phrasings: Literal[1, 3] = 3                                    # searches in the first round
+    evidence_rounds: int = 2                                                 # extra search rounds (critic+research)
+    evidence_match: float = 0.9                                              # word overlap a cited sentence needs
+    evidence_scope: bool = True                                              # critic: database-record questions out of scope
+    verified_lookup: bool = True                                             # a document search inside the loop is checked
+    value_check: bool = True
+    empty_recovery: Literal["off", "hint", "retry"] = "retry"                # retry: other forms of the values, then hint
+    loop_guard: bool = True
+    grounded_answer: bool = True
 
 
 @dataclass(frozen=True)

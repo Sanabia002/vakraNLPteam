@@ -1,0 +1,5 @@
+# Ablation: the Decision Graph without Search on Demand (document search always shown).
+name: ablate-search-on-demand
+max_iterations: 12
+system:
+  search_on_demand: "off"

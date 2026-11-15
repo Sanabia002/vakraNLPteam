@@ -1,0 +1,5 @@
+# Ablation: the Decision Graph without the Evidence Check (refuse at once, as in the Rule Gate).
+name: ablate-evidence-check
+max_iterations: 12
+system:
+  evidence_check: refuse

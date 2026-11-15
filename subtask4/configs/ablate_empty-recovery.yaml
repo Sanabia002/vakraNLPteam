@@ -1,0 +1,5 @@
+# Ablation: the Decision Graph without Empty-Result Recovery (no retry, no hint).
+name: ablate-empty-recovery
+max_iterations: 12
+system:
+  empty_recovery: "off"

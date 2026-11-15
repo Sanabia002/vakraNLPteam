@@ -1,0 +1,5 @@
+# Ablation: the Decision Graph without the Verified Lookup (plain document search in the loop).
+name: ablate-verified-lookup
+max_iterations: 12
+system:
+  verified_lookup: false

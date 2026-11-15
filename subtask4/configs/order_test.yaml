@@ -1,0 +1,5 @@
+# Order test: the Decision Graph with the shown tools shuffled. Does the model choose by position in the list?
+name: order-test
+max_iterations: 12
+system:
+  tool_order: shuffled

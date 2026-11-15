@@ -1,4 +1,4 @@
 {
-  "dependencies": [".."],
-  "graphs": {"system": "../system/studio.py:make_graph"}
+  "dependencies": ["."],
+  "graphs": {"system": "./subtask4/system/studio.py:make_graph"}
 }

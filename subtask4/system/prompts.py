@@ -5,6 +5,10 @@ API_FIRST = """Prefer the database API tools. Use a document search only when no
 
 BUDGET = """You have reached the step limit. Answer the question now, using only the tool results above."""
 
+REPEATED_CALL = """You already made this exact call to '{name}'; its result is above. Use that result, make a different call, or answer the question."""
+
+STOP_REPEATS = """You are repeating calls that do not help. Answer the question now, using only the tool results above."""
+
 UNKNOWN_TOOL = """Error: {name} is not a valid tool, try one of [{tools}]."""  # LangGraph ToolNode's wording
 
 FORBIDDEN_TOOL = """Blocked: '{name}' is not allowed by the tool rule. Use one of [{tools}], or answer."""

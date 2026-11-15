@@ -12,19 +12,42 @@ its own switch in the run config, so its effect can be measured on its own.
 
 All parts off gives the intermediate report's baseline (20 tools, rule delivered for single-turn input).
 
-## The new system (design revision 6)
+## The Decision Graph
 
-`subtask4/system/` rebuilds the agent as one LangGraph state graph: every component is a node, every decision a
-conditional edge, and the evidence procedure (retriever, code check, critic, re-search) a sub-graph shared by the
-documents-only path and the in-loop document lookup. A run config with a `system:` section uses it; its switches are
-`SystemConfig` in `config.py` (defaults = the full design). `spec.py` is the design's graph: Figure 1 is drawn from it
-and `tests/unit/test_s4_system.py` checks the built graph's edges against it.
+Three systems are compared: **Baseline** (VAKRA's ReAct agent), **Rule Gate** (Tool Filter + refuse at once: the
+`p1_p2_refuse` config of the interim report) and the **Decision Graph** (`subtask4/system/`): one LangGraph state graph
+in which every decision is made where its information exists. Its components, in three stages, are also its config
+switches (`SystemConfig` in `config.py`) and its graph nodes:
+
+| Stage | Component | Switch | What it does |
+|---|---|---|---|
+| Read | Rule Reader | `rule_reader` | which tools the rule allows; the model reads a rule in new wording |
+| | Topic Check | `topic_check` | does a topic rule apply to this question? |
+| | Tool Filter | `tool_filter` | hides the tools the rule forbids |
+| Act | Tool Ranker | `tool_ranker` | the 20 tools shown at each step |
+| | Search on Demand | `search_on_demand` | document search shown only when it fits |
+| | Rule Guard | (always on) | blocks a forbidden or made-up tool |
+| | Value Check | `value_check` | warns once about values that appear nowhere |
+| | Empty-Result Recovery | `empty_recovery` | retries other forms of the values, then a hint |
+| | Loop Guard | `loop_guard` | stops repeated calls |
+| | Step Budget | `max_iterations` | the step limit (12) |
+| | Verified Lookup | `verified_lookup` | a document search inside the loop, fact-checked |
+| Answer | Evidence Check | `evidence_check` | documents-only rule: answer from cited sentences, or refuse |
+| | Grounded Answer | `grounded_answer` | the final answer rewritten from the tool results |
+
+`spec.py` is the graph as designed: Figure 1 is drawn from it, and `tests/unit/test_s4_system.py` checks the built
+graph against it.
 
 | Config | What |
 |---|---|
-| `system.yaml` | the full design, step budget 20 |
-| `system_parity.yaml` | the graph with every new component off: must match `p1_p2_refuse` within 1.5 points |
-| `system_smoke.yaml` | the full design on 6 dialogues each of books, cars, hockey |
+| `decision_graph.yaml` | the final system |
+| `rebuild_check.yaml` | every component off: must score like the Rule Gate |
+| `ablate_<component>.yaml` | the final system without one component (9 files) |
+| `order_test.yaml` | the shown tools shuffled: does the model choose by position? |
+| `decision_graph_smoke.yaml` | 6 dialogues each of books, cars, hockey |
+
+Retired names: P1 = Tool Filter, P2 = Refusal Gate (replaced by the Evidence Check), P3 = hybrid tool picker (dropped);
+the design document's C1-C15 map to the components above.
 
 ## Layout
 
@@ -38,10 +61,11 @@ subtask4/
   run.py          runs a config through VAKRA's runner in-process and writes the run record
   evaluate.py     VAKRA's evaluator with a chosen judge and a persistent judge cache
   scoreboard.py   per-dialogue table, summary and paired comparison
-  configs/        baseline, p1, p1_oracle, p2_refuse, p2_evidence, p1_p2_*, p1_p2_p3, smoke, system*
+  configs/        baseline, p1, p1_oracle, p2_refuse, p2_evidence, p1_p2_*, p1_p2_p3, smoke, decision_graph*, rebuild_check, ablate_*, order_test
   deploy/         services.py (start/check the servers), nothink_proxy.py, mcp_native.yaml
-  system/         the new system: spec.py (the design's graph), graph.py (nodes, edges, evidence sub-graph),
-                  checks.py (plain checks), prompts.py, agent.py (GraphAgent, for the runner)
+  system/         the Decision Graph: spec.py (the design's graph), graph.py (nodes, edges, Evidence Check sub-graph),
+                  checks.py (plain checks), prompts.py, agent.py (GraphAgent, for the runner), studio.py
+
 ```
 
 Changes to VAKRA's code (both behaviour-preserving, tested): `benchmark_runner.AGENT_FACTORY` and a `domain` argument

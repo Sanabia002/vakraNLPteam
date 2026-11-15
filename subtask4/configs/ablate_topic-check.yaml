@@ -1,0 +1,5 @@
+# Ablation: the Decision Graph without the Topic Check per question (decided once per domain, as in the Rule Gate).
+name: ablate-topic-check
+max_iterations: 12
+system:
+  topic_check: domain
