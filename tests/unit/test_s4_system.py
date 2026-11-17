@@ -238,6 +238,19 @@ def test_document_lookup_not_found_is_not_a_refusal():
     assert told == "Not found in the documents." and final["answer"] != REFUSAL
 
 
+def test_rule_reader_off_sends_a_documents_only_rule_down_the_no_rule_path():
+    final, _ = run(DOCS, FakeLLM(steps=["Six."]), config=SystemConfig(rule_reader="off"))
+    assert final["rule"] is None and final["mode"] == "none" and "retrieve" not in nodes(final)
+    assert final["answer"] == "Six."
+
+
+def test_tool_filter_off_shows_and_allows_a_forbidden_search():
+    llm = FakeLLM(steps=[("query_hockey", {"query": "cups"}), "24."])
+    final, log = run(APIS, llm, config=SystemConfig(tool_filter="off"))
+    assert final["mode"] == "apis" and "query_hockey" in final["allowed"]
+    assert not any(e["node"] == "rule_guard" and e.get("blocked") for e in final["log"])
+
+
 def test_own_search_only_in_the_no_rule_path():
     final, _ = run("", FakeLLM(steps=["Six."]))
     assert "query_books" not in final["allowed"] and "query_hockey" in final["allowed"]

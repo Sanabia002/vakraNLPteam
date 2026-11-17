@@ -1,0 +1,6 @@
+# Ablation: the Decision Graph without the Rule Reader. The rule text still reaches the model, but no rule is read,
+# so every dialogue takes the no-rule path (no Tool Filter by rule, no Evidence Check, no refusal by rule).
+name: ablate-rule-reader
+max_iterations: 12
+system:
+  rule_reader: "off"

@@ -27,10 +27,10 @@ class SystemConfig:
              (the Rule Guard is always on; the Step Budget is RunConfig.max_iterations)
     Answer   evidence_check, grounded_answer
     """
-    rule_reader: Literal["patterns", "patterns+model"] = "patterns+model"    # the model reads a rule in new wording
+    rule_reader: Literal["off", "patterns", "patterns+model"] = "patterns+model"  # off: no rule read (only told)
     topic_check: Literal["domain", "question"] = "question"                  # decide per domain (Rule Gate) or per question
     topic_check_context: bool = False                                        # show the domain's document description
-    tool_filter: Literal["rule", "rule+own-search"] = "rule+own-search"      # no-rule path: only the domain's own search
+    tool_filter: Literal["off", "rule", "rule+own-search"] = "rule+own-search"  # off: every tool shown and allowed
     tool_ranker: Literal["once", "stepwise", "stepwise+rewrite"] = "stepwise+rewrite"
     tool_order: Literal["ranked", "shuffled"] = "ranked"                     # shuffled: the order test only
     search_on_demand: Literal["off", "relevance", "fallback", "instruct", "hide"] = "relevance"  # off: search pinned

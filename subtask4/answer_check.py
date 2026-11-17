@@ -18,6 +18,7 @@ import argparse
 import asyncio
 import collections
 import json
+import os
 from pathlib import Path
 
 from . import data
@@ -76,6 +77,8 @@ async def run(config_path: str | None = None) -> dict:
     out = OUTPUT / f"answer_check-{config.run_id}.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps({"config": config.run_id, "summary": summary, "results": results}, indent=1) + "\n")
+    from .system import studio
+    await studio._STACK.aclose()  # close the tool servers' connections, or the process never exits
     return {"summary": summary, "file": str(out)}
 
 
@@ -87,7 +90,8 @@ def main() -> None:
     if args.command == "build":
         print(f"{len(build())} questions with a known answer -> {ITEMS}")
     else:
-        print(asyncio.run(run(args.config)))
+        print(asyncio.run(run(args.config)), flush=True)
+        os._exit(0)  # tool-server subprocesses can keep the interpreter alive after the work is done
 
 
 if __name__ == "__main__":

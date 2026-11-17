@@ -159,8 +159,11 @@ class System:
     # ------------------------------------------------------------------ Read: before the loop
 
     async def rule_reader(self, state: State) -> State:
-        """Rule Reader: the rule's sentence pattern; the model reads a rule in new wording (patterns+model)."""
+        """Rule Reader: the rule's sentence pattern; the model reads a rule in new wording (patterns+model). Off: no
+        rule is read, so every dialogue takes the no-rule path."""
         text = state.get("rule_text") or ""
+        if self.cfg.rule_reader == "off":  # ablation: the rule text still reaches the model, but nothing acts on it
+            return {"rule": None, "log": self._log(state, "rule_reader", rule=None, source="off" if text.strip() else None)}
         try:
             rule, source = parse_rule(text), "pattern"
         except UnknownRule:
@@ -205,9 +208,12 @@ class System:
         return "evidence_check" if state["mode"] == "docs" else "tool_filter"
 
     def tool_filter(self, state: State) -> State:
-        """Tool Filter: the tools the path allows. A forbidden tool is never shown, and the Rule Guard blocks it."""
+        """Tool Filter: the tools the path allows. A forbidden tool is never shown, and the Rule Guard blocks it. Off:
+        every tool is shown and allowed."""
         names = list(self.tools)
-        if state["mode"] == "apis" or (state["mode"] == "none" and self.cfg.search_on_demand == "hide"):
+        if self.cfg.tool_filter == "off":  # ablation: forbidden tools are shown, and the Rule Guard has nothing to block
+            allowed = names
+        elif state["mode"] == "apis" or (state["mode"] == "none" and self.cfg.search_on_demand == "hide"):
             allowed = [n for n in names if not is_retriever(n)]
         elif self.cfg.tool_filter == "rule+own-search":
             allowed = [n for n in names if not is_retriever(n) or n == self.own_search]

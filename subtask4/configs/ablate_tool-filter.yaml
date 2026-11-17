@@ -1,0 +1,6 @@
+# Ablation: the Decision Graph without the Tool Filter. Every tool is shown and allowed, so the Rule Guard has nothing
+# to block (it still blocks made-up tools). Documents-only rules still go to the Evidence Check.
+name: ablate-tool-filter
+max_iterations: 12
+system:
+  tool_filter: "off"
