@@ -26,3 +26,17 @@ If validate_run.py aborts a stage, inspect the error text: connection/auth/5xx =
 with MAX_OTHER_ERR raised (set to 20), no rerun. Judge errors are repaired by re-judging only the failed items (rejudge_test.py); that is rescoring, not rerunning.
 No code changes after tag final-config. Nobody opens output/final_test_* except validators and the scorer until all scoring is finished.
 The run and scoring are done in the owner's terminal, not by Claude Code.
+
+Supplementary uniform grid (added after frozen-test results were seen), written 2026-11-23 BEFORE any grid stage runs.
+Purpose: a uniform model-by-agent table on the same 67 frozen-test questions. Supplementary only.
+- Code: the frozen code at tag final-config (agents/ and benchmark_runner.py unchanged; run_grid.sh aborts otherwise).
+- These runs are NOT used to select, change or re-report the final system. F (D on Groq 27B + C on local 4B, fallback merge)
+  and its reported test numbers stay as they are; no existing output/final_* folder or results/eval_final_* file is touched.
+- New stages, one run each, with the existing stages' flags, k, timeouts, recursion limit and LLM settings:
+  final_test_D4 (D's ReAct+hybrid+grounded k=30 on local 4B), final_test_C27 (C's plan agent on Groq 27B),
+  final_test_baseline27 (provided ReAct, k=20, no flags, Groq 27B). Merges, no model calls: final_test_E = D4 with fallback to C;
+  final_test_F27 = D with fallback to C27. Same status-only fallback rule as F.
+- Each stage runs once. A rerun is allowed only for an infrastructure failure shown by validate_run.py BEFORE any scoring,
+  under the same definitions as the test protocol above; any rerun is disclosed in SETUP_NOTES.md.
+- Scores go to new files results/eval_gridtest_<run>.json; judge errors are repaired by re-judging only the failed items.
+- Disclosure: all of these cells are chosen after the frozen-test scores of baseline, C, D and F were known.
