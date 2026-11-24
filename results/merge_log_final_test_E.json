@@ -1,0 +1,27 @@
+{
+ "primary": "final_test_D4",
+ "fallback": "final_test_C",
+ "used_fallback": [
+  "10050cfaf017-5a44f512597f",
+  "10050cfaf017-32fe3953461a",
+  "39a28b2592a2-1907080be68c",
+  "39a28b2592a2-9f02611452c0",
+  "39a28b2592a2-1e297a03260e",
+  "39a28b2592a2-020dcb6246af",
+  "39a28b2592a2-3fb2e2ad682a",
+  "34a533dfd727-3064ccb23fb6",
+  "34a533dfd727-ef7e1fe67b5b",
+  "34a533dfd727-0db5a403896c",
+  "34a533dfd727-d2b241d29c8c",
+  "34a533dfd727-76f6f60eb98c",
+  "34a533dfd727-82edcb4f200d",
+  "34a533dfd727-2340d72332cc",
+  "5caddc4c49de-0a1eb2b4db44",
+  "5caddc4c49de-318f1fe105df",
+  "ee275d64dafc-bcde04422bd8",
+  "ee275d64dafc-f847f018c877",
+  "ee275d64dafc-33f72e8fc9c6",
+  "ee275d64dafc-7891e942c72d"
+ ],
+ "fallback_also_failed": []
+}
