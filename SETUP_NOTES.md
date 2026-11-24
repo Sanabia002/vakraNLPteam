@@ -65,3 +65,14 @@ llama.cpp build b11960 (Vulkan), model bartowski/Qwen_Qwen3.5-4B-GGUF:Q4_K_M:
 - D is hosted and non-deterministic. The pool run of D sent reasoning_effort at the top level (run_groq27.sh); dev/test runs send it via extra_body
   (run_set.sh). Request logs show reasoning_effort: none in the sent request in both cases (json_data vs extra_json).
 - Public data has at most 3 gold calls per question; the task describes 1 to 5 hops, so 4-5 hop behavior is untested.
+
+## Nov 23: supplementary uniform grid on the frozen test set (not used to choose anything)
+Protocol note committed first (dd50eb3, 2026-11-23 20:07:11), then `./run_grid.sh test` at the final-config code. Each stage ran once, no reruns.
+Pre-flight aborts before any stage started (nothing ran, so not reruns): local server down (20:07), then restarted with 16384 context and
+caught by the check, restarted with the frozen flags; Groq agent key returned 401 and was replaced; the 4 containers had exited and were started.
+Stages: final_test_D4 20:28-21:10 (41 min), final_test_C27 21:10-21:16 (6 min), final_test_baseline27 21:16-21:27 (10 min); all validate_run OK,
+0 schema/context/429 lines. Merges: final_test_E (D4 then C, 20 fallbacks), final_test_F27 (D then C27, 17 fallbacks). Scored 21:27-21:34 with
+score_grid.sh into results/eval_gridtest_*.json, all VALID with 0 judge errors, no re-judging. Table: results/grid_test.txt (grid_report.py).
+Results (/67): baseline 16 (4B) / 24 (27B); C 23 / 29; D 22 / 35; D then C: E 22 / F27 33. Frozen F unchanged at 36.
+Finding: F27 < D comes from the judge, not the merge: the 50 answers F27 shares with D are identical but 3 were judged differently. Judge noise
+on the same answers is up to about 3 questions per set, larger than the ~1 seen before.
