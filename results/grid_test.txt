@@ -1,0 +1,33 @@
+Supplementary uniform grid, frozen test set (67 questions). Protocol: results/freeze_rule.txt, 'Supplementary uniform grid'.
+Not used to select or change the final system. Cells: correct/67, %, 95% Wilson interval.
+
+                                             Qwen3.5-4B (local)             qwen3.8-27b (Groq)
+Baseline (provided ReAct, k=20, no flags)    16/67 = 23.9% [15-35%]         24/67 = 35.8% [25-48%]
+C (plan-execute, frozen flags)               23/67 = 34.3% [24-46%]         29/67 = 43.3% [32-55%]
+D (ReAct, hybrid, k=30, grounded)            22/67 = 32.8% [23-45%]         35/67 = 52.2% [40-64%]
+D then C (status fallback)                   E  22/67 = 32.8% [23-45%]      F27 33/67 = 49.3% [38-61%]
+
+Frozen system F (D 27B + C 4B, reported, unchanged): 36/67 = 53.7% [42-65%]
+
+Paired counts over the same 67 questions (both / only first / only second / neither):
+  baseline   vs baseline27  15 /  1 /  9 / 42
+  C          vs C27         18 /  5 / 11 / 33
+  D4         vs D           20 /  2 / 15 / 30
+  E          vs F27         19 /  3 / 14 / 31
+  baseline27 vs D           20 /  4 / 15 / 28
+
+New stages: run status (from output/<run>/; step limit = 'Recursion' in error, timeout = 'timed out' in error):
+  D4         n=67 success 47, error 20 (step limit 20, timeout 0, other 0); no answer 20 (20 non-success + 0 empty successful)
+  C27        n=67 success 67, error 0 (step limit 0, timeout 0, other 0); no answer 0 (0 non-success + 0 empty successful)
+  baseline27 n=67 success 53, error 14 (step limit 13, timeout 0, other 1); no answer 14 (14 non-success + 0 empty successful)
+  E          merge: fallback used 20, fallback also failed 0
+  F27        merge: fallback used 17, fallback also failed 0
+
+Judge consistency: a merged run's non-fallback answers are byte-identical to its primary run's, but are judged again:
+  F    kept from D   50: 35 correct here vs 35 in D's own scoring (2 judged differently); fallback items 17: 1 correct here, 0 in C's own scoring
+  E    kept from D4  47: 22 correct here vs 22 in D4's own scoring (0 judged differently); fallback items 20: 0 correct here, 0 in C's own scoring
+  F27  kept from D   50: 32 correct here vs 35 in D's own scoring (3 judged differently); fallback items 17: 1 correct here, 1 in C27's own scoring
+
+Noise: re-judging the same outputs flipped about 1 question per set earlier (results/judgecheck_*), and up to 3 here (above),
+so differences of up to about 3 questions are within judge noise. F27 < D is judge noise on identical answers, not a merge effect.
+The 27B model is hosted (Groq preview) and not deterministic; each cell is a single run.
